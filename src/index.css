@@ -1,0 +1,544 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --mouse-x: 0.5;
+  --mouse-y: 0.5;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Improve touch targets for mobile */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Prevent text selection on buttons */
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Improved Accessible Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333; 
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* 3D Engine Utilities */
+.perspective-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Parallax Effect Utility */
+.parallax-layer {
+  transition: transform 0.1s cubic-bezier(0.2, 0.4, 0.6, 1);
+  will-change: transform;
+}
+
+.text-glow {
+  text-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+}
+
+/* Fade In Animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* Fade In Up Animation for Badges */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+/* Reaction Picker Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Reaction Button Hover Effect */
+.reaction-button {
+  position: relative;
+  overflow: visible;
+}
+
+.reaction-button::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.reaction-button:hover::before {
+  opacity: 1;
+}
+
+/* Subtle Pulse Animation */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* Subtle Bounce Animation */
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+/* Slow spin animation for stars */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Blink Animation for AI Eyes */
+@keyframes blink {
+  0%, 90%, 100% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0.1;
+  }
+}
+
+/* Shimmer Animation for Progress Bar */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* ========== 3D Badge Animations ========== */
+@keyframes badgeFloat {
+  0%, 100% {
+    transform: translateY(0px) translateZ(0);
+  }
+  25% {
+    transform: translateY(-4px) translateZ(8px);
+  }
+  50% {
+    transform: translateY(-8px) translateZ(16px);
+  }
+  75% {
+    transform: translateY(-4px) translateZ(8px);
+  }
+}
+
+@keyframes badgeRotate {
+  0%, 100% {
+    transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(1);
+  }
+  20% {
+    transform: rotateY(10deg) rotateX(5deg) rotateZ(3deg) scale(1.1);
+  }
+  40% {
+    transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(1.15);
+  }
+  60% {
+    transform: rotateY(-10deg) rotateX(-5deg) rotateZ(-3deg) scale(1.1);
+  }
+  80% {
+    transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(1.05);
+  }
+}
+
+@keyframes badgeGlow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translateZ(-15px) scale(1.5);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateZ(-15px) scale(1.9);
+  }
+}
+
+@keyframes badgeGlow2 {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translateZ(-10px) scale(1.4);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateZ(-10px) scale(1.7);
+  }
+}
+
+@keyframes badgeRing {
+  0% {
+    transform: translateZ(-5px) rotate(0deg) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateZ(-5px) rotate(180deg) scale(1.15);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateZ(-5px) rotate(360deg) scale(1);
+    opacity: 0.4;
+  }
+}
+
+@keyframes badgeSparkle0 {
+  0%, 100% {
+    transform: translate(0, 0) scale(0.8) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(12px, -12px) scale(1.8) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+@keyframes badgeSparkle1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(0.8) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-12px, 12px) scale(1.8) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+@keyframes badgeSparkle2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(0.8) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(12px, 12px) scale(1.8) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+@keyframes badgeSparkle3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(0.8) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-12px, -12px) scale(1.8) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+/* Badge Animation Classes */
+.badge-float {
+  animation: badgeFloat 3s ease-in-out infinite;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.badge-rotate {
+  animation: badgeRotate 4s ease-in-out infinite;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.badge-glow {
+  animation: badgeGlow 2.5s ease-in-out infinite;
+}
+
+.badge-glow-2 {
+  animation: badgeGlow2 2s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.badge-ring {
+  animation: badgeRing 3s linear infinite;
+}
+
+.badge-sparkle-0 {
+  animation: badgeSparkle0 2.5s ease-in-out infinite;
+}
+
+.badge-sparkle-1 {
+  animation: badgeSparkle1 2.5s ease-in-out infinite;
+  animation-delay: 0.25s;
+}
+
+.badge-sparkle-2 {
+  animation: badgeSparkle2 2.5s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.badge-sparkle-3 {
+  animation: badgeSparkle3 2.5s ease-in-out infinite;
+  animation-delay: 0.75s;
+}
+
+/* Badge Container - No hover effects, always animated */
+.badge-container {
+  overflow: visible !important;
+  contain: none !important;
+  clip-path: none !important;
+}
+
+/* Ensure parent containers don't clip badge animations */
+.badge-container * {
+  overflow: visible !important;
+  clip-path: none !important;
+}
+
+/* Mobile-specific badge z-index fixes */
+@media (max-width: 1023px) {
+  /* Ensure badge animations appear above mobile header */
+  .badge-container,
+  .badge-container * {
+    z-index: 100 !important;
+    position: relative !important;
+  }
+  
+  /* Badge sparkles and glows should be visible */
+  .badge-sparkle-0,
+  .badge-sparkle-1,
+  .badge-sparkle-2,
+  .badge-sparkle-3,
+  .badge-glow,
+  .badge-glow-2,
+  .badge-ring {
+    z-index: 99 !important;
+  }
+  
+  /* Main badge icon should be on top */
+  .badge-float,
+  .badge-rotate {
+    z-index: 102 !important;
+  }
+}
+
+/* Force 24-hour format for time inputs - browser locale dependent */
+input[type="time"] {
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  /* Force 24-hour format by default */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Hide AM/PM field in Chrome/Safari - forces 24-hour format */
+input[type="time"]::-webkit-datetime-edit-ampm-field {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+/* Hide AM/PM in Chrome time picker dropdown - this is a workaround */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+input[type="time"]::-webkit-clear-button {
+  display: none;
+}
+
+/* For Firefox - use 24-hour format by setting lang attribute to en-GB */
+input[type="time"],
+input[type="time"][lang="en-GB"] {
+  font-variant-numeric: tabular-nums;
+  /* Force 24-hour format */
+}
+
+/* Additional CSS to ensure 24-hour format display */
+input[type="time"]::-webkit-datetime-edit-hour-field,
+input[type="time"]::-webkit-datetime-edit-minute-field {
+  padding: 0;
+}
+
+/* Force 24-hour format for time input value display */
+input[type="time"]::before {
+  content: '';
+}
+
+/* Ensure time input uses 24-hour format in all browsers */
+input[type="time"][lang="en-GB"] {
+  /* en-GB locale forces 24-hour format in most browsers */
+}
+
+/* ===== App Themes (Market sotib olingan mavzular) ===== */
+/* Neon Kechalar - Cyberpunk uslub */
+.app-theme-neon {
+  --theme-accent: #06b6d4;
+  --theme-accent-hover: #22d3ee;
+  --theme-glow: rgba(6, 182, 212, 0.4);
+}
+.app-theme-neon [class*="bg-indigo-600"],
+.app-theme-neon [class*="bg-indigo-500"],
+.app-theme-neon .bg-indigo-600,
+.app-theme-neon .bg-indigo-500 {
+  background-color: #06b6d4 !important;
+}
+.app-theme-neon .bg-gradient-to-r.from-indigo-500,
+.app-theme-neon .bg-gradient-to-r.from-violet-600,
+.app-theme-neon .bg-gradient-to-br.from-indigo-500 {
+  --tw-gradient-from: #06b6d4;
+  --tw-gradient-to: #ec4899;
+}
+.app-theme-neon .text-indigo-600,
+.app-theme-neon .text-indigo-500,
+.app-theme-neon [class*="text-indigo"] {
+  color: #06b6d4 !important;
+}
+.app-theme-neon .border-indigo-500,
+.app-theme-neon .border-indigo-600 {
+  border-color: #06b6d4 !important;
+}
+.app-theme-neon .shadow-indigo-500\/30,
+.app-theme-neon [class*="shadow-indigo"] {
+  box-shadow: 0 10px 40px -10px rgba(6, 182, 212, 0.4) !important;
+}
+
+/* Tinch O'rmon - Tabiat ranglari */
+.app-theme-forest {
+  --theme-accent: #059669;
+  --theme-accent-hover: #10b981;
+  --theme-glow: rgba(5, 150, 105, 0.4);
+}
+.app-theme-forest [class*="bg-indigo-600"],
+.app-theme-forest [class*="bg-indigo-500"],
+.app-theme-forest .bg-indigo-600,
+.app-theme-forest .bg-indigo-500 {
+  background-color: #059669 !important;
+}
+.app-theme-forest .bg-gradient-to-r.from-indigo-500,
+.app-theme-forest .bg-gradient-to-r.from-violet-600,
+.app-theme-forest .bg-gradient-to-br.from-indigo-500 {
+  --tw-gradient-from: #059669;
+  --tw-gradient-to: #84cc16;
+}
+.app-theme-forest .text-indigo-600,
+.app-theme-forest .text-indigo-500,
+.app-theme-forest [class*="text-indigo"] {
+  color: #059669 !important;
+}
+.app-theme-forest .border-indigo-500,
+.app-theme-forest .border-indigo-600 {
+  border-color: #059669 !important;
+}
+.app-theme-forest .shadow-indigo-500\/30,
+.app-theme-forest [class*="shadow-indigo"] {
+  box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.4) !important;
+}

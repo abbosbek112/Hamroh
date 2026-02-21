@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Primary Meta Tags -->
+    <title>Hamroh AI - Yordamchi AI Asistant</title>
+    <meta name="title" content="Hamroh AI - Yordamchi AI Asistant" />
+    <meta name="description" content="Hamroh AI - Sizning shaxsiy AI yordamchingiz. Chat, jamiyat, intizom va ko'plab boshqa funksiyalar bilan tanishib chiqing." />
+    <meta name="keywords" content="AI, asistant, chat, jamiyat, intizom, hamroh, yordamchi, artificial intelligence" />
+    <meta name="author" content="Hamroh AI" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Uzbek" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Hamroh AI - Yordamchi AI Asistant" />
+    <meta property="og:description" content="Sizning shaxsiy AI yordamchingiz. Chat, jamiyat, intizom va ko'plab boshqa funksiyalar." />
+    <meta property="og:site_name" content="Hamroh AI" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hamroh AI - Yordamchi AI Asistant" />
+    <meta name="twitter:description" content="Sizning shaxsiy AI yordamchingiz." />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+    
+    <!-- Fonts - with font-display: swap for faster rendering -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+    
+    <!-- Tailwind CSS will be bundled by PostCSS during build -->
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "recharts": "https://esm.sh/recharts@^3.6.0"
+  }
+  }
+</script>
+</head>
+  <body class="bg-slate-50 text-slate-900 dark:bg-[#050505] dark:text-slate-200 transition-colors duration-700 ease-in-out selection:bg-violet-500/30 selection:text-violet-200">
+    <div id="root"></div>
+    <script>
+      // Global mouse tracking for CSS
+      document.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        document.documentElement.style.setProperty('--mouse-x', x);
+        document.documentElement.style.setProperty('--mouse-y', y);
+      });
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
