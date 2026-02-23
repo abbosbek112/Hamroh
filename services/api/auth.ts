@@ -37,19 +37,6 @@ export const authApi = {
       }
 
       if (!userData) {
-        try {
-          const adminApi = (supabase as any).auth?.admin;
-          if (adminApi?.getUserById) {
-            const { data: authUser, error: authCheckError } = await adminApi.getUserById(session.user.id);
-            if (authCheckError || !authUser) {
-              logger.warn('Auth user not found in auth.users, cannot create profile:', session.user.id);
-              return null;
-            }
-          }
-        } catch (e) {
-          logger.warn('Could not verify auth user exists, proceeding with profile creation:', e);
-        }
-
         const metadata = session.user.user_metadata || {};
         const email = session.user.email || '';
         const name = (metadata as any).full_name || (metadata as any).name || email.split('@')[0] || 'User';

@@ -140,7 +140,6 @@ function App() {
         initSession();
       } else if (event === 'SIGNED_OUT' && mounted) {
         setUser(null);
-        setCurrentView(AppView.LANDING);
       }
     });
 
