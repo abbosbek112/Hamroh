@@ -462,6 +462,7 @@ export const Admin: React.FC = () => {
   const [supportTickets, setSupportTickets] = useState<SupportTicket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
   const [supportReply, setSupportReply] = useState('');
+  const [isSendingSupport, setIsSendingSupport] = useState(false);
 
   // --- MARKETING FORM STATE ---
   const [adForm, setAdForm] = useState({
@@ -1051,7 +1052,7 @@ export const Admin: React.FC = () => {
 
   // --- SUPPORT HANDLERS ---
   const handleSendAdminReply = async () => {
-    if (!selectedTicket || !supportReply.trim()) return;
+    if (!selectedTicket || !supportReply.trim() || isSendingSupport) return;
 
     // Validate message
     const validation = validateMessage(supportReply);
@@ -1069,15 +1070,16 @@ export const Admin: React.FC = () => {
 
     // Sanitize input
     const sanitizedText = sanitizeInput(supportReply.trim());
-    setSupportReply(''); // Clear input immediately for better UX
+    setIsSendingSupport(true);
+    setSupportReply(''); // Clear input
 
     try {
       const newMsg = await api.adminReplyToTicket(selectedTicket.id, sanitizedText);
 
       // Update Local State
-      const updatedTicket = {
+      const updatedTicket: SupportTicket = {
         ...selectedTicket,
-        status: 'RESOLVED' as const,
+        status: 'OPEN' as const, // Match the change in api.adminReplyToTicket
         messages: [...selectedTicket.messages, newMsg],
         lastMessage: `Admin: ${sanitizedText}`,
         lastUpdated: Date.now()
@@ -1085,9 +1087,16 @@ export const Admin: React.FC = () => {
       setSupportTickets(prev => prev.map(t => t.id === selectedTicket.id ? updatedTicket : t));
       setSelectedTicket(updatedTicket);
       notify('Javob yuborildi', 'success');
+
+      // Scroll to bottom
+      setTimeout(() => {
+        supportEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     } catch (error: any) {
       setSupportReply(sanitizedText); // Restore on error
       notify(error.message || 'Xabar yuborishda xatolik', 'error');
+    } finally {
+      setIsSendingSupport(false);
     }
   };
 
@@ -2180,11 +2189,17 @@ export const Admin: React.FC = () => {
                 </div>
                 <button
                   onClick={handleSendAdminReply}
-                  disabled={!supportReply.trim()}
-                  className="px-6 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed text-white rounded-2xl transition-all shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 active:scale-95 flex items-center gap-2 font-bold"
+                  disabled={!supportReply.trim() || isSendingSupport}
+                  className="px-6 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed text-white rounded-2xl transition-all shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 active:scale-95 flex items-center gap-2 font-bold min-w-[120px] justify-center"
                 >
-                  <Send size={20} strokeWidth={2.5} />
-                  <span className="hidden sm:inline">Yuborish</span>
+                  {isSendingSupport ? (
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <>
+                      <Send size={20} strokeWidth={2.5} />
+                      <span className="hidden sm:inline">Yuborish</span>
+                    </>
+                  )}
                 </button>
               </div>
               <p className="text-xs text-slate-400 dark:text-slate-500 mt-3 text-center">

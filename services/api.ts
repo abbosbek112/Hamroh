@@ -1248,14 +1248,6 @@ export const api = {
         .eq('id', ticket.user_id)
         .single();
 
-      // Get admin users to properly identify admin messages
-      const { data: adminUsers } = await supabase
-        .from('users')
-        .select('id')
-        .eq('role', 'admin');
-
-      const adminIds = new Set((adminUsers || []).map((u: any) => u.id));
-
       return {
         id: ticket.id,
         userId: ticket.user_id,
@@ -1267,7 +1259,7 @@ export const api = {
         messages: (messages || []).map((m: any) => ({
           id: m.id,
           text: m.text,
-          sender: adminIds.has(m.sender_id) ? ('admin' as const) : ('user' as const),
+          sender: m.sender_id === ticket.user_id ? ('user' as const) : ('admin' as const),
           timestamp: new Date(m.created_at).getTime(),
         })),
         createdAt: ticket.created_at,
@@ -1379,15 +1371,20 @@ export const api = {
         throw new Error("Xabar yuborishda xatolik yuz berdi.");
       }
 
-      // Update ticket status
-      await supabase
+      // Update ticket status (Keep as OPEN but update last message and time)
+      const { error: updateError } = await supabase
         .from('support_tickets')
         .update({
-          status: 'RESOLVED',
+          status: 'OPEN', // Keep it Open while in conversation
           last_message: `Admin: ${text}`,
           updated_at: new Date().toISOString(),
         })
         .eq('id', ticketId);
+
+      if (updateError) {
+        logger.error('Error updating ticket status:', updateError);
+        // We still return the message if it was inserted successfully
+      }
 
       return {
         id: message.id,
