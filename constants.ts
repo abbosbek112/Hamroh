@@ -415,9 +415,13 @@ export const TRANSLATIONS = {
       }
     },
     settings: {
+      preferences: "Afzalliklar",
+      theme: "Rejim",
+      language: "Til",
+      app_theme: "Ilova Mavzusi",
+      locked_themes: "Boshqa mavzular do'konda",
+      theme_updated: "Mavzu muvaffaqiyatli yangilandi!",
       title: "Shaxsiy Sozlamalar",
-      theme: "Ko'rinish",
-      language: "Muloqot Tili",
       personal_info: "Siz Haqingizda",
       name: "Ism Familiya",
       phone: "Aloqa",
@@ -455,6 +459,46 @@ export const TRANSLATIONS = {
       notification_welcome_title: "Salom! Hamroh AI siz bilan.",
       notification_welcome_body: "Endi muhim xabarlarni o'tkazib yubormaysiz.",
       notifications_enabled: "Bildirishnomalar yoqildi!"
+    },
+    market: {
+      title: "XP Do'koni",
+      subtitle: "Yutuqlaringizni real imkoniyatlarga aylantiring",
+      balance: "Sizning hisobingiz",
+      price: "Narxi",
+      buy: "Sotib olish",
+      owned: "Sotib olingan",
+      insufficient: "Mablag' yetarli emas",
+      insufficient_short: "XP yetarli emas",
+      premium_store: "Premium Do'kon",
+      confirm_title: "Xaridni tasdiqlash",
+      confirm_desc: "Haqiqatan ham sotib olmoqchimisiz?",
+      success: "Xarid muvaffaqiyatli amalga oshirildi!",
+      error_msg: "Xatolik yuz berdi. Qayta urinib ko'ring.",
+      xp: "XP",
+      tabs: {
+        all: "Barchasi",
+        utility: "Foydali",
+        theme: "Mavzular",
+        badge: "Nishonlar",
+        inventory: "Savat"
+      },
+      apply: "Tanlash",
+      applied: "Tanlangan",
+      item_types: {
+        UTILITY: "Foydali",
+        THEME: "Mavzu",
+        BADGE: "Nishon"
+      },
+      items: {
+        streak_freeze: { name: "Streak Muzlatgich", desc: "Bir kunlik mashg'ulotni o'tkazib yuborsangiz ham, streak saqlanib qoladi." },
+        double_xp: { name: "2x XP (1 soat)", desc: "Keyingi 1 soat davomida bajarilgan vazifalar uchun 2 barobar ko'p XP oling." },
+        focus_booster: { name: "Diqqat Kuchaytirgich", desc: "Keyingi 2 soat davomida diqqat vaqti 1.5 barobar tezroq hisoblanadi." },
+        theme_neon: { name: "Neon Kechalar", desc: "Ilova uchun maxsus kiberpank uslubidagi mavzu." },
+        theme_forest: { name: "Tinch O'rmon", desc: "Ko'zga yoqimli yashil va tabiat ranglari." },
+        theme_midnight: { name: "Yarim Tun", desc: "To'liq qora va elegant dizaynli mavzu." },
+        badge_rich: { name: "Boyvachcha", desc: "Faqat bozordan sotib olish mumkin bo'lgan eksklyuziv nishon." },
+        badge_vip: { name: "VIP Nishon", desc: "Profilingiz uchun maxsus VIP maqomi va nishoni." }
+      }
     },
     support: {
       title: "Yordam va Maslahatlar",
