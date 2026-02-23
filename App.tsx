@@ -136,16 +136,11 @@ function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       logger.info('Auth state changed:', event);
       if (event === 'SIGNED_IN' && session && mounted) {
-        // Only run getSession if user is not already set
-        setUser(prevUser => {
-          if (!prevUser) {
-            // Trigger an async update if user is missing
-            initSession();
-          }
-          return prevUser;
-        });
+        // Safe to call async function directly here instead of inside state updater
+        initSession();
       } else if (event === 'SIGNED_OUT' && mounted) {
         setUser(null);
+        setCurrentView(AppView.LANDING);
       }
     });
 
