@@ -718,6 +718,7 @@ export const Admin: React.FC = () => {
         });
 
         setSupportTickets(tickets);
+        supportTicketsRef.current = tickets;
 
         // Update selected ticket if it exists (using ref to avoid stale closure and loop)
         const currentSelectedId = selectedTicketIdRef.current;
@@ -1097,8 +1098,13 @@ export const Admin: React.FC = () => {
         lastMessage: `Admin: ${sanitizedText}`,
         lastUpdated: Date.now()
       };
-      setSupportTickets(prev => prev.map(t => t.id === selectedTicket.id ? updatedTicket : t));
+      setSupportTickets(prev => {
+        const next = prev.map(t => t.id === selectedTicket.id ? updatedTicket : t);
+        supportTicketsRef.current = next;
+        return next;
+      });
       setSelectedTicket(updatedTicket);
+      selectedTicketIdRef.current = updatedTicket.id;
       notify('Javob yuborildi', 'success');
 
       // Scroll to bottom
@@ -2063,7 +2069,10 @@ export const Admin: React.FC = () => {
             return (
               <div
                 key={ticket.id}
-                onClick={() => setSelectedTicket(ticket)}
+                onClick={() => {
+                  setSelectedTicket(ticket);
+                  selectedTicketIdRef.current = ticket.id;
+                }}
                 className={`p-4 border-b border-slate-100 dark:border-white/5 cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-white/10 relative group ${selectedTicket?.id === ticket.id
                   ? 'bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 border-l-4 border-l-indigo-500 shadow-sm'
                   : hasUnread
