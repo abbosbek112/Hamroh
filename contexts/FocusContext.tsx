@@ -118,7 +118,7 @@ export const FocusProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
 
         try {
-            play('/sounds/fire.mp3', { volume: 0.5 });
+            play('/sounds/rain.mp3', { volume: 0.5 });
         } catch {
             // Ignore audio errors
         }

@@ -32,8 +32,8 @@ export const IdentitySetup: React.FC<IdentitySetupProps> = ({ user, onComplete, 
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <div className="bg-white dark:bg-[#1a1a1e] rounded-2xl w-full max-w-lg p-6 shadow-2xl relative">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300">
+            <div className="bg-white/90 dark:bg-[#1a1a1e]/90 backdrop-blur-2xl rounded-[2.5rem] w-full max-w-lg p-8 shadow-2xl relative border border-white/20 dark:border-white/5 md:-translate-y-12 animate-fade-in-up">
                 <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
                     <X size={24} />
                 </button>

@@ -27,12 +27,12 @@ export const AUDIO_URLS = {
   rain: '/sounds/rain.mp3',
   fire: '/sounds/fire.mp3',
   forest: '/sounds/forest.mp3',
-  
+
   // Tashqi URL'lar (misollar)
   // rain: 'https://cdn.example.com/sounds/rain.mp3',
   // fire: 'https://cdn.example.com/sounds/fire.mp3',
   // forest: 'https://cdn.example.com/sounds/forest.mp3',
-  
+
   // Environment variable orqali
   // rain: import.meta.env.VITE_AUDIO_RAIN_URL || rainSound,
   // fire: import.meta.env.VITE_AUDIO_FIRE_URL || fireSound,
@@ -54,22 +54,22 @@ export const getAudioUrl = (soundId: string): string | null => {
  */
 export const isValidAudioUrl = (url: string | null): boolean => {
   if (!url) return false;
-  
+
   // Import qilingan fayl (blob: yoki data: yoki relative path)
   if (url.startsWith('blob:') || url.startsWith('data:') || url.startsWith('/')) {
     return true;
   }
-  
+
   // Tashqi URL (http:// yoki https://)
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return true;
   }
-  
+
   // Relative path (./ yoki ../)
   if (url.startsWith('./') || url.startsWith('../')) {
     return true;
   }
-  
+
   return false;
 };
 

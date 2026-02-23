@@ -37,10 +37,10 @@ export const ShareCard: React.FC<ShareCardProps> = ({ user, stats, onClose }) =>
     };
 
     return (
-        <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}></div>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-all duration-300" onClick={onClose}></div>
 
-            <div className="relative flex flex-col gap-6 animate-fade-in-up items-center">
+            <div className="relative flex flex-col gap-6 animate-fade-in-up items-center md:-translate-y-12">
 
                 {/* THE CARD */}
                 <div

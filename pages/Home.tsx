@@ -23,9 +23,9 @@ const XPGuideModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
   const { t } = useLanguage();
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-      <div className="relative w-full max-w-md bg-white dark:bg-[#1a1a1e] rounded-[2rem] p-8 shadow-2xl animate-fade-in-up border border-slate-200 dark:border-white/10">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onClick={onClose}></div>
+      <div className="relative w-full max-w-md bg-white/90 dark:bg-[#1a1a1e]/90 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-2xl animate-fade-in-up border border-white/20 dark:border-white/5 md:-translate-y-12">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Star className="text-yellow-500 fill-yellow-500" /> {t('home.xp_guide.title')}
@@ -462,9 +462,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       )}
 
       {showOnboarding && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md transition-all duration-500 overflow-y-auto">
+        <div className="fixed inset-0 z-[150] flex justify-center items-start pt-[10vh] md:pt-[15vh] p-4 bg-slate-900/70 backdrop-blur-md transition-all duration-500">
           <div className="absolute inset-0" onClick={handleCompleteOnboarding}></div>
-          <div className="relative w-full max-w-lg bg-white/90 dark:bg-[#1a1a1e]/90 rounded-[3rem] p-10 shadow-2xl border border-white/20 dark:border-white/5 backdrop-blur-2xl animate-fade-in-up">
+          <div className="relative w-full max-w-lg bg-white/95 dark:bg-[#1a1a1e]/95 rounded-[3rem] p-10 shadow-2xl border border-white/20 dark:border-white/5 backdrop-blur-2xl animate-fade-in-up -translate-y-8">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
@@ -494,7 +494,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     {(['uz', 'ru', 'en'] as const).map(lang => (
                       <button
                         key={lang}
-                        onClick={() => setLanguage(lang)}
+                        onClick={() => {
+                          setLanguage(lang);
+                          setTimeout(() => setOnboardingStep(2), 200);
+                        }}
                         className={`py-4 rounded-2xl font-black transition-all border-2 ${language === lang
                           ? 'bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-500/30 -translate-y-1'
                           : 'bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 border-slate-100 dark:border-white/5 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10'

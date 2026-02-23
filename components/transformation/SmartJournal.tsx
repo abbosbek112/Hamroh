@@ -87,8 +87,8 @@ export const SmartJournal: React.FC<SmartJournalProps> = ({ user, onSave, onClos
     };
 
     return (
-        <div className={`fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md`}>
-            <div className={`w-full max-w-lg bg-gradient-to-br ${getGradient()} bg-white dark:bg-[#1a1a1e] rounded-3xl p-8 shadow-2xl relative border border-white/10 overflow-hidden`}>
+        <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-300`}>
+            <div className={`w-full max-w-lg bg-gradient-to-br ${getGradient()} bg-white/90 dark:bg-[#1a1a1e]/90 rounded-[3rem] p-10 shadow-2xl relative border border-white/20 dark:border-white/5 backdrop-blur-2xl md:-translate-y-12 animate-fade-in-up overflow-hidden`}>
 
                 {/* Progress Bar */}
                 <div className="absolute top-0 left-0 h-1 bg-indigo-500 transition-all duration-300" style={{ width: `${((step + 1) / template.prompts.length) * 100}%` }}></div>
