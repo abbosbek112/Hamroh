@@ -89,9 +89,10 @@ function App() {
 
   useEffect(() => {
     const html = document.documentElement;
-    html.classList.remove('app-theme-neon', 'app-theme-forest');
+    html.classList.remove('app-theme-neon', 'app-theme-forest', 'app-theme-midnight');
     if (user?.appTheme === 'neon') html.classList.add('app-theme-neon');
     else if (user?.appTheme === 'forest') html.classList.add('app-theme-forest');
+    else if (user?.appTheme === 'midnight') html.classList.add('app-theme-midnight');
   }, [user?.appTheme]);
 
   // Initial Session Check & Auth State Listener

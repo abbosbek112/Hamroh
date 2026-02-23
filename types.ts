@@ -38,8 +38,9 @@ export interface User {
   inventory: string[]; // Array of purchased StoreItem IDs
   selectedBadgeId?: string;
   theme?: 'light' | 'dark';
-  appTheme?: 'neon' | 'forest';
+  appTheme?: 'neon' | 'forest' | 'midnight';
   doubleXpExpiresAt?: number;
+  focusBoosterExpiresAt?: string; // ISO Date string
   language?: 'uz' | 'ru' | 'en';
   status?: 'Active' | 'Banned';
   banExpiresAt?: string; // ISO Date for temporary bans
@@ -255,6 +256,7 @@ export type StoreItemType = 'THEME' | 'UTILITY' | 'BADGE';
 export interface StoreItem {
   id: string;
   type: StoreItemType;
+  isPremium?: boolean;
   name: string;
   description: string;
   price: number;

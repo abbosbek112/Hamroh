@@ -90,26 +90,38 @@ export const STORE_ITEMS: StoreItem[] = [
   {
     id: 'streak_freeze',
     type: 'UTILITY',
-    name: 'store.streak_freeze.name',
-    description: "store.streak_freeze.desc",
+    isPremium: false,
+    name: 'market.items.streak_freeze.name',
+    description: "market.items.streak_freeze.desc",
     price: 500,
     icon: '❄️'
   },
   {
     id: 'double_xp',
     type: 'UTILITY',
-    name: 'store.double_xp.name',
-    description: "store.double_xp.desc",
+    isPremium: true,
+    name: 'market.items.double_xp.name',
+    description: "market.items.double_xp.desc",
     price: 300,
     icon: '⚡'
+  },
+  {
+    id: 'focus_booster',
+    type: 'UTILITY',
+    isPremium: true,
+    name: 'market.items.focus_booster.name',
+    description: "market.items.focus_booster.desc",
+    price: 1500,
+    icon: '🎯'
   },
 
   // Themes
   {
     id: 'theme_neon',
     type: 'THEME',
-    name: 'store.theme_neon.name',
-    description: "store.theme_neon.desc",
+    isPremium: true,
+    name: 'market.items.theme_neon.name',
+    description: "market.items.theme_neon.desc",
     price: 1000,
     icon: '🌆',
     value: 'neon'
@@ -117,22 +129,44 @@ export const STORE_ITEMS: StoreItem[] = [
   {
     id: 'theme_forest',
     type: 'THEME',
-    name: 'store.theme_forest.name',
-    description: "store.theme_forest.desc",
+    isPremium: false,
+    name: 'market.items.theme_forest.name',
+    description: "market.items.theme_forest.desc",
     price: 800,
     icon: '🌲',
     value: 'forest'
+  },
+  {
+    id: 'theme_midnight',
+    type: 'THEME',
+    isPremium: true,
+    name: 'market.items.theme_midnight.name',
+    description: "market.items.theme_midnight.desc",
+    price: 1200,
+    icon: '🌑',
+    value: 'midnight'
   },
 
   // Badges
   {
     id: 'badge_rich',
     type: 'BADGE',
-    name: 'badges.badge_rich.name',
-    description: "badges.badge_rich.desc",
+    isPremium: true,
+    name: 'market.items.badge_rich.name',
+    description: "market.items.badge_rich.desc",
     price: 5000,
     icon: '💎',
     value: 'badge_rich'
+  },
+  {
+    id: 'badge_vip',
+    type: 'BADGE',
+    isPremium: true,
+    name: 'market.items.badge_vip.name',
+    description: "market.items.badge_vip.desc",
+    price: 3000,
+    icon: '👑',
+    value: 'badge_vip'
   }
 ];
 
@@ -155,7 +189,9 @@ export const TRANSLATIONS = {
       saving: "Saqlanmoqda...",
       active: "Faol",
       enable: "Yoqish",
-      no_data: "Ma'lumotlar yo'q"
+      no_data: "Ma'lumotlar yo'q",
+      premium: "Premium",
+      processing: "Kutilmoqda..."
     },
     badges: {
       first_step: { name: 'Ilk Qadam', desc: "Tizimga birinchi marta kirish." },
@@ -205,9 +241,12 @@ export const TRANSLATIONS = {
       title: "XP Do'koni",
       subtitle: "Yutuqlaringizni real imkoniyatlarga aylantiring",
       balance: "Sizning hisobingiz",
+      price: "Narxi",
       buy: "Sotib olish",
       owned: "Sotib olingan",
       insufficient: "Mablag' yetarli emas",
+      insufficient_short: "XP yetarli emas",
+      premium_store: "Premium Do'kon",
       confirm_title: "Xaridni tasdiqlash",
       confirm_desc: "Haqiqatan ham sotib olmoqchimisiz?",
       success: "Xarid muvaffaqiyatli amalga oshirildi!",
@@ -227,9 +266,12 @@ export const TRANSLATIONS = {
       items: {
         streak_freeze: { name: "Streak Muzlatgich", desc: "Bir kunlik mashg'ulotni o'tkazib yuborsangiz ham, streak saqlanib qoladi." },
         double_xp: { name: "2x XP (1 soat)", desc: "Keyingi 1 soat davomida bajarilgan vazifalar uchun 2 barobar ko'p XP oling." },
+        focus_booster: { name: "Diqqat Kuchaytirgich", desc: "Keyingi 2 soat davomida diqqat vaqti 1.5 barobar tezroq hisoblanadi." },
         theme_neon: { name: "Neon Kechalar", desc: "Ilova uchun maxsus kiberpank uslubidagi mavzu." },
         theme_forest: { name: "Tinch O'rmon", desc: "Ko'zga yoqimli yashil va tabiat ranglari." },
-        badge_rich: { name: "Boyvachcha", desc: "Faqat bozordan sotib olish mumkin bo'lgan eksklyuziv nishon." }
+        theme_midnight: { name: "Yarim Tun", desc: "To'liq qora va elegant dizaynli mavzu." },
+        badge_rich: { name: "Boyvachcha", desc: "Faqat bozordan sotib olish mumkin bo'lgan eksklyuziv nishon." },
+        badge_vip: { name: "VIP Nishon", desc: "Profilingiz uchun maxsus VIP maqomi va nishoni." }
       }
     },
     admin: {

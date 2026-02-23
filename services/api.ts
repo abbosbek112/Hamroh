@@ -450,6 +450,9 @@ export const api = {
         if (!currentInventory.includes(item.id)) {
           updateData.inventory = [...currentInventory, item.id];
         }
+      } else if (item.id === 'focus_booster') {
+        const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString();
+        updateData.focus_booster_expires_at = expiresAt;
       } else {
         if (!currentInventory.includes(item.id)) {
           updateData.inventory = [...currentInventory, item.id];
