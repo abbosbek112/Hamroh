@@ -41,8 +41,8 @@ export const AdminAnalytics: React.FC<AdminAnalyticsProps> = ({ deals, expenses,
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[2rem] p-8 shadow-sm">
                     <h3 className="font-bold text-lg mb-6 text-slate-900 dark:text-white">Financial Overview</h3>
-                    <div className="h-64 w-full min-w-[200px] min-h-[200px]">
-                        <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200} aspect={undefined}>
+                    <div className="h-64 w-full">
+                        <ResponsiveContainer width="100%" height={256}>
                             <BarChart data={financialData}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />

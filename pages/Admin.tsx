@@ -464,6 +464,18 @@ export const Admin: React.FC = () => {
   const [supportReply, setSupportReply] = useState('');
   const [isSendingSupport, setIsSendingSupport] = useState(false);
 
+  // SECURITY: Refs to prevent infinite loops in real-time polling
+  const supportTicketsRef = useRef<SupportTicket[]>([]);
+  const selectedTicketIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    supportTicketsRef.current = supportTickets;
+  }, [supportTickets]);
+
+  useEffect(() => {
+    selectedTicketIdRef.current = selectedTicket?.id || null;
+  }, [selectedTicket?.id]);
+
   // --- MARKETING FORM STATE ---
   const [adForm, setAdForm] = useState({
     dealId: '',
@@ -692,8 +704,8 @@ export const Admin: React.FC = () => {
       try {
         const tickets = await api.getAllSupportTickets();
 
-        // Check for new messages and notify admin
-        const previousTickets = supportTickets;
+        // Check for new messages and notify admin (via ref to avoid loop)
+        const previousTickets = supportTicketsRef.current;
         tickets.forEach(newTicket => {
           const oldTicket = previousTickets.find(t => t.id === newTicket.id);
           if (oldTicket && newTicket.messages.length > oldTicket.messages.length) {
@@ -707,9 +719,10 @@ export const Admin: React.FC = () => {
 
         setSupportTickets(tickets);
 
-        // Update selected ticket if it exists
-        if (selectedTicket) {
-          const updated = tickets.find(t => t.id === selectedTicket.id);
+        // Update selected ticket if it exists (using ref to avoid stale closure and loop)
+        const currentSelectedId = selectedTicketIdRef.current;
+        if (currentSelectedId) {
+          const updated = tickets.find(t => t.id === currentSelectedId);
           if (updated) {
             setSelectedTicket(updated);
           }
@@ -728,7 +741,7 @@ export const Admin: React.FC = () => {
         clearInterval(interval);
       }
     };
-  }, [activeTab, selectedTicket?.id, supportTickets, language]);
+  }, [activeTab, language]); // Dependencies reduced to prevent infinite loops
 
   // --- HANDLERS ---
 
@@ -1230,8 +1243,8 @@ export const Admin: React.FC = () => {
               <TrendingUp size={24} className="text-indigo-500" />
               Foydalanuvchilar O'sishi
             </h3>
-            <div className="h-64 min-h-[200px] w-full min-w-[200px]">
-              <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200} aspect={undefined}>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height={256}>
                 <AreaChart data={usersList.reduce((acc: any[], user) => {
                   const date = user.joinedDate || new Date().toISOString().split('T')[0];
                   const existing = acc.find(i => i.date === date);
@@ -1346,8 +1359,8 @@ export const Admin: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-white/70 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[2rem] p-8 shadow-sm">
             <h3 className="font-bold text-lg mb-6 text-slate-900 dark:text-white">Financial Overview</h3>
-            <div className="h-64 w-full min-w-[200px] min-h-[200px]">
-              <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200} aspect={undefined}>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height={256}>
                 <BarChart data={financialData}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />

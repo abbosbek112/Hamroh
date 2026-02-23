@@ -1190,11 +1190,11 @@ export const api = {
             .eq('ticket_id', ticket.id)
             .order('created_at', { ascending: true });
 
-          const { data: user } = await supabase
+          const { data: user } = ticket.user_id ? await supabase
             .from('users')
             .select('name, avatar')
             .eq('id', ticket.user_id)
-            .single();
+            .single() : { data: null };
 
           return {
             id: ticket.id,
@@ -1242,11 +1242,11 @@ export const api = {
         .eq('ticket_id', ticket.id)
         .order('created_at', { ascending: true });
 
-      const { data: user } = await supabase
+      const { data: user } = ticket.user_id ? await supabase
         .from('users')
         .select('name, avatar')
         .eq('id', ticket.user_id)
-        .single();
+        .single() : { data: null };
 
       return {
         id: ticket.id,

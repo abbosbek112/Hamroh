@@ -100,8 +100,8 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ isLoading, usersLi
                         <TrendingUp size={24} className="text-indigo-500" />
                         Foydalanuvchilar O'sishi
                     </h3>
-                    <div className="h-64 min-h-[200px] w-full min-w-[200px]">
-                        <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200} aspect={undefined}>
+                    <div className="h-64 w-full">
+                        <ResponsiveContainer width="100%" height={256}>
                             <AreaChart data={usersList.reduce((acc: any[], user) => {
                                 const date = user.joinedDate || new Date().toISOString().split('T')[0];
                                 const existing = acc.find(i => i.date === date);
