@@ -482,6 +482,10 @@ export const TRANSLATIONS = {
         badge: "Nishonlar",
         inventory: "Savat"
       },
+      inventory_empty_title: "Sizda hali buyumlar yo'q",
+      inventory_empty_subtitle: "Do'kondan biror narsa sotib oling!",
+      store_empty_title: "Hozircha mahsulotlar yo'q",
+      store_empty_subtitle: "Tez kunda yangi mahsulotlar qo'shiladi!",
       apply: "Tanlash",
       applied: "Tanlangan",
       item_types: {
@@ -1026,6 +1030,10 @@ export const TRANSLATIONS = {
         badge: "Значки",
         inventory: "Корзина"
       },
+      inventory_empty_title: "У вас пока нет предметов",
+      inventory_empty_subtitle: "Купите что-нибудь в магазине!",
+      store_empty_title: "Продуктов пока нет",
+      store_empty_subtitle: "Скоро будут добавлены новые товары!",
       apply: "Выбрать",
       applied: "Выбрано",
       item_types: {
@@ -1036,9 +1044,12 @@ export const TRANSLATIONS = {
       items: {
         streak_freeze: { name: "Заморозка Стрика", desc: "Сохраните стрик, даже если пропустите один день тренировок." },
         double_xp: { name: "2x XP (1 час)", desc: "Получайте вдвое больше XP за выполненные задания в течение следующего часа." },
+        focus_booster: { name: "Усилитель Фокуса", desc: "В течение следующих 2 часов время фокуса будет считаться в 1.5 раза быстрее." },
         theme_neon: { name: "Неоновые Ночи", desc: "Специальная тема в стиле киберпанк для приложения." },
         theme_forest: { name: "Тихий Лес", desc: "Приятные для глаз зеленые и природные цвета." },
-        badge_rich: { name: "Богач", desc: "Эксклюзивный значок, который можно купить только на рынке." }
+        theme_midnight: { name: "Полночь", desc: "Полностью черный и элегантный дизайн темы." },
+        badge_rich: { name: "Богач", desc: "Эксклюзивный значок, который можно купить только на рынке." },
+        badge_vip: { name: "VIP Значок", desc: "Специальный VIP статус и значок для вашего профиля." }
       }
     },
     admin: {
@@ -1810,6 +1821,10 @@ export const TRANSLATIONS = {
         badge: "Badges",
         inventory: "Inventory"
       },
+      inventory_empty_title: "You don't have any items yet",
+      inventory_empty_subtitle: "Buy something from the store!",
+      store_empty_title: "No products yet",
+      store_empty_subtitle: "New products will be added soon!",
       apply: "Apply",
       applied: "Applied",
       xp: "XP",
@@ -1821,9 +1836,12 @@ export const TRANSLATIONS = {
       items: {
         streak_freeze: { name: "Streak Freeze", desc: "Keep your streak even if you miss one day of practice." },
         double_xp: { name: "2x XP (1 hour)", desc: "Get double XP for completed tasks for the next 1 hour." },
+        focus_booster: { name: "Focus Booster", desc: "For the next 2 hours, focus time will be counted 1.5 times faster." },
         theme_neon: { name: "Neon Nights", desc: "A cyber-punk style theme for the app." },
         theme_forest: { name: "Peaceful Forest", desc: "Pleasing green and nature colors." },
-        badge_rich: { name: "Wealthy", desc: "An exclusive badge that can only be bought in the market." }
+        theme_midnight: { name: "Midnight", desc: "A sleek black and elegant theme." },
+        badge_rich: { name: "Wealthy", desc: "An exclusive badge that can only be bought in the market." },
+        badge_vip: { name: "VIP Badge", desc: "Special VIP status and badge for your profile." }
       }
     },
     admin: {

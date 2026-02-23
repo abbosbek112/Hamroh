@@ -162,10 +162,10 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                         <ShoppingBag size={48} className="text-slate-300 dark:text-slate-600" />
                     </div>
                     <h3 className="text-2xl font-bold dark:text-white mb-2">
-                        {activeTab === 'INVENTORY' ? 'Sizda hali buyumlar yo\'q' : 'Hozircha mahsulotlar yo\'q'}
+                        {activeTab === 'INVENTORY' ? t('market.inventory_empty_title') : t('market.store_empty_title')}
                     </h3>
                     <p className="text-slate-500 dark:text-slate-400">
-                        {activeTab === 'INVENTORY' ? 'Do\'kondan biror narsa sotib oling!' : 'Tez kunda yangi mahsulotlar qo\'shiladi!'}
+                        {activeTab === 'INVENTORY' ? t('market.inventory_empty_subtitle') : t('market.store_empty_subtitle')}
                     </p>
                 </div>
             ) : (

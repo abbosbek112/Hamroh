@@ -51,7 +51,7 @@ const createMockClient = () => {
       signUp: async () => ({ data: { user: null, session: null }, error: { message: 'Backend not configured' } }),
       signOut: async () => ({ error: null }),
       onAuthStateChange: () => ({
-        data: { subscription: { unsubscribe: () => {} } },
+        data: { subscription: { unsubscribe: () => { } } },
         error: null,
       }),
     },
@@ -64,8 +64,8 @@ const createMockClient = () => {
       single: () => ({ data: null, error: { message: 'Backend not configured' } }),
     }),
     channel: () => ({
-      on: () => ({ subscribe: () => {} }),
-      subscribe: () => {},
+      on: () => ({ subscribe: () => { } }),
+      subscribe: () => { },
     }),
   } as any;
 };
@@ -73,36 +73,58 @@ const createMockClient = () => {
 // Initialize Supabase client or use mock if env vars are missing
 let supabaseInstance: any;
 
-if (!supabaseUrl || !supabaseAnonKey || isAuthDisabled) {
+// SECURITY: Sanitize URLs to prevent double-slashes or trailing slash issues
+const sanitizeUrl = (url: string) => {
+  if (!url) return '';
+  let sanitized = url.trim();
+  // Remove trailing slashes
+  sanitized = sanitized.replace(/\/+$/, '');
+  return sanitized;
+};
+
+const finalUrl = sanitizeUrl(supabaseUrl || '');
+
+if (!finalUrl || !supabaseAnonKey || isAuthDisabled) {
   // Use mock client in demo mode
   supabaseInstance = createMockClient();
-  
-  // Log warning in development only
-  if (import.meta.env.DEV) {
-    console.warn('[Supabase] Running in demo mode - backend features disabled');
-  }
+
+  // Log status
+  console.log('[Supabase] Initializing in DEMO mode (Auth Disabled or missing keys)');
 } else {
   // Initialize real Supabase client
-  supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-      // Clear invalid sessions on error
-      storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-      storageKey: 'supabase.auth.token',
-      // Use 'pkce' if WebCrypto is available, otherwise fallback to 'implicit'
-      flowType: typeof window !== 'undefined' && window.crypto && window.crypto.subtle ? 'pkce' : 'implicit',
-    },
-  });
+  try {
+    supabaseInstance = createClient(finalUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        // FORCE localStorage to avoid cookie domain issues on Netlify subdomains
+        storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+        storageKey: 'hamroh_auth_session',
+        // PKCE is default, but we can fallback to implicit if domain issues occur
+        flowType: typeof window !== 'undefined' && window.crypto && window.crypto.subtle ? 'pkce' : 'implicit',
+      },
+      global: {
+        headers: { 'x-application-name': 'hamroh-ai' },
+      },
+      db: {
+        schema: 'public'
+      }
+    });
+
+    console.log('[Supabase] Client initialized for:', finalUrl);
+  } catch (error) {
+    console.error('[Supabase] Critical initialization error:', error);
+    supabaseInstance = createMockClient();
+  }
 
   // Handle invalid refresh token errors globally
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && supabaseInstance.auth) {
     supabaseInstance.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
         // Clear any cached data
         try {
-          localStorage.removeItem('supabase.auth.token');
+          localStorage.removeItem('hamroh_auth_session');
         } catch (e) {
           // Ignore localStorage errors
         }
@@ -114,7 +136,7 @@ if (!supabaseUrl || !supabaseAnonKey || isAuthDisabled) {
         // User data updated
       }
     });
-    
+
     // Handle session errors
     supabaseInstance.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT' && !session) {
