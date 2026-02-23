@@ -2,11 +2,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   User as UserIcon, Camera, Trash2, LogOut, Loader2,
-  Check, X, Shield, Star, Lock, Copy, Moon, Sun, Globe, Calendar, Mail
+  Check, X, Shield, Star, Lock, Copy, Moon, Sun, Globe, Calendar, Mail,
+  Palette, Sparkles
 } from 'lucide-react';
 import { User } from '../types';
 import { api } from '../services/api';
-import { ACHIEVEMENTS_LIST } from '../constants';
+import { ACHIEVEMENTS_LIST, STORE_ITEMS } from '../constants';
 import { compressImage } from '../utils/helpers';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useToast } from '../contexts/ToastContext';
@@ -140,15 +141,30 @@ export const Settings: React.FC<SettingsProps> = ({
   const handleLanguageChange = async (lang: string) => {
     const newLang = lang.toLowerCase() as 'uz' | 'ru' | 'en';
     setLanguage(newLang);
-    const updatedUser = { ...formData, language: newLang };
+    const updatedUser: User = { ...formData, language: newLang };
     setFormData(updatedUser);
     try {
       await api.updateUser(updatedUser);
       onUpdateUser(updatedUser);
-      // No notification - language change is visible immediately in UI
     } catch (e: unknown) {
       logger.error("Language auto-save failed", e);
       notify(t('common.error'), "error");
+    }
+  };
+
+  const handleAppThemeChange = async (themeKey: string | undefined) => {
+    setIsSaving(true);
+    try {
+      const updatedFormData: User = { ...formData, appTheme: themeKey as any };
+      setFormData(updatedFormData);
+      const updatedUser = await api.updateUser(updatedFormData);
+      onUpdateUser(updatedUser);
+      notify(t('settings.theme_updated') || 'Mavzu yangilandi', 'success');
+    } catch (e: unknown) {
+      logger.error("App theme change failed", e);
+      notify(t('common.error'), "error");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -292,36 +308,83 @@ export const Settings: React.FC<SettingsProps> = ({
 
           <section className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 shadow-sm">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-              <Sun size={20} className="text-orange-500" /> Preferences
+              <Sun size={20} className="text-orange-500" /> {t('settings.preferences') || 'Afzalliklar'}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button
-                onClick={toggleTheme}
-                className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-between hover:bg-slate-100 dark:hover:bg-white/10 transition-colors group"
-              >
-                <span className="font-medium text-slate-700 dark:text-slate-300">{t('settings.theme')}</span>
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                  {isDarkMode ? <Moon size={16} className="text-blue-400" /> : <Sun size={16} className="text-orange-400" />}
-                  {isDarkMode ? 'Dark' : 'Light'}
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button
+                  onClick={toggleTheme}
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-between hover:bg-slate-100 dark:hover:bg-white/10 transition-colors group"
+                >
+                  <span className="font-medium text-slate-700 dark:text-slate-300">{t('settings.theme')}</span>
+                  <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
+                    {isDarkMode ? <Moon size={16} className="text-blue-400" /> : <Sun size={16} className="text-orange-400" />}
+                    {isDarkMode ? 'Dark' : 'Light'}
+                  </div>
+                </button>
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-between">
+                  <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                    <Globe size={16} /> {t('settings.language')}
+                  </span>
+                  <div className="flex gap-1">
+                    {['UZ', 'RU', 'EN'].map(lang => (
+                      <button
+                        key={lang}
+                        onClick={() => handleLanguageChange(lang)}
+                        className={`text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all ${formData.language === lang.toLowerCase()
+                          ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md'
+                          : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
+                          }`}
+                      >
+                        {lang}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </button>
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-between">
-                <span className="font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                  <Globe size={16} /> {t('settings.language')}
-                </span>
-                <div className="flex gap-1">
-                  {['UZ', 'RU', 'EN'].map(lang => (
-                    <button
-                      key={lang}
-                      onClick={() => handleLanguageChange(lang)}
-                      className={`text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all ${formData.language === lang.toLowerCase()
-                        ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md'
-                        : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
-                        }`}
-                    >
-                      {lang}
-                    </button>
-                  ))}
+              </div>
+
+              {/* Unique Theme Selection */}
+              <div className="pt-4 border-t border-slate-100 dark:border-white/5">
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-4 block">
+                  {t('settings.app_theme') || 'Ilova Mavzulari'}
+                </label>
+                <div className="flex flex-wrap gap-3">
+                  {/* Default Theme */}
+                  <button
+                    onClick={() => handleAppThemeChange(undefined)}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all border
+                      ${!user.appTheme
+                        ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg'
+                        : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-indigo-300'}`}
+                  >
+                    <Sparkles size={16} /> Classic
+                  </button>
+
+                  {/* Purchased Themes */}
+                  {STORE_ITEMS.filter(item => item.type === 'THEME').map(themeItem => {
+                    const isOwned = !themeItem.isPremium || user.inventory?.includes(themeItem.id);
+                    if (!isOwned) return null;
+
+                    return (
+                      <button
+                        key={themeItem.id}
+                        onClick={() => handleAppThemeChange(themeItem.value)}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all border
+                          ${user.appTheme === themeItem.value
+                            ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg'
+                            : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-indigo-300'}`}
+                      >
+                        <Palette size={16} /> {t(themeItem.name)}
+                      </button>
+                    );
+                  })}
+
+                  {/* Locked Themes Hint */}
+                  {STORE_ITEMS.filter(item => item.type === 'THEME' && item.isPremium && !user.inventory?.includes(item.id)).length > 0 && (
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 text-[10px] font-bold text-slate-400 border border-dashed border-slate-200 dark:border-white/10">
+                      <Lock size={12} /> {t('settings.locked_themes') || 'Boshqa mavzular do\'konda'}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

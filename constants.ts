@@ -237,43 +237,6 @@ export const TRANSLATIONS = {
       dark_mode: "Tungi Rejim",
       market: "Do'kon"
     },
-    market: {
-      title: "XP Do'koni",
-      subtitle: "Yutuqlaringizni real imkoniyatlarga aylantiring",
-      balance: "Sizning hisobingiz",
-      price: "Narxi",
-      buy: "Sotib olish",
-      owned: "Sotib olingan",
-      insufficient: "Mablag' yetarli emas",
-      insufficient_short: "XP yetarli emas",
-      premium_store: "Premium Do'kon",
-      confirm_title: "Xaridni tasdiqlash",
-      confirm_desc: "Haqiqatan ham sotib olmoqchimisiz?",
-      success: "Xarid muvaffaqiyatli amalga oshirildi!",
-      error_msg: "Xatolik yuz berdi. Qayta urinib ko'ring.",
-      xp: "XP",
-      tabs: {
-        all: "Barchasi",
-        utility: "Foydali",
-        theme: "Mavzular",
-        badge: "Nishonlar"
-      },
-      item_types: {
-        UTILITY: "Foydali",
-        THEME: "Mavzu",
-        BADGE: "Nishon"
-      },
-      items: {
-        streak_freeze: { name: "Streak Muzlatgich", desc: "Bir kunlik mashg'ulotni o'tkazib yuborsangiz ham, streak saqlanib qoladi." },
-        double_xp: { name: "2x XP (1 soat)", desc: "Keyingi 1 soat davomida bajarilgan vazifalar uchun 2 barobar ko'p XP oling." },
-        focus_booster: { name: "Diqqat Kuchaytirgich", desc: "Keyingi 2 soat davomida diqqat vaqti 1.5 barobar tezroq hisoblanadi." },
-        theme_neon: { name: "Neon Kechalar", desc: "Ilova uchun maxsus kiberpank uslubidagi mavzu." },
-        theme_forest: { name: "Tinch O'rmon", desc: "Ko'zga yoqimli yashil va tabiat ranglari." },
-        theme_midnight: { name: "Yarim Tun", desc: "To'liq qora va elegant dizaynli mavzu." },
-        badge_rich: { name: "Boyvachcha", desc: "Faqat bozordan sotib olish mumkin bo'lgan eksklyuziv nishon." },
-        badge_vip: { name: "VIP Nishon", desc: "Profilingiz uchun maxsus VIP maqomi va nishoni." }
-      }
-    },
     admin: {
       overview: 'Bosh Ko\'rinish',
       analytics: 'Statistika',
@@ -1016,8 +979,11 @@ export const TRANSLATIONS = {
         all: "Все",
         utility: "Полезное",
         theme: "Темы",
-        badge: "Значки"
+        badge: "Значки",
+        inventory: "Корзина"
       },
+      apply: "Выбрать",
+      applied: "Выбрано",
       item_types: {
         UTILITY: "Полезное",
         THEME: "Тема",
@@ -1209,9 +1175,13 @@ export const TRANSLATIONS = {
       }
     },
     settings: {
+      preferences: "Настройки предпочтений",
+      app_theme: "Тема приложения",
+      locked_themes: "Другие темы в магазине",
+      theme_updated: "Тема успешно обновлена!",
       title: "Настройки",
-      theme: "Тема (Theme)",
-      language: "Язык (Language)",
+      theme: "Режим",
+      language: "Язык",
       personal_info: "Личные данные",
       name: "Имя Фамилия",
       phone: "Номер телефона",
@@ -1793,8 +1763,11 @@ export const TRANSLATIONS = {
         all: "All",
         utility: "Utility",
         theme: "Themes",
-        badge: "Badges"
+        badge: "Badges",
+        inventory: "Inventory"
       },
+      apply: "Apply",
+      applied: "Applied",
       xp: "XP",
       item_types: {
         UTILITY: "Utility",
@@ -1987,6 +1960,10 @@ export const TRANSLATIONS = {
       }
     },
     settings: {
+      preferences: "Preferences",
+      app_theme: "App Theme",
+      locked_themes: "Other themes in store",
+      theme_updated: "Theme updated successfully!",
       title: "Settings",
       theme: "Theme",
       language: "Language",

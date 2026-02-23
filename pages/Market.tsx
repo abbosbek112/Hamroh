@@ -64,9 +64,24 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
         }
     };
 
-    const filteredItems = storeItems.filter(item =>
-        activeTab === 'ALL' ? true : item.type === activeTab
-    );
+    const handleApplyTheme = async (themeKey: string) => {
+        try {
+            const updatedUser = await api.updateUser({ ...user, appTheme: themeKey as any });
+            onUpdateUser(updatedUser);
+            notify(t('settings.theme_updated') || 'Mavzu yangilandi', 'success');
+        } catch (e) {
+            logger.error('Failed to apply theme', e);
+            notify(t('common.error'), 'error');
+        }
+    };
+
+    const filteredItems = storeItems.filter(item => {
+        if (activeTab === 'ALL') return true;
+        if (activeTab === 'INVENTORY') {
+            return user.inventory?.includes(item.id) || (item.type === 'BADGE' && item.value && user.badges?.includes(item.value));
+        }
+        return item.type === activeTab;
+    });
 
     return (
         <div className="space-y-10 pb-24 animate-fade-in">
@@ -117,6 +132,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                     { id: 'UTILITY', label: t('market.tabs.utility'), icon: Zap, color: 'text-blue-500' },
                     { id: 'THEME', label: t('market.tabs.theme'), icon: Palette, color: 'text-purple-500' },
                     { id: 'BADGE', label: t('market.tabs.badge'), icon: Star, color: 'text-yellow-500' },
+                    { id: 'INVENTORY', label: t('market.tabs.inventory') || 'Savat', icon: Check, color: 'text-green-500' },
                 ].map((tab) => (
                     <button
                         key={tab.id}
@@ -145,8 +161,12 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                     <div className="w-24 h-24 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mx-auto mb-6">
                         <ShoppingBag size={48} className="text-slate-300 dark:text-slate-600" />
                     </div>
-                    <h3 className="text-2xl font-bold dark:text-white mb-2">Hozircha mahsulotlar yo'q</h3>
-                    <p className="text-slate-500 dark:text-slate-400">Tez kunda yangi mahsulotlar qo'shiladi!</p>
+                    <h3 className="text-2xl font-bold dark:text-white mb-2">
+                        {activeTab === 'INVENTORY' ? 'Sizda hali buyumlar yo\'q' : 'Hozircha mahsulotlar yo\'q'}
+                    </h3>
+                    <p className="text-slate-500 dark:text-slate-400">
+                        {activeTab === 'INVENTORY' ? 'Do\'kondan biror narsa sotib oling!' : 'Tez kunda yangi mahsulotlar qo\'shiladi!'}
+                    </p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -154,6 +174,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                         const isOwned = item.type === 'BADGE' && item.value
                             ? (user.badges?.includes(item.value) || user.inventory?.includes(item.id))
                             : (item.type !== 'UTILITY' && user.inventory?.includes(item.id));
+                        const isEquippedTheme = item.type === 'THEME' && user.appTheme === item.value;
                         const canAfford = user.xp >= item.price;
                         const isBuying = buyingItem === item.id;
 
@@ -162,7 +183,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                                 key={item.id}
                                 className={`group relative flex flex-col h-full rounded-[2.5rem] border transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2
                                 ${isOwned && item.type !== 'UTILITY'
-                                        ? 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-white/5 opacity-80'
+                                        ? 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-white/5'
                                         : 'bg-white dark:bg-zinc-900/40 border-slate-200/50 dark:border-white/5'
                                     }`}
                             >
@@ -207,9 +228,23 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                                         </div>
 
                                         {isOwned && item.type !== 'UTILITY' ? (
-                                            <div className="px-6 py-3 rounded-2xl bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 font-black text-xs flex items-center gap-2 border border-green-200/50 dark:border-green-500/30">
-                                                <Check size={16} strokeWidth={3} /> {t('market.owned')}
-                                            </div>
+                                            item.type === 'THEME' && item.value ? (
+                                                <button
+                                                    onClick={() => handleApplyTheme(item.value!)}
+                                                    disabled={isEquippedTheme}
+                                                    className={`px-6 py-3 rounded-2xl font-black text-xs flex items-center gap-2 border transition-all
+                                                    ${isEquippedTheme
+                                                            ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 border-green-200/50 cursor-default'
+                                                            : 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-200/50 hover:bg-indigo-100 dark:hover:bg-indigo-500/20'}`}
+                                                >
+                                                    {isEquippedTheme ? <Check size={16} strokeWidth={3} /> : <Zap size={16} />}
+                                                    {isEquippedTheme ? t('market.applied') || 'Tanlangan' : t('market.apply') || 'Tanlash'}
+                                                </button>
+                                            ) : (
+                                                <div className="px-6 py-3 rounded-2xl bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 font-black text-xs flex items-center gap-2 border border-green-200/50 dark:border-green-500/30">
+                                                    <Check size={16} strokeWidth={3} /> {t('market.owned')}
+                                                </div>
+                                            )
                                         ) : (
                                             <button
                                                 onClick={() => handleBuy(item)}
