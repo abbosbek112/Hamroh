@@ -204,13 +204,13 @@ export const Layout: React.FC<LayoutProps> = ({
           }}
         >
           <div
-            className="absolute right-0 top-0 bottom-0 w-[280px] sm:w-80 bg-white/95 dark:bg-slate-950/98 border-l border-white/20 dark:border-white/10 p-6 sm:p-8 flex flex-col shadow-2xl animate-slide-in-right"
+            className={`absolute right-0 top-0 bottom-0 w-[280px] sm:w-80 ${isDarkMode ? 'bg-slate-950/98 border-slate-800' : 'bg-white/95 border-white/20'} border-l p-6 sm:p-8 flex flex-col shadow-2xl animate-slide-in-right`}
             onClick={e => e.stopPropagation()}
             onTouchStart={e => e.stopPropagation()}
             style={{ zIndex: 65, overflowY: 'auto', overflowX: 'hidden' }}
           >
             {user && (
-              <div className="mt-12 sm:mt-16 mb-4 sm:mb-6 flex flex-col gap-4 pb-6 border-b border-slate-200/50 dark:border-white/10" style={{ overflow: 'visible', position: 'relative', zIndex: 1 }}>
+              <div className={`mt-12 sm:mt-16 mb-4 sm:mb-6 flex flex-col gap-4 pb-6 border-b ${isDarkMode ? 'border-white/10' : 'border-slate-200/50'}`} style={{ overflow: 'visible', position: 'relative', zIndex: 1 }}>
                 <div
                   className="flex items-center gap-3 cursor-pointer relative"
                   onClick={() => { onNavigate(AppView.SETTINGS); setIsMobileMenuOpen(false); }}
@@ -221,11 +221,11 @@ export const Layout: React.FC<LayoutProps> = ({
                     <img src={user.avatar} alt={user.name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover ring-2 ring-white/50 dark:ring-white/10 relative" style={{ zIndex: 101 }} />
                   </div>
                   <div className="flex-1 min-w-0 relative" style={{ overflow: 'visible', zIndex: 100 }}>
-                    <p className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 relative" style={{ overflow: 'visible', zIndex: 100 }}>
+                    <p className={`font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'} flex items-center gap-1.5 relative`} style={{ overflow: 'visible', zIndex: 100 }}>
                       <span style={{ position: 'relative', zIndex: 102, overflow: 'visible', display: 'inline-block' }}>
                         <UserBadge user={user} size="sm" />
                       </span>
-                      <span className="truncate relative text-slate-900 dark:text-white" style={{ zIndex: 101 }}>{user.name}</span>
+                      <span className="truncate relative" style={{ zIndex: 101 }}>{user.name}</span>
                     </p>
                     <button
                       onClick={(e) => {
@@ -247,7 +247,7 @@ export const Layout: React.FC<LayoutProps> = ({
                 </div>
 
                 {/* Mobile Language Switch */}
-                <div className="flex gap-2 justify-center bg-slate-50/50 dark:bg-white/5 p-2 rounded-xl">
+                <div className={`flex gap-2 justify-center ${isDarkMode ? 'bg-slate-900/50 border border-white/5' : 'bg-slate-50/50'} p-2 rounded-xl`}>
                   {['UZ', 'RU', 'EN'].map((lang) => (
                     <button
                       key={lang}
@@ -260,8 +260,8 @@ export const Layout: React.FC<LayoutProps> = ({
                         handleLanguageChange(lang);
                       }}
                       className={`flex-1 text-xs font-bold py-2.5 rounded-lg transition-all touch-manipulation ${language === lang.toLowerCase()
-                        ? 'bg-white text-indigo-900 shadow-sm dark:bg-slate-800 dark:text-white'
-                        : 'text-slate-400 active:bg-slate-100 dark:active:bg-white/10'
+                        ? (isDarkMode ? 'bg-slate-700 text-white' : 'bg-white text-indigo-900 shadow-sm')
+                        : (isDarkMode ? 'text-slate-400' : 'text-slate-500')
                         }`}
                       style={{ minHeight: '40px' }}
                     >
@@ -280,7 +280,9 @@ export const Layout: React.FC<LayoutProps> = ({
                     e.stopPropagation();
                     toggleTheme();
                   }}
-                  className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl bg-slate-50/50 dark:bg-white/5 hover:bg-slate-100/50 dark:hover:bg-white/10 active:bg-slate-200/50 dark:active:bg-white/15 transition-all text-slate-600 dark:text-slate-400 font-semibold border border-slate-200/50 dark:border-white/10 touch-manipulation"
+                  className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all font-semibold border ${isDarkMode
+                    ? 'bg-white/5 text-slate-300 border-white/10 active:bg-white/10'
+                    : 'bg-slate-50/50 text-slate-600 border-slate-200/50 active:bg-slate-200/50'} touch-manipulation`}
                   style={{ minHeight: '48px' }}
                 >
                   {isDarkMode ? (
@@ -308,7 +310,7 @@ export const Layout: React.FC<LayoutProps> = ({
                       onNavigate(AppView.ADMIN);
                       setIsMobileMenuOpen(false);
                     }}
-                    className="w-full py-3 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 rounded-xl font-bold flex items-center justify-center gap-2 active:bg-slate-200 dark:active:bg-white/10 touch-manipulation"
+                    className={`w-full py-3 ${isDarkMode ? 'bg-white/5 text-slate-300' : 'bg-slate-100 text-slate-600'} rounded-xl font-bold flex items-center justify-center gap-2 touch-manipulation`}
                     style={{ minHeight: '48px' }}
                   >
                     <Shield size={16} /> Admin Panel
@@ -362,8 +364,8 @@ export const Layout: React.FC<LayoutProps> = ({
                     }}
                     className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all touch-manipulation
                       ${currentView === item.view
-                        ? 'bg-indigo-50/50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 font-bold border border-indigo-100/50 dark:border-transparent shadow-sm'
-                        : 'text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50/50 dark:hover:bg-white/5 active:bg-slate-100/50 dark:active:bg-white/10'
+                        ? (isDarkMode ? 'bg-indigo-900/40 text-indigo-300' : 'bg-indigo-50/50 text-indigo-700 font-bold border border-indigo-100/50 shadow-sm')
+                        : (isDarkMode ? 'text-slate-400' : 'text-slate-600 font-medium')
                       }`}
                     style={{ minHeight: '48px' }}
                   >
