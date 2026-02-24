@@ -137,6 +137,7 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => onNavigate(AppView.INTIZOM, { tab: 'PLAN' })}
+              aria-label={t('about.cta_btn')}
               className="bg-white text-blue-900 px-10 py-5 rounded-2xl font-bold text-xl hover:scale-105 hover:shadow-2xl transition-all duration-300 shadow-lg flex items-center justify-center gap-2"
             >
               <Rocket size={24} /> {t('about.cta_btn')}

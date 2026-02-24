@@ -134,6 +134,7 @@ export const Layout: React.FC<LayoutProps> = ({
                   <button
                     key={lang}
                     onClick={(e) => { e.stopPropagation(); handleLanguageChange(lang); }}
+                    aria-label={`Change language to ${lang}`}
                     className={`text-[10px] font-bold px-2 py-1 rounded-md transition-all ${language === lang.toLowerCase()
                       ? 'bg-white/80 text-indigo-900 shadow-sm dark:bg-slate-700 dark:text-white'
                       : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-200'
@@ -148,6 +149,7 @@ export const Layout: React.FC<LayoutProps> = ({
                   onClick={(e) => { e.stopPropagation(); onNavigate(AppView.ADMIN); }}
                   className="p-1.5 text-slate-400 hover:text-blue-600 transition-colors bg-white/20 dark:bg-black/20 rounded-lg border border-white/20 dark:border-white/5"
                   title="Admin Panel"
+                  aria-label="Admin Panel"
                 >
                   <Shield size={14} />
                 </button>
@@ -161,6 +163,7 @@ export const Layout: React.FC<LayoutProps> = ({
             <button
               key={item.view}
               onClick={() => onNavigate(item.view)}
+              aria-label={item.label}
               className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group relative overflow-hidden
                 ${currentView === item.view
                   ? 'text-indigo-700 dark:text-indigo-300 bg-white/60 dark:bg-white/10 font-bold shadow-sm border border-white/40 dark:border-white/10 backdrop-blur-md'
@@ -176,6 +179,7 @@ export const Layout: React.FC<LayoutProps> = ({
         <div className="mt-4 space-y-3">
           <button
             onClick={toggleTheme}
+            aria-label={isDarkMode ? t('nav.light_mode') : t('nav.dark_mode')}
             className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl hover:bg-white/30 dark:hover:bg-white/5 transition-all text-slate-600 dark:text-slate-400 group font-semibold border border-transparent hover:border-white/20 dark:hover:border-white/5 backdrop-blur-sm"
           >
             {isDarkMode ? <Sun size={20} strokeWidth={2} className="group-hover:text-yellow-400 transition-colors" /> : <Moon size={20} strokeWidth={2} className="group-hover:text-indigo-600 transition-colors" />}
@@ -183,6 +187,7 @@ export const Layout: React.FC<LayoutProps> = ({
           </button>
           <button
             onClick={onLogout}
+            aria-label={t('nav.logout')}
             className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl hover:bg-red-50/50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-500 transition-all text-slate-600 dark:text-slate-400 font-semibold border border-transparent hover:border-red-100/50 dark:hover:border-transparent backdrop-blur-sm"
           >
             <LogOut size={20} strokeWidth={2} />
@@ -259,6 +264,7 @@ export const Layout: React.FC<LayoutProps> = ({
                         e.stopPropagation();
                         handleLanguageChange(lang);
                       }}
+                      aria-label={`Change language to ${lang}`}
                       className={`flex-1 text-xs font-bold py-2.5 rounded-lg transition-all touch-manipulation ${language === lang.toLowerCase()
                         ? (isDarkMode ? 'bg-slate-700 text-white' : 'bg-white text-indigo-900 shadow-sm')
                         : (isDarkMode ? 'text-slate-400' : 'text-slate-500')
@@ -280,6 +286,7 @@ export const Layout: React.FC<LayoutProps> = ({
                     e.stopPropagation();
                     toggleTheme();
                   }}
+                  aria-label={isDarkMode ? t('nav.light_mode') : t('nav.dark_mode')}
                   className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all font-semibold border ${isDarkMode
                     ? 'bg-white/5 text-slate-300 border-white/10 active:bg-white/10'
                     : 'bg-slate-50/50 text-slate-600 border-slate-200/50 active:bg-slate-200/50'} touch-manipulation`}
@@ -310,6 +317,7 @@ export const Layout: React.FC<LayoutProps> = ({
                       onNavigate(AppView.ADMIN);
                       setIsMobileMenuOpen(false);
                     }}
+                    aria-label="Admin Panel"
                     className={`w-full py-3 ${isDarkMode ? 'bg-white/5 text-slate-300' : 'bg-slate-100 text-slate-600'} rounded-xl font-bold flex items-center justify-center gap-2 touch-manipulation`}
                     style={{ minHeight: '48px' }}
                   >
@@ -330,6 +338,7 @@ export const Layout: React.FC<LayoutProps> = ({
                     e.stopPropagation();
                     toggleTheme();
                   }}
+                  aria-label={isDarkMode ? t('nav.light_mode') : t('nav.dark_mode')}
                   className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl bg-slate-50/50 dark:bg-white/5 hover:bg-slate-100/50 dark:hover:bg-white/10 active:bg-slate-200/50 dark:active:bg-white/15 transition-all text-slate-600 dark:text-slate-400 font-semibold border border-slate-200/50 dark:border-white/10 touch-manipulation"
                   style={{ minHeight: '48px' }}
                 >
@@ -362,6 +371,7 @@ export const Layout: React.FC<LayoutProps> = ({
                       onNavigate(item.view);
                       setIsMobileMenuOpen(false);
                     }}
+                    aria-label={item.label}
                     className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all touch-manipulation
                       ${currentView === item.view
                         ? (isDarkMode ? 'bg-indigo-900/40 text-indigo-300' : 'bg-indigo-50/50 text-indigo-700 font-bold border border-indigo-100/50 shadow-sm')

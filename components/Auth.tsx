@@ -361,7 +361,11 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
       {/* Main Card */}
       <div className="relative w-full max-w-5xl bg-white dark:bg-[#0f172a] rounded-[2.5rem] shadow-2xl overflow-hidden animate-fade-in-up flex flex-col md:flex-row h-auto md:h-[600px] max-h-[95vh] md:max-h-none">
 
-        <button onClick={onClose} className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 p-2 rounded-full bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 backdrop-blur-md transition-colors">
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 p-2 rounded-full bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 backdrop-blur-md transition-colors"
+        >
           <X size={18} className="text-slate-500 dark:text-slate-400 sm:w-5 sm:h-5" />
         </button>
 
@@ -469,7 +473,12 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                 )}
 
                 <div className="flex gap-3 pt-2">
-                  <button type="button" onClick={() => handleModeSwitch('LOGIN')} className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300">
+                  <button
+                    type="button"
+                    onClick={() => handleModeSwitch('LOGIN')}
+                    aria-label="Back to login"
+                    className="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300"
+                  >
                     <ArrowLeft size={20} />
                   </button>
                   <button
@@ -608,6 +617,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
+                          aria-label={showPassword ? "Hide password" : "Show password"}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                         >
                           {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -635,6 +645,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
+                          aria-label={showPassword ? "Hide password" : "Show password"}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                         >
                           {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -689,6 +700,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
+                          aria-label={showPassword ? "Hide password" : "Show password"}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                         >
                           {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}

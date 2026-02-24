@@ -39,6 +39,7 @@ export const DMList: React.FC<DMListProps> = ({
                     </h1>
                     <button
                         onClick={onBack}
+                        aria-label={t('community.back')}
                         className="flex items-center gap-2 px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl"
                     >
                         <X size={18} />

@@ -55,6 +55,7 @@ export const Intizom: React.FC<IntizomProps> = ({ initialTab }) => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
+                aria-label={tab.label}
                 className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-2 whitespace-nowrap
                   ${activeTab === tab.id
                     ? 'bg-white shadow-sm text-indigo-700 dark:bg-white/10 dark:text-indigo-300'
@@ -89,6 +90,7 @@ export const Intizom: React.FC<IntizomProps> = ({ initialTab }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
+              aria-label={tab.label}
               className={`flex-1 min-w-[64px] flex flex-col items-center gap-1 py-2 px-1 rounded-xl transition-all duration-300 ${activeTab === tab.id
                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
                 : 'text-slate-500 dark:text-slate-400 font-medium hover:bg-white/10'}`}

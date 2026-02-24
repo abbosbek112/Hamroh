@@ -137,6 +137,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as any)}
+                        aria-label={tab.label}
                         className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm transition-all duration-300 whitespace-nowrap
                         ${activeTab === tab.id
                                 ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/30 -translate-y-0.5'
@@ -293,6 +294,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
+                            aria-label={tab.label}
                             className={`flex-1 min-w-[64px] flex flex-col items-center gap-1 py-2 px-1 rounded-xl transition-all duration-300 ${activeTab === tab.id
                                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
                                 : 'text-slate-500 dark:text-slate-400 font-medium hover:bg-white/10'}`}

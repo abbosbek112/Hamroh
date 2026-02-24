@@ -725,6 +725,7 @@ export const Community: React.FC<CommunityProps> = ({ currentUser }) => {
           <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl p-1.5 flex justify-between items-center max-w-lg mx-auto overflow-x-auto no-scrollbar gap-1">
             <button
               onClick={() => { setTabMode('community'); setViewMode('groups'); }}
+              aria-label={t('community.tab_community')}
               className={`flex-1 flex flex-col items-center gap-1 py-2.5 px-1 rounded-xl transition-all duration-300 ${tabMode === 'community'
                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
                 : 'text-slate-500 dark:text-slate-400 font-medium hover:bg-white/10'}`}
@@ -734,6 +735,7 @@ export const Community: React.FC<CommunityProps> = ({ currentUser }) => {
             </button>
             <button
               onClick={() => { setTabMode('rating'); setViewMode('rating'); loadLeaderboard(); }}
+              aria-label={t('community.tab_rating')}
               className={`flex-1 flex flex-col items-center gap-1 py-2.5 px-1 rounded-xl transition-all duration-300 ${tabMode === 'rating'
                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
                 : 'text-slate-500 dark:text-slate-400 font-medium hover:bg-white/10'}`}
@@ -748,11 +750,19 @@ export const Community: React.FC<CommunityProps> = ({ currentUser }) => {
       {/* Desktop Tabs */}
       {!['group-chat', 'dm-chat'].includes(viewMode) && (
         <div className="hidden lg:flex px-6 py-4 border-t border-slate-200 dark:border-white/10 gap-2 bg-white/80 dark:bg-[#0a0a0c]/80 backdrop-blur-lg">
-          <button onClick={() => { setTabMode('community'); setViewMode('groups'); }} className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold transition-all ${tabMode === 'community' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-400'}`}>
+          <button
+            onClick={() => { setTabMode('community'); setViewMode('groups'); }}
+            aria-label={t('community.tab_community')}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold transition-all ${tabMode === 'community' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-400'}`}
+          >
             <Users size={18} />
             <span className="hidden sm:inline">{t('community.tab_community')}</span>
           </button>
-          <button onClick={() => { setTabMode('rating'); setViewMode('rating'); loadLeaderboard(); }} className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold transition-all ${tabMode === 'rating' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-400'}`}>
+          <button
+            onClick={() => { setTabMode('rating'); setViewMode('rating'); loadLeaderboard(); }}
+            aria-label={t('community.tab_rating')}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold transition-all ${tabMode === 'rating' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-400'}`}
+          >
             <Trophy size={18} />
             <span className="hidden sm:inline">{t('community.tab_rating')}</span>
           </button>

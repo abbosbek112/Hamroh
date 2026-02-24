@@ -101,6 +101,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                     <div className="flex items-center gap-3">
                         <button
                             onClick={onBack}
+                            aria-label={t('community.back')}
                             className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl transition-colors"
                         >
                             <X size={20} className="text-slate-600 dark:text-slate-400" />
@@ -113,6 +114,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                     <div className="flex items-center gap-1.5 sm:gap-2">
                         <button
                             onClick={onShowMembers}
+                            aria-label={`${t('community.members_count')} (${groupMembers.length})`}
                             className="px-2.5 sm:px-3 py-1.5 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-bold hover:bg-indigo-200 dark:hover:bg-indigo-500/30 transition-colors flex items-center gap-1"
                         >
                             <Users size={14} />
@@ -124,6 +126,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                             <div className="flex items-center gap-1.5">
                                 <button
                                     onClick={onEditGroup}
+                                    aria-label={t('community.editGroup')}
                                     className="p-1.5 sm:px-3 sm:py-1.5 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-xl text-xs font-bold hover:bg-blue-200 dark:hover:bg-blue-500/30 transition-colors"
                                     title={t('community.editGroup')}
                                 >
@@ -131,6 +134,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                                 </button>
                                 <button
                                     onClick={onClearHistory}
+                                    aria-label={t('common.clear')}
                                     className="hidden sm:block px-3 py-1.5 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-xl text-xs font-bold hover:bg-orange-200 dark:hover:bg-orange-500/30 transition-colors"
                                     title={t('common.clear')}
                                 >
@@ -141,6 +145,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
 
                         <button
                             onClick={onLeaveGroup}
+                            aria-label={t('community.leave_group')}
                             className="p-1.5 sm:px-3 sm:py-1.5 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-xl text-xs font-bold hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors flex items-center gap-1"
                             title={t('community.leave_group')}
                         >
@@ -169,6 +174,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                         {canPinMessages && (
                             <button
                                 onClick={onUnpinMessage}
+                                aria-label={t('community.unpin')}
                                 className="text-xs font-bold text-amber-700 dark:text-amber-300 hover:underline"
                             >
                                 {t('community.unpin')}
@@ -187,7 +193,11 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                             className="flex-1 bg-transparent outline-none text-sm text-slate-700 dark:text-slate-200"
                         />
                         {messageSearchQuery && (
-                            <button onClick={() => setMessageSearchQuery('')} className="text-slate-400 hover:text-slate-600">
+                            <button
+                                onClick={() => setMessageSearchQuery('')}
+                                aria-label="Clear search"
+                                className="text-slate-400 hover:text-slate-600"
+                            >
                                 <X size={14} />
                             </button>
                         )}
@@ -261,6 +271,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                                                     e.stopPropagation();
                                                     setMessageMenuOpen(messageMenuOpen === msg.id ? null : msg.id);
                                                 }}
+                                                aria-label="Message options"
                                                 className={`opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-white/10 ${isOwn ? 'order-first' : ''}`}
                                             >
                                                 <EllipsisVertical size={16} className="text-slate-500 dark:text-slate-400" />
@@ -353,6 +364,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                         </div>
                         <button
                             onClick={() => setReplyingTo(null)}
+                            aria-label="Cancel reply"
                             className="p-1 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 rounded"
                         >
                             <X size={14} className="text-indigo-600 dark:text-indigo-400" />
@@ -367,6 +379,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                                 setEditingMessageId(null);
                                 setEditMessageText('');
                             }}
+                            aria-label="Cancel edit"
                             className="p-1 hover:bg-yellow-100 dark:hover:bg-yellow-500/20 rounded"
                         >
                             <X size={14} className="text-yellow-600 dark:text-yellow-400" />
@@ -404,6 +417,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                             <button
                                 onClick={onSaveEdit}
                                 disabled={!editMessageText.trim() || isSendingMessage}
+                                aria-label="Save edit"
                                 className="px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl disabled:hover:shadow-lg flex items-center justify-center"
                             >
                                 {isSendingMessage ? (
@@ -426,6 +440,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                         <button
                             onClick={onSendMessage}
                             disabled={!messageInput.trim() || isSendingMessage}
+                            aria-label={t('community.writeMessage')}
                             className="px-4 sm:px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl disabled:hover:shadow-lg flex items-center justify-center min-w-[50px] sm:min-w-[80px]"
                         >
                             {isSendingMessage ? (

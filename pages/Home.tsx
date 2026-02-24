@@ -599,12 +599,12 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       )}
 
-      <div className="space-y-24 animate-fade-in pb-12 overflow-x-hidden">
+      <div className="space-y-12 lg:space-y-24 animate-fade-in pb-12 overflow-x-hidden">
 
         {/* --- HERO SECTION --- */}
         <section
           ref={heroRef}
-          className="relative min-h-[450px] sm:min-h-[500px] lg:min-h-[650px] flex items-center justify-center perspective-3000 pt-6 sm:pt-10 lg:pt-0"
+          className="relative min-h-[340px] sm:min-h-[500px] lg:min-h-[650px] flex items-center justify-center perspective-3000 pt-0 sm:pt-10 lg:pt-0"
           style={{ isolation: 'isolate' }}
         >
           {/* Background Highlight - Chrome fix: removed mix-blend-overlay */}
@@ -614,7 +614,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
             {/* LEFT: TEXT CONTENT - DIMMED WHEN BOOK IS OPEN */}
             <div
-              className={`text-center lg:text-left space-y-6 lg:space-y-8 order-2 lg:order-1 relative transition-all duration-700 ease-out transform-gpu ${isBookOpen ? 'z-0 lg:opacity-30 lg:blur-[2px] lg:scale-95 lg:-translate-x-10 origin-left grayscale-[50%]' : 'z-30 opacity-100 scale-100'}`}
+              className={`text-center lg:text-left space-y-6 lg:space-y-8 order-2 lg:order-1 relative transition-all duration-700 ease-out transform-gpu ${isBookOpen ? 'z-0 lg:opacity-30 lg:blur-[2px] lg:scale-95 lg:-translate-x-10 origin-left lg:grayscale-[50%] opacity-100' : 'z-30 opacity-100 scale-100'}`}
               style={{
                 isolation: 'isolate',
                 transform: 'translateZ(0)',
@@ -896,7 +896,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <Activity size={16} /> {t('home.activity')}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 auto-rows-[200px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 auto-rows-auto sm:auto-rows-[200px]">
 
             {/* 1. XP & Level Card */}
             <div className="sm:col-span-1 lg:col-span-1 bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 text-white rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-6 flex flex-col justify-between shadow-lg shadow-yellow-500/30 hover:scale-[1.02] transition-transform duration-500 animate-fade-in-up cursor-pointer" onClick={() => setShowXPGuide(true)} style={{ animationDelay: '0.05s' }}>

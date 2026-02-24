@@ -60,12 +60,14 @@ export const PWAInstallPrompt: React.FC = () => {
             <div className="flex gap-2">
                 <button
                     onClick={handleDismiss}
+                    aria-label="Close"
                     className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full text-slate-400 transition-colors"
                 >
                     <X size={18} />
                 </button>
                 <button
                     onClick={handleInstallClick}
+                    aria-label={t('pwa.install_btn') || 'Install app'}
                     className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition-colors shadow-lg shadow-indigo-500/30"
                 >
                     {t('pwa.install_btn') || 'O\'rnatish'}
