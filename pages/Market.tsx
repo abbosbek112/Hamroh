@@ -84,39 +84,39 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
     });
 
     return (
-        <div className="space-y-10 pb-24 animate-fade-in">
+        <div className="space-y-10 pb-32 lg:pb-24 animate-fade-in">
             {/* Premium Header */}
             <div className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 border border-white/10 shadow-2xl">
                 {/* Background Decorations */}
                 <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
                 <div className="absolute bottom-0 left-0 w-80 h-80 bg-violet-600/10 rounded-full blur-[80px] -z-10"></div>
 
-                <div className="p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div className="p-6 sm:p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8">
                     <div className="flex-1 text-center lg:text-left">
                         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 text-yellow-400 text-xs font-black uppercase tracking-[0.2em] mb-6 animate-bounce-subtle">
                             <Crown size={14} />
                             {t('market.premium_store') || 'Premium Do\'kon'}
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 tracking-tight">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-2 sm:mb-4 tracking-tight">
                             {t('market.title')}
                         </h1>
-                        <p className="text-indigo-200/70 text-lg md:text-xl max-w-2xl font-medium leading-relaxed">
+                        <p className="text-indigo-200/70 text-base sm:text-lg md:text-xl max-w-2xl font-medium leading-relaxed">
                             {t('market.subtitle')}
                         </p>
                     </div>
 
                     {/* XP Balance Display */}
                     <div className="relative perspective-container">
-                        <div className="market-card-glass dark:bg-white/5 border-white/20 p-8 rounded-3xl flex flex-col items-center gap-6 shadow-2xl transform-style-3d hover:rotate-y-12 transition-all duration-500">
-                            <div className="relative h-24 w-24 flex items-center justify-center transition-transform hover:scale-110">
+                        <div className="market-card-glass dark:bg-white/5 border-white/20 p-6 sm:p-8 rounded-2xl sm:rounded-3xl flex items-center lg:flex-col gap-4 sm:gap-6 shadow-2xl transform-style-3d hover:rotate-y-12 transition-all duration-500">
+                            <div className="relative h-16 w-16 sm:h-24 sm:w-24 flex items-center justify-center transition-transform hover:scale-110">
                                 <div className="absolute inset-0 bg-yellow-400/20 rounded-full blur-2xl animate-pulse"></div>
-                                <div className="h-20 w-20 rounded-full bg-gradient-to-br from-yellow-300 to-amber-600 flex items-center justify-center text-yellow-950 shadow-[0_0_30px_rgba(251,191,36,0.5)] border-4 border-yellow-200/50">
-                                    <Star fill="currentColor" size={40} className="animate-spin-slow" />
+                                <div className="h-14 w-14 sm:h-20 sm:w-20 rounded-full bg-gradient-to-br from-yellow-300 to-amber-600 flex items-center justify-center text-yellow-950 shadow-[0_0_30px_rgba(251,191,36,0.5)] border-4 border-yellow-200/50">
+                                    <Star fill="currentColor" size={24} className="sm:w-[40px] sm:h-[40px] animate-spin-slow" />
                                 </div>
                             </div>
-                            <div className="text-center">
-                                <p className="text-white/50 text-xs font-black uppercase tracking-widest mb-1">{t('market.balance')}</p>
-                                <p className="text-5xl font-black text-white tabular-nums tracking-tighter xp-gold-glow">
+                            <div className="text-left lg:text-center">
+                                <p className="text-white/50 text-[10px] sm:text-xs font-black uppercase tracking-widest mb-0.5 sm:mb-1">{t('market.balance')}</p>
+                                <p className="text-3xl sm:text-5xl font-black text-white tabular-nums tracking-tighter xp-gold-glow">
                                     {user.xp.toLocaleString()}
                                 </p>
                             </div>
@@ -126,7 +126,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
             </div>
 
             {/* Premium Category Filter */}
-            <div className="sticky top-0 z-20 py-4 -mx-4 px-4 bg-slate-50/80 dark:bg-[#0a0a0c]/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/5 flex items-center gap-2 overflow-x-auto hide-scrollbar">
+            <div className="hidden lg:flex sticky top-0 z-20 py-4 -mx-4 px-4 bg-slate-50/80 dark:bg-[#0a0a0c]/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/5 items-center gap-2 overflow-x-auto hide-scrollbar">
                 {[
                     { id: 'ALL', label: t('market.tabs.all'), icon: ShoppingBag, color: 'text-slate-500' },
                     { id: 'UTILITY', label: t('market.tabs.utility'), icon: Zap, color: 'text-blue-500' },
@@ -137,7 +137,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as any)}
-                        className={`flex items-center gap-2.5 px-6 py-3 rounded-2xl font-black text-sm transition-all duration-300 whitespace-nowrap
+                        className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm transition-all duration-300 whitespace-nowrap
                         ${activeTab === tab.id
                                 ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/30 -translate-y-0.5'
                                 : 'bg-white dark:bg-white/5 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10'
@@ -190,7 +190,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                                 {/* Premium Shine Effect */}
                                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-gradient-to-br from-white/10 to-transparent"></div>
 
-                                <div className="p-8 flex flex-col h-full relative z-10">
+                                <div className="p-6 sm:p-8 flex flex-col h-full relative z-10">
                                     <div className="flex justify-between items-start mb-8">
                                         <div className={`h-16 w-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg transform transition-transform group-hover:scale-110 group-hover:rotate-6
                                         ${item.type === 'THEME' ? 'bg-purple-100 text-purple-600 dark:bg-purple-500/20' :
@@ -249,7 +249,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                                             <button
                                                 onClick={() => handleBuy(item)}
                                                 disabled={!canAfford || isBuying}
-                                                className={`px-8 py-3.5 rounded-2xl font-black text-sm transition-all relative overflow-hidden group/btn
+                                                className={`px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm transition-all relative overflow-hidden group/btn
                                                 ${canAfford
                                                         ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-xl shadow-indigo-500/20 active:scale-95'
                                                         : 'bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-white/10 cursor-not-allowed'
@@ -279,6 +279,30 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                     })}
                 </div>
             )}
+
+            {/* Mobile Bottom Category Filter */}
+            <div className="lg:hidden fixed bottom-6 left-4 right-4 z-50">
+                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl p-1.5 flex justify-between items-center max-w-lg mx-auto overflow-x-auto no-scrollbar">
+                    {[
+                        { id: 'ALL', label: t('market.tabs.all'), icon: ShoppingBag, color: 'text-slate-500' },
+                        { id: 'UTILITY', label: t('market.tabs.utility'), icon: Zap, color: 'text-blue-500' },
+                        { id: 'THEME', label: t('market.tabs.theme'), icon: Palette, color: 'text-purple-500' },
+                        { id: 'BADGE', label: t('market.tabs.badge'), icon: Star, color: 'text-yellow-500' },
+                        { id: 'INVENTORY', label: t('market.tabs.inventory') || 'Savat', icon: Check, color: 'text-green-500' },
+                    ].map((tab) => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveTab(tab.id as any)}
+                            className={`flex-1 min-w-[60px] flex flex-col items-center gap-1 py-2 px-1 rounded-xl transition-all duration-300 ${activeTab === tab.id
+                                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
+                                : 'text-slate-500 dark:text-slate-400 font-medium'}`}
+                        >
+                            <tab.icon size={20} className={activeTab === tab.id ? 'text-white' : tab.color} />
+                            <span className="text-[10px] leading-tight text-center">{tab.label}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };

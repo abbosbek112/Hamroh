@@ -110,51 +110,42 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                             <h2 className="font-bold text-slate-900 dark:text-white">{selectedGroup.name}</h2>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
                         <button
                             onClick={onShowMembers}
-                            className="px-3 py-1.5 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-bold hover:bg-indigo-200 dark:hover:bg-indigo-500/30 transition-colors flex items-center gap-1"
+                            className="px-2.5 sm:px-3 py-1.5 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-bold hover:bg-indigo-200 dark:hover:bg-indigo-500/30 transition-colors flex items-center gap-1"
                         >
                             <Users size={14} />
-                            <span className="hidden sm:inline">{t('community.members_count')} ({groupMembers.length})</span>
-                            <span className="sm:hidden">{groupMembers.length}</span>
+                            <span className="hidden md:inline">{t('community.members_count')} ({groupMembers.length})</span>
+                            <span className="md:hidden">{groupMembers.length}</span>
                         </button>
+
                         {isOwner && (
-                            <>
-                                <span className="hidden sm:flex px-3 py-1 bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 rounded-full text-xs font-bold items-center gap-1">
-                                    <Crown size={12} />
-                                    {t('community.admin_badge')}
-                                </span>
+                            <div className="flex items-center gap-1.5">
                                 <button
                                     onClick={onEditGroup}
-                                    className="px-3 py-1.5 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-xl text-xs font-bold hover:bg-blue-200 dark:hover:bg-blue-500/30 transition-colors"
+                                    className="p-1.5 sm:px-3 sm:py-1.5 bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 rounded-xl text-xs font-bold hover:bg-blue-200 dark:hover:bg-blue-500/30 transition-colors"
                                     title={t('community.editGroup')}
                                 >
                                     <Settings size={14} />
                                 </button>
                                 <button
                                     onClick={onClearHistory}
-                                    className="px-3 py-1.5 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-xl text-xs font-bold hover:bg-orange-200 dark:hover:bg-orange-500/30 transition-colors"
+                                    className="hidden sm:block px-3 py-1.5 bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 rounded-xl text-xs font-bold hover:bg-orange-200 dark:hover:bg-orange-500/30 transition-colors"
                                     title={t('common.clear')}
                                 >
                                     <Trash2 size={14} />
                                 </button>
-                                <button
-                                    onClick={onDeleteGroup}
-                                    className="px-3 py-1.5 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-xl text-xs font-bold hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors"
-                                    title={t('common.delete')}
-                                >
-                                    <X size={14} />
-                                </button>
-                            </>
+                            </div>
                         )}
+
                         <button
                             onClick={onLeaveGroup}
-                            className="px-3 py-1.5 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-xl text-xs font-bold hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors flex items-center gap-1"
+                            className="p-1.5 sm:px-3 sm:py-1.5 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-xl text-xs font-bold hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors flex items-center gap-1"
                             title={t('community.leave_group')}
                         >
                             <LogOut size={14} />
-                            <span className="hidden sm:inline">{t('nav.logout')}</span>
+                            <span className="hidden sm:inline">{t('community.leave_group_short') || 'Chiqish'}</span>
                         </button>
                     </div>
                 </div>
@@ -435,7 +426,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                         <button
                             onClick={onSendMessage}
                             disabled={!messageInput.trim() || isSendingMessage}
-                            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl disabled:hover:shadow-lg flex items-center justify-center"
+                            className="px-4 sm:px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl disabled:hover:shadow-lg flex items-center justify-center min-w-[50px] sm:min-w-[80px]"
                         >
                             {isSendingMessage ? (
                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

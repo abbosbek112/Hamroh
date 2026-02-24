@@ -719,9 +719,35 @@ export const Community: React.FC<CommunityProps> = ({ currentUser }) => {
         )}
       </div>
 
-      {/* Tabs */}
+      {/* Mobile Bottom Navigation */}
       {!['group-chat', 'dm-chat'].includes(viewMode) && (
-        <div className="px-6 py-4 border-t border-slate-200 dark:border-white/10 flex gap-2 bg-white/80 dark:bg-[#0a0a0c]/80 backdrop-blur-lg">
+        <div className="lg:hidden fixed bottom-6 left-4 right-4 z-50">
+          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl p-1.5 flex justify-between items-center max-w-lg mx-auto">
+            <button
+              onClick={() => { setTabMode('community'); setViewMode('groups'); }}
+              className={`flex-1 flex flex-col items-center gap-1 py-3 px-1 rounded-xl transition-all duration-300 ${tabMode === 'community'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
+                : 'text-slate-500 dark:text-slate-400 font-medium'}`}
+            >
+              <Users size={20} className={tabMode === 'community' ? 'text-white' : 'text-slate-500'} />
+              <span className="text-[10px] leading-tight text-center">{t('community.tab_community')}</span>
+            </button>
+            <button
+              onClick={() => { setTabMode('rating'); setViewMode('rating'); loadLeaderboard(); }}
+              className={`flex-1 flex flex-col items-center gap-1 py-3 px-1 rounded-xl transition-all duration-300 ${tabMode === 'rating'
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
+                : 'text-slate-500 dark:text-slate-400 font-medium'}`}
+            >
+              <Trophy size={20} className={tabMode === 'rating' ? 'text-white' : 'text-slate-500'} />
+              <span className="text-[10px] leading-tight text-center">{t('community.tab_rating')}</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Tabs */}
+      {!['group-chat', 'dm-chat'].includes(viewMode) && (
+        <div className="hidden lg:flex px-6 py-4 border-t border-slate-200 dark:border-white/10 gap-2 bg-white/80 dark:bg-[#0a0a0c]/80 backdrop-blur-lg">
           <button onClick={() => { setTabMode('community'); setViewMode('groups'); }} className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-bold transition-all ${tabMode === 'community' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white dark:bg-white/5 text-slate-600 dark:text-slate-400'}`}>
             <Users size={18} />
             <span className="hidden sm:inline">{t('community.tab_community')}</span>

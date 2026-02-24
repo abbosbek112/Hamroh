@@ -354,59 +354,60 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-slate-200/60 dark:bg-black/80 backdrop-blur-sm" onClick={onClose}></div>
 
       {/* Main Card */}
-      <div className="relative w-full max-w-5xl bg-white dark:bg-[#0f172a] rounded-[2.5rem] shadow-2xl overflow-hidden animate-fade-in-up flex flex-col md:flex-row h-auto md:h-[600px]">
+      <div className="relative w-full max-w-5xl bg-white dark:bg-[#0f172a] rounded-[2.5rem] shadow-2xl overflow-hidden animate-fade-in-up flex flex-col md:flex-row h-auto md:h-[600px] max-h-[95vh] md:max-h-none">
 
-        <button onClick={onClose} className="absolute top-4 right-4 z-20 p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-          <X size={20} className="text-slate-500 dark:text-slate-400" />
+        <button onClick={onClose} className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 p-2 rounded-full bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 backdrop-blur-md transition-colors">
+          <X size={18} className="text-slate-500 dark:text-slate-400 sm:w-5 sm:h-5" />
         </button>
 
         {/* LEFT SIDE - Branding */}
-        <div className="w-full md:w-[45%] bg-gradient-to-br from-[#f0f3ff] to-[#f5f0ff] dark:from-slate-900 dark:to-slate-900 p-10 md:p-14 flex flex-col justify-between relative overflow-hidden">
+        <div className="w-full md:w-[45%] bg-gradient-to-br from-[#f0f3ff] to-[#f5f0ff] dark:from-slate-900 dark:to-slate-900 p-6 sm:p-10 md:p-14 flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-[-20%] left-[-20%] w-96 h-96 bg-purple-200/30 rounded-full blur-3xl"></div>
 
           <div className="relative z-10">
-            <div className="w-14 h-14 bg-[#0f172a] dark:bg-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-slate-900/10">
-              <Sparkles className="text-white dark:text-black" size={28} strokeWidth={2} />
+            <div className="w-10 h-10 sm:w-14 sm:h-14 bg-[#0f172a] dark:bg-white rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-8 shadow-lg shadow-slate-900/10">
+              <Sparkles className="text-white dark:text-black sm:hidden" size={18} strokeWidth={2} />
+              <Sparkles className="text-white dark:text-black hidden sm:block" size={28} strokeWidth={2} />
             </div>
 
-            <h1 className="text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-2 tracking-tight">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight mb-0.5 sm:mb-2 tracking-tight">
               Hamroh
             </h1>
-            <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 leading-tight mb-6 tracking-tight">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 leading-tight mb-2 sm:mb-6 tracking-tight">
               AI
             </h1>
 
-            <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed font-medium max-w-sm">
+            <p className="hidden sm:block text-slate-600 dark:text-slate-400 text-sm sm:text-base md:text-lg leading-relaxed font-medium max-w-sm">
               {t('auth.branding_slogan')}
             </p>
           </div>
 
-          <div className="relative z-10 flex gap-4 mt-12 md:mt-0">
-            <div className="flex items-center gap-2 bg-white dark:bg-white/5 px-4 py-3 rounded-2xl shadow-sm">
-              <Zap size={18} className="text-yellow-500 fill-yellow-500" />
-              <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{t('auth.feature_speed')}</span>
+          <div className="relative z-10 flex flex-wrap gap-2 sm:gap-4 mt-6 sm:mt-8 md:mt-0">
+            <div className="flex items-center gap-2 bg-white dark:bg-white/5 px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl shadow-sm">
+              <Zap size={16} className="text-yellow-500 fill-yellow-500 sm:w-[18px] sm:h-[18px]" />
+              <span className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200">{t('auth.feature_speed')}</span>
             </div>
-            <div className="flex items-center gap-2 bg-white dark:bg-white/5 px-4 py-3 rounded-2xl shadow-sm">
-              <Shield size={18} className="text-green-500 fill-green-500" />
-              <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{t('auth.feature_secure')}</span>
+            <div className="flex items-center gap-2 bg-white dark:bg-white/5 px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl shadow-sm">
+              <Shield size={16} className="text-green-500 fill-green-500 sm:w-[18px] sm:h-[18px]" />
+              <span className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200">{t('auth.feature_secure')}</span>
             </div>
           </div>
         </div>
 
         {/* RIGHT SIDE - Form */}
-        <div className="w-full md:w-[55%] bg-white dark:bg-[#0f172a] p-10 md:p-14 flex flex-col justify-center overflow-y-auto custom-scrollbar">
+        <div className="w-full md:w-[55%] bg-white dark:bg-[#0f172a] p-6 sm:p-10 md:p-14 flex flex-col justify-center overflow-y-auto custom-scrollbar">
           <div className="max-w-md mx-auto w-full">
 
             {/* Header Text */}
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="text-xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-1">
               {mode === 'LOGIN' ? t('auth.welcome') : mode === 'REGISTER' ? t('auth.create_account') : t('auth.forgot_title')}
             </h2>
-            <p className="text-slate-500 dark:text-slate-400 mb-8 font-medium">
+            <p className="text-xs sm:text-base text-slate-500 dark:text-slate-400 mb-4 sm:mb-8 font-medium">
               {mode === 'LOGIN' ? t('auth.login_desc') : mode === 'REGISTER' ? t('auth.register_desc') : t('auth.forgot_desc')}
             </p>
 
@@ -423,7 +424,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="w-full pl-12 pr-4 py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-2xl text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-900 transition-all font-semibold"
+                        className="w-full pl-12 pr-4 py-3 sm:py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-xl sm:rounded-2xl text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-900 transition-all font-semibold"
                         placeholder="mail@example.com"
                       />
                     </div>
@@ -440,7 +441,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                         value={forgotCode}
                         onChange={(e) => setForgotCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
                         required
-                        className="w-full pl-12 pr-4 py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-2xl text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-900 transition-all font-semibold text-center text-2xl tracking-widest"
+                        className="w-full pl-12 pr-4 py-3 sm:py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-xl sm:rounded-2xl text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-900 transition-all font-semibold text-center text-xl sm:text-2xl tracking-widest"
                         placeholder="00000000"
                         maxLength={8}
                         autoComplete="one-time-code"
@@ -475,8 +476,8 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                     type="submit"
                     disabled={isLoading}
                     className={`flex-1 py-4 bg-[#0f172a] dark:bg-white text-white dark:text-[#0f172a] rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-xl ${isLoading
-                        ? 'opacity-50 cursor-not-allowed'
-                        : 'hover:opacity-90 active:scale-[0.98] cursor-pointer'
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:opacity-90 active:scale-[0.98] cursor-pointer'
                       }`}
                   >
                     {isLoading ? (
@@ -494,7 +495,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
               </form>
             ) : (
               /* --- LOGIN / REGISTER FORM --- */
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
 
                 {/* REGISTER CODE STEP */}
                 {mode === 'REGISTER' && registerStep === 'CODE' && (
@@ -512,7 +513,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                         value={registerCode}
                         onChange={(e) => setRegisterCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
                         required
-                        className="w-full pl-12 pr-4 py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-2xl text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-900 transition-all font-semibold text-center text-2xl tracking-widest"
+                        className="w-full pl-12 pr-4 py-3 sm:py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-xl sm:rounded-2xl text-slate-900 dark:text-white focus:ring-2 focus:ring-slate-900 transition-all font-semibold text-center text-xl sm:text-2xl tracking-widest"
                         placeholder="00000000"
                         maxLength={8}
                         autoComplete="one-time-code"
@@ -565,7 +566,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           required
-                          className="w-full pl-12 pr-4 py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold"
+                          className="w-full pl-12 pr-4 py-3 sm:py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-xl sm:rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold"
                           placeholder={t('auth.name')}
                         />
                       </div>
@@ -582,7 +583,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="w-full pl-12 pr-4 py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold"
+                          className="w-full pl-12 pr-12 py-3 sm:py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-xl sm:rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold tracking-widest"
                           placeholder="example@gmail.com"
                         />
                       </div>
@@ -601,7 +602,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           required
-                          className="w-full pl-12 pr-12 py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold tracking-widest"
+                          className="w-full pl-12 pr-12 py-3 sm:py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-xl sm:rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold tracking-widest"
                           placeholder="••••••••"
                         />
                         <button
@@ -626,7 +627,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
                           required
-                          className={`w-full pl-12 pr-12 py-4 bg-yellow-50 dark:bg-slate-800/50 border-2 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold tracking-widest
+                          className={`w-full pl-12 pr-12 py-3 sm:py-4 bg-yellow-50 dark:bg-slate-800/50 border-2 rounded-xl sm:rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold tracking-widest
                           ${confirmPassword && confirmPassword !== password ? 'border-red-400' : confirmPassword && confirmPassword === password ? 'border-green-400' : 'border-transparent'}
                         `}
                           placeholder="••••••••"
@@ -660,7 +661,7 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="w-full pl-12 pr-4 py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold"
+                          className="w-full pl-12 pr-12 py-3 sm:py-4 bg-yellow-50 dark:bg-slate-800/50 border-none rounded-xl sm:rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white transition-all font-semibold tracking-widest"
                           placeholder="example@gmail.com"
                         />
                       </div>
@@ -711,9 +712,9 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                 <button
                   type="submit"
                   disabled={isLoading || (mode === 'REGISTER' && registerStep === 'CODE' && !registerCode)}
-                  className={`w-full py-4 mt-6 bg-[#0f172a] dark:bg-white text-white dark:text-[#0f172a] rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-xl shadow-slate-900/20 ${isLoading || (mode === 'REGISTER' && registerStep === 'CODE' && !registerCode)
-                      ? 'opacity-50 cursor-not-allowed'
-                      : 'hover:opacity-90 active:scale-[0.98] cursor-pointer'
+                  className={`w-full py-3 sm:py-4 mt-4 sm:mt-6 bg-[#0f172a] dark:bg-white text-white dark:text-[#0f172a] rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg transition-all flex items-center justify-center gap-2 shadow-xl shadow-slate-900/20 ${isLoading || (mode === 'REGISTER' && registerStep === 'CODE' && !registerCode)
+                    ? 'opacity-50 cursor-not-allowed'
+                    : 'hover:opacity-90 active:scale-[0.98] cursor-pointer'
                     }`}
                 >
                   {isLoading ? (
@@ -741,12 +742,12 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
             {/* Footer Links */}
             {mode !== 'FORGOT_PASSWORD' && (
               <>
-                <div className="relative my-8">
+                <div className="relative my-4 sm:my-8">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white dark:bg-[#0f172a] px-4 text-slate-500 font-bold tracking-widest">{t('auth.or')}</span>
+                    <span className="bg-white dark:bg-[#0f172a] px-4 text-slate-500 font-bold tracking-widest">{t('auth.or') || 'YOKI'}</span>
                   </div>
                 </div>
 
@@ -767,9 +768,9 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
                     }
                   }}
                   disabled={isLoading}
-                  className={`w-full py-4 mt-2 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-2xl font-bold text-base transition-all flex items-center justify-center gap-3 shadow-md hover:shadow-lg ${isLoading
-                      ? 'opacity-50 cursor-not-allowed'
-                      : 'hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98] cursor-pointer'
+                  className={`w-full py-3.5 sm:py-4 mt-2 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base transition-all flex items-center justify-center gap-3 shadow-md hover:shadow-lg ${isLoading
+                    ? 'opacity-50 cursor-not-allowed'
+                    : 'hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98] cursor-pointer'
                     }`}
                 >
                   {isLoading ? (

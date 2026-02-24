@@ -350,19 +350,19 @@ export const RoutineList: React.FC = () => {
   return (
     <div className="animate-fade-in max-w-4xl mx-auto">
       {/* Daily Header & Progress */}
-      <div className="flex flex-col gap-6 mb-8">
-        <div className="flex justify-between items-center gap-4 flex-wrap">
-          <div className="flex items-center gap-2 bg-gradient-to-r from-white/90 via-white/80 to-violet-50/30 dark:from-white/5 dark:via-white/5 dark:to-violet-950/20 px-5 py-3 rounded-2xl border border-white/60 dark:border-white/10 shadow-lg hover:shadow-xl transition-all backdrop-blur-xl group">
+      <div className="flex flex-col gap-4 sm:gap-6 mb-8">
+        <div className="flex justify-between items-center gap-3 sm:gap-4 flex-wrap">
+          <div className="flex-1 sm:flex-none flex items-center justify-between sm:justify-start gap-2 bg-gradient-to-r from-white/90 via-white/80 to-violet-50/30 dark:from-white/5 dark:via-white/5 dark:to-violet-950/20 px-3 sm:px-5 py-2 sm:py-3 rounded-2xl border border-white/60 dark:border-white/10 shadow-lg hover:shadow-xl transition-all backdrop-blur-xl group">
             <button
               onClick={() => setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() - 1)))}
               className="p-2 hover:bg-violet-100/50 dark:hover:bg-violet-500/20 rounded-xl transition-all group-hover:scale-110"
             >
               <ChevronLeft size={20} className="text-slate-600 dark:text-slate-300" />
             </button>
-            <span className="font-bold text-lg text-slate-900 dark:text-white min-w-[140px] text-center px-4">
+            <span className="font-bold text-base sm:text-lg text-slate-900 dark:text-white min-w-[120px] sm:min-w-[140px] text-center px-2 sm:px-4">
               {currentDate.toISOString().split('T')[0] === new Date().toISOString().split('T')[0]
                 ? <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">{t('common.today')}</span>
-                : currentDate.toLocaleDateString('uz-UZ', { weekday: 'long', day: 'numeric', month: 'long' })
+                : currentDate.toLocaleDateString('uz-UZ', { weekday: 'short', day: 'numeric', month: 'short' })
               }
             </span>
             <button
@@ -373,7 +373,7 @@ export const RoutineList: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex items-center gap-4 bg-gradient-to-r from-white/90 via-white/80 to-orange-50/30 dark:from-white/5 dark:via-white/5 dark:to-orange-950/20 px-5 py-3 rounded-2xl border border-white/60 dark:border-white/10 shadow-lg hover:shadow-xl transition-all backdrop-blur-xl group">
+          <div className="flex-1 sm:flex-none flex items-center justify-center sm:justify-start gap-3 sm:gap-4 bg-gradient-to-r from-white/90 via-white/80 to-orange-50/30 dark:from-white/5 dark:via-white/5 dark:to-orange-950/20 px-4 sm:px-5 py-2 sm:py-3 rounded-2xl border border-white/60 dark:border-white/10 shadow-lg hover:shadow-xl transition-all backdrop-blur-xl group">
             <StreakFlame streak={streak} size={28} />
             <div className="flex flex-col items-start">
               <span className="font-black text-2xl text-slate-900 dark:text-white leading-none bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">{streak}</span>
@@ -430,7 +430,7 @@ export const RoutineList: React.FC = () => {
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               <div
-                className={`p-6 rounded-2xl border bg-gradient-to-br from-white/90 via-white/85 to-slate-50/50 dark:from-white/5 dark:via-white/5 dark:to-slate-900/20 border-white/60 dark:border-white/10 hover:shadow-xl hover:shadow-violet-500/10 transition-all backdrop-blur-xl relative overflow-hidden ${!isEditing ? 'cursor-pointer flex items-center gap-4 hover:-translate-y-1 hover:scale-[1.02]' : 'flex flex-col sm:flex-row items-center gap-3'}`}
+                className={`p-4 sm:p-6 rounded-2xl border bg-gradient-to-br from-white/90 via-white/85 to-slate-50/50 dark:from-white/5 dark:via-white/5 dark:to-slate-900/20 border-white/60 dark:border-white/10 hover:shadow-xl hover:shadow-violet-500/10 transition-all backdrop-blur-xl relative overflow-hidden ${!isEditing ? 'cursor-pointer flex items-center gap-3 sm:gap-4 hover:-translate-y-1 hover:scale-[1.02]' : 'flex flex-col sm:flex-row items-center gap-3'}`}
                 onClick={() => !isEditing && handleToggleRoutineTask(task.id, task.time, task.date)}
               >
                 {/* Gradient overlay on hover (must not block inputs) */}
@@ -540,7 +540,7 @@ export const RoutineList: React.FC = () => {
           </div>
         )}
 
-        <div className="pl-14 pt-2">
+        <div className="pl-0 sm:pl-14 pt-2">
           {/* Copy Previous Day Button - Show only when there are no tasks */}
           {!isAddingRoutine && routineTasks.length === 0 && !isCopying && (
             <div className="mb-4">

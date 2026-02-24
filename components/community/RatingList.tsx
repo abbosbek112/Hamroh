@@ -30,15 +30,15 @@ export const RatingList: React.FC<RatingListProps> = ({
 
     return (
         <div className="flex-1 overflow-y-auto px-4 pb-8 sm:px-6 custom-scrollbar">
-            <div className="max-w-4xl mx-auto py-8">
-                <div className="text-center mb-10">
-                    <div className="inline-flex p-3 rounded-2xl bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 mb-4 shadow-xl shadow-indigo-500/10">
-                        <Trophy size={32} />
+            <div className="max-w-4xl mx-auto py-4 sm:py-8">
+                <div className="text-center mb-6 sm:mb-10 px-2">
+                    <div className="inline-flex p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 mb-3 sm:mb-4 shadow-xl shadow-indigo-500/10">
+                        <Trophy size={28} className="sm:w-8 sm:h-8" />
                     </div>
-                    <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">
+                    <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mb-1sm:mb-2">
                         {t('community.leaderboard_title')}
                     </h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">
+                    <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-lg">
                         {t('community.leaderboard_subtitle')}
                     </p>
                 </div>
@@ -53,12 +53,12 @@ export const RatingList: React.FC<RatingListProps> = ({
                             <div
                                 key={user.id}
                                 onClick={() => onViewProfile?.(user)}
-                                className={`flex items-center gap-4 p-5 rounded-3xl transition-all duration-300 border cursor-pointer ${isCurrentUser
+                                className={`flex items-center gap-2 sm:gap-4 p-3 sm:p-5 rounded-2xl sm:rounded-3xl transition-all duration-300 border cursor-pointer ${isCurrentUser
                                     ? 'bg-indigo-600 border-indigo-400 shadow-xl shadow-indigo-500/20 scale-[1.02] z-10'
                                     : 'bg-white/60 dark:bg-white/5 border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 hover:scale-[1.01]'
                                     }`}
                             >
-                                <div className={`w-12 flex-shrink-0 flex items-center justify-center font-black text-2xl ${isCurrentUser
+                                <div className={`w-8 sm:w-12 flex-shrink-0 flex items-center justify-center font-black text-lg sm:text-2xl ${isCurrentUser
                                     ? 'text-white'
                                     : isTop3
                                         ? 'text-indigo-500'
@@ -67,11 +67,11 @@ export const RatingList: React.FC<RatingListProps> = ({
                                     {rank}
                                 </div>
 
-                                <div className="relative">
+                                <div className="relative flex-shrink-0">
                                     <img
                                         src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`}
                                         alt={user.name}
-                                        className={`w-14 h-14 rounded-2xl object-cover border-2 ${isCurrentUser ? 'border-white/40' : 'border-slate-200 dark:border-white/10'
+                                        className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl object-cover border-2 ${isCurrentUser ? 'border-white/40' : 'border-slate-200 dark:border-white/10'
                                             }`}
                                     />
                                     {isTop3 && (
@@ -95,18 +95,18 @@ export const RatingList: React.FC<RatingListProps> = ({
                                         </span>
                                         {user.streak > 0 && (
                                             <span className="flex items-center gap-1">
-                                                <Flame size={14} className="text-orange-500" />
-                                                {user.streak} {t('community.daily_streak')}
+                                                <Flame size={12} className="text-orange-500 sm:w-[14px] sm:h-[14px]" />
+                                                {user.streak} <span className="hidden sm:inline">{t('community.daily_streak')}</span><span className="sm:hidden">🔥</span>
                                             </span>
                                         )}
                                     </div>
                                 </div>
 
-                                <div className="text-right">
-                                    <div className={`font-black text-xl ${isCurrentUser ? 'text-white' : 'text-indigo-600 dark:text-indigo-400'}`}>
+                                <div className="text-right flex-shrink-0">
+                                    <div className={`font-black text-base sm:text-xl ${isCurrentUser ? 'text-white' : 'text-indigo-600 dark:text-indigo-400'}`}>
                                         {user.xp.toLocaleString()}
                                     </div>
-                                    <div className={`text-xs font-bold uppercase tracking-wider ${isCurrentUser ? 'text-indigo-100/70' : 'text-slate-400'}`}>
+                                    <div className={`text-[10px] font-bold uppercase tracking-wider ${isCurrentUser ? 'text-indigo-100/70' : 'text-slate-400'}`}>
                                         XP
                                     </div>
                                 </div>

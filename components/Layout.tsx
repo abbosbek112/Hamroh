@@ -73,8 +73,8 @@ export const Layout: React.FC<LayoutProps> = ({
       <LiquidBackground />
 
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-20 bg-white/30 dark:bg-[#0a0a0c]/50 backdrop-blur-xl border-b border-white/20 dark:border-white/5 z-50 flex items-center justify-between px-6 shadow-sm" style={{ isolation: 'isolate' }}>
-        <div className="text-xl font-bold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-white dark:to-slate-400">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 sm:h-20 bg-white/40 dark:bg-[#0a0a0c]/60 backdrop-blur-xl border-b border-white/20 dark:border-white/5 z-50 flex items-center justify-between px-4 sm:px-6 shadow-sm" style={{ isolation: 'isolate' }}>
+        <div className="text-lg sm:text-xl font-bold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-white dark:to-slate-400">
           Hamroh AI
         </div>
         <div className="flex items-center gap-4">
@@ -94,11 +94,11 @@ export const Layout: React.FC<LayoutProps> = ({
               e.stopPropagation();
               setIsMobileMenuOpen(!isMobileMenuOpen);
             }}
-            className="p-2.5 rounded-full hover:bg-white/20 dark:hover:bg-white/5 active:bg-white/30 dark:active:bg-white/10 transition-all text-slate-600 dark:text-slate-400 touch-manipulation"
-            style={{ minWidth: '44px', minHeight: '44px' }}
+            className="p-2 sm:p-2.5 rounded-full hover:bg-white/20 dark:hover:bg-white/5 active:bg-white/30 dark:active:bg-white/10 transition-all text-slate-600 dark:text-slate-400 touch-manipulation"
+            style={{ minWidth: '40px', minHeight: '40px' }}
             aria-label="Menu"
           >
-            {isMobileMenuOpen ? <X size={24} strokeWidth={2} /> : <Menu size={24} strokeWidth={2} />}
+            {isMobileMenuOpen ? <X size={22} strokeWidth={2} /> : <Menu size={22} strokeWidth={2} />}
           </button>
         </div>
       </div>
@@ -194,9 +194,9 @@ export const Layout: React.FC<LayoutProps> = ({
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/30 backdrop-blur-md transition-opacity"
+          className="lg:hidden fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm transition-all duration-300"
           onClick={() => setIsMobileMenuOpen(false)}
-          style={{ zIndex: 60, overflow: 'visible' }}
+          style={{ zIndex: 60, overflow: 'hidden' }}
           onTouchStart={(e) => {
             if (e.target === e.currentTarget) {
               setIsMobileMenuOpen(false);
@@ -204,13 +204,13 @@ export const Layout: React.FC<LayoutProps> = ({
           }}
         >
           <div
-            className="absolute right-0 top-0 bottom-0 w-72 bg-white/80 dark:bg-[#0a0a0c]/90 border-l border-white/20 dark:border-white/10 p-8 flex flex-col shadow-2xl backdrop-blur-xl"
+            className="absolute right-0 top-0 bottom-0 w-[280px] sm:w-80 bg-white/95 dark:bg-[#0f172a]/98 border-l border-white/20 dark:border-white/10 p-6 sm:p-8 flex flex-col shadow-2xl animate-slide-in-right"
             onClick={e => e.stopPropagation()}
             onTouchStart={e => e.stopPropagation()}
-            style={{ zIndex: 55, overflowY: 'auto', overflowX: 'visible' }}
+            style={{ zIndex: 65, overflowY: 'auto', overflowX: 'hidden' }}
           >
             {user && (
-              <div className="mt-16 mb-6 flex flex-col gap-4 pb-6 border-b border-slate-200/50 dark:border-white/10" style={{ overflow: 'visible', position: 'relative', zIndex: 1 }}>
+              <div className="mt-12 sm:mt-16 mb-4 sm:mb-6 flex flex-col gap-4 pb-6 border-b border-slate-200/50 dark:border-white/10" style={{ overflow: 'visible', position: 'relative', zIndex: 1 }}>
                 <div
                   className="flex items-center gap-3 cursor-pointer relative"
                   onClick={() => { onNavigate(AppView.SETTINGS); setIsMobileMenuOpen(false); }}
@@ -218,7 +218,7 @@ export const Layout: React.FC<LayoutProps> = ({
                   style={{ overflow: 'visible', isolation: 'isolate', zIndex: 100 }}
                 >
                   <div style={{ position: 'relative', zIndex: 101, overflow: 'visible' }}>
-                    <img src={user.avatar} alt={user.name} className="w-12 h-12 rounded-full object-cover ring-2 ring-white/50 dark:ring-white/10 relative" style={{ zIndex: 101 }} />
+                    <img src={user.avatar} alt={user.name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover ring-2 ring-white/50 dark:ring-white/10 relative" style={{ zIndex: 101 }} />
                   </div>
                   <div className="flex-1 min-w-0 relative" style={{ overflow: 'visible', zIndex: 100 }}>
                     <p className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 relative" style={{ overflow: 'visible', zIndex: 100 }}>
@@ -378,7 +378,7 @@ export const Layout: React.FC<LayoutProps> = ({
       )}
 
       {/* Main Content Area */}
-      <main className="lg:ml-72 pt-28 lg:pt-12 px-6 lg:px-16 pb-16 min-h-screen" style={{ isolation: 'isolate', position: 'relative', zIndex: 10 }}>
+      <main className="lg:ml-72 pt-24 sm:pt-28 lg:pt-12 px-4 sm:px-6 lg:px-16 pb-16 min-h-screen" style={{ isolation: 'isolate', position: 'relative', zIndex: 10 }}>
         <div className="max-w-7xl mx-auto h-full animate-fade-in relative" style={{ isolation: 'isolate', zIndex: 10, overflow: 'visible' }}>
           {children}
         </div>

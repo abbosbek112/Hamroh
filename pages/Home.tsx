@@ -25,7 +25,7 @@ const XPGuideModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" onClick={onClose}></div>
-      <div className="relative w-full max-w-md bg-white/90 dark:bg-[#1a1a1e]/90 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-2xl animate-fade-in-up border border-white/20 dark:border-white/5 md:-translate-y-12">
+      <div className="relative w-full max-w-md bg-white/90 dark:bg-[#1a1a1e]/90 backdrop-blur-2xl rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-2xl animate-fade-in-up border border-white/20 dark:border-white/5">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Star className="text-yellow-500 fill-yellow-500" /> {t('home.xp_guide.title')}
@@ -462,16 +462,16 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       )}
 
       {showOnboarding && (
-        <div className="fixed inset-0 z-[150] flex justify-center items-start pt-[10vh] md:pt-[15vh] p-4 bg-slate-900/70 backdrop-blur-md transition-all duration-500">
+        <div className="fixed inset-0 z-[150] flex justify-center items-center p-4 sm:p-6 bg-slate-900/70 backdrop-blur-md transition-all duration-500">
           <div className="absolute inset-0" onClick={handleCompleteOnboarding}></div>
-          <div className="relative w-full max-w-lg bg-white/95 dark:bg-[#1a1a1e]/95 rounded-[3rem] p-10 shadow-2xl border border-white/20 dark:border-white/5 backdrop-blur-2xl animate-fade-in-up -translate-y-8">
+          <div className="relative w-full max-w-lg bg-white/95 dark:bg-[#1a1a1e]/95 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 shadow-2xl border border-white/20 dark:border-white/5 backdrop-blur-2xl animate-fade-in-up">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
-                  <Zap size={24} />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+                  <Zap size={20} className="sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
                     {t('home.onboarding.title')}
                   </h3>
                   <div className="flex gap-1 mt-1">
@@ -604,7 +604,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         {/* --- HERO SECTION --- */}
         <section
           ref={heroRef}
-          className="relative min-h-[500px] lg:min-h-[650px] flex items-center justify-center perspective-3000 pt-10 lg:pt-0"
+          className="relative min-h-[450px] sm:min-h-[500px] lg:min-h-[650px] flex items-center justify-center perspective-3000 pt-6 sm:pt-10 lg:pt-0"
           style={{ isolation: 'isolate' }}
         >
           {/* Background Highlight - Chrome fix: removed mix-blend-overlay */}
@@ -632,7 +632,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               </div>
 
               <h1
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-slate-900 dark:text-white leading-[1.05] animate-fade-in-up"
+                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-slate-900 dark:text-white leading-[1.1] sm:leading-[1.05] animate-fade-in-up"
                 style={{
                   animationDelay: '0.2s',
                   textShadow: '0 4px 30px rgba(0,0,0,0.1)',
@@ -652,7 +652,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               </h1>
 
               <p
-                className="text-base sm:text-lg md:text-xl text-slate-700 dark:text-slate-300 max-w-lg mx-auto lg:mx-0 font-medium leading-relaxed animate-fade-in-up"
+                className="text-sm sm:text-lg md:text-xl text-slate-700 dark:text-slate-300 max-w-lg mx-auto lg:mx-0 font-medium leading-relaxed animate-fade-in-up"
                 style={{
                   animationDelay: '0.3s',
                   transform: 'translateZ(0)',
@@ -667,7 +667,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                 <button
                   onClick={() => onNavigate(AppView.INTIZOM, { tab: 'PLAN' })}
                   disabled={isBookOpen}
-                  className={`px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 dark:bg-white text-white dark:text-black rounded-xl sm:rounded-2xl font-bold flex items-center justify-center gap-2 sm:gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-indigo-500/30 dark:shadow-[0_10px_40px_-10px_rgba(255,255,255,0.3)] group border border-transparent text-sm sm:text-base ${isBookOpen ? 'cursor-default pointer-events-none' : ''}`}
+                  className={`px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 dark:bg-white text-white dark:text-black rounded-xl sm:rounded-2xl font-bold flex items-center justify-center gap-2 sm:gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-indigo-500/30 dark:shadow-[0_10px_40px_-10px_rgba(255,255,255,0.3)] group border border-transparent text-sm sm:text-base w-full sm:w-auto ${isBookOpen ? 'cursor-default pointer-events-none' : ''}`}
                 >
                   <PlusCircle size={18} className="sm:w-5 sm:h-5 group-hover:rotate-90 transition-transform" /> {t('home.plan_btn')}
                 </button>
