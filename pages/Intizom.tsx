@@ -77,7 +77,7 @@ export const Intizom: React.FC<IntizomProps> = ({ initialTab }) => {
 
       {/* Mobile Bottom Navigation */}
       <div className="lg:hidden fixed bottom-6 left-4 right-4 z-50">
-        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl p-1.5 flex justify-between items-center max-w-lg mx-auto overflow-x-auto no-scrollbar">
+        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl p-1.5 flex justify-between items-center max-w-lg mx-auto overflow-x-auto no-scrollbar gap-1">
           {[
             { id: ViewMode.PLAN, label: t('intizom.tabs.plan'), icon: BrainCircuit },
             { id: ViewMode.DAILY, label: t('intizom.tabs.daily'), icon: Calendar },
@@ -89,9 +89,9 @@ export const Intizom: React.FC<IntizomProps> = ({ initialTab }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 min-w-[50px] flex flex-col items-center gap-1 py-2 px-1 rounded-xl transition-all duration-300 ${activeTab === tab.id
+              className={`flex-1 min-w-[64px] flex flex-col items-center gap-1 py-2 px-1 rounded-xl transition-all duration-300 ${activeTab === tab.id
                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
-                : 'text-slate-500 dark:text-slate-400 font-medium'}`}
+                : 'text-slate-500 dark:text-slate-400 font-medium hover:bg-white/10'}`}
             >
               <tab.icon size={20} strokeWidth={activeTab === tab.id ? 3 : 2} />
               <span className="text-[10px] leading-tight text-center">{tab.label}</span>

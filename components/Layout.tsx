@@ -204,7 +204,7 @@ export const Layout: React.FC<LayoutProps> = ({
           }}
         >
           <div
-            className="absolute right-0 top-0 bottom-0 w-[280px] sm:w-80 bg-white/95 dark:bg-[#0f172a]/98 border-l border-white/20 dark:border-white/10 p-6 sm:p-8 flex flex-col shadow-2xl animate-slide-in-right"
+            className="absolute right-0 top-0 bottom-0 w-[280px] sm:w-80 bg-white/95 dark:bg-slate-950/98 border-l border-white/20 dark:border-white/10 p-6 sm:p-8 flex flex-col shadow-2xl animate-slide-in-right"
             onClick={e => e.stopPropagation()}
             onTouchStart={e => e.stopPropagation()}
             style={{ zIndex: 65, overflowY: 'auto', overflowX: 'hidden' }}
@@ -225,7 +225,7 @@ export const Layout: React.FC<LayoutProps> = ({
                       <span style={{ position: 'relative', zIndex: 102, overflow: 'visible', display: 'inline-block' }}>
                         <UserBadge user={user} size="sm" />
                       </span>
-                      <span className="truncate relative" style={{ zIndex: 101 }}>{user.name}</span>
+                      <span className="truncate relative text-slate-900 dark:text-white" style={{ zIndex: 101 }}>{user.name}</span>
                     </p>
                     <button
                       onClick={(e) => {
@@ -260,7 +260,7 @@ export const Layout: React.FC<LayoutProps> = ({
                         handleLanguageChange(lang);
                       }}
                       className={`flex-1 text-xs font-bold py-2.5 rounded-lg transition-all touch-manipulation ${language === lang.toLowerCase()
-                        ? 'bg-white text-indigo-900 shadow-sm dark:bg-white dark:text-black'
+                        ? 'bg-white text-indigo-900 shadow-sm dark:bg-slate-800 dark:text-white'
                         : 'text-slate-400 active:bg-slate-100 dark:active:bg-white/10'
                         }`}
                       style={{ minHeight: '40px' }}

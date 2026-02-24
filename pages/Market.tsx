@@ -282,7 +282,7 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
 
             {/* Mobile Bottom Category Filter */}
             <div className="lg:hidden fixed bottom-6 left-4 right-4 z-50">
-                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl p-1.5 flex justify-between items-center max-w-lg mx-auto overflow-x-auto no-scrollbar">
+                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl p-1.5 flex justify-between items-center max-w-lg mx-auto overflow-x-auto no-scrollbar gap-1">
                     {[
                         { id: 'ALL', label: t('market.tabs.all'), icon: ShoppingBag, color: 'text-slate-500' },
                         { id: 'UTILITY', label: t('market.tabs.utility'), icon: Zap, color: 'text-blue-500' },
@@ -293,9 +293,9 @@ export const Market: React.FC<MarketProps> = ({ user, onUpdateUser }) => {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
-                            className={`flex-1 min-w-[60px] flex flex-col items-center gap-1 py-2 px-1 rounded-xl transition-all duration-300 ${activeTab === tab.id
+                            className={`flex-1 min-w-[64px] flex flex-col items-center gap-1 py-2 px-1 rounded-xl transition-all duration-300 ${activeTab === tab.id
                                 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 font-bold scale-105'
-                                : 'text-slate-500 dark:text-slate-400 font-medium'}`}
+                                : 'text-slate-500 dark:text-slate-400 font-medium hover:bg-white/10'}`}
                         >
                             <tab.icon size={20} className={activeTab === tab.id ? 'text-white' : tab.color} />
                             <span className="text-[10px] leading-tight text-center">{tab.label}</span>
