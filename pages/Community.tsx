@@ -399,11 +399,11 @@ export const Community: React.FC<CommunityProps> = ({ currentUser }) => {
   };
 
   const handleEditGroup = useCallback(async () => {
-    if (!selectedGroup) return; // Add check
-    if (!isOwner(selectedGroup)) return notify('Faqat admin tahrirlay oladi', 'error');
+    if (!selectedGroup) return;
+    if (!isOwner(selectedGroup) && currentUser.role !== 'admin') return notify('Faqat admin tahrirlay oladi', 'error');
     setEditGroupForm({ name: selectedGroup.name, description: selectedGroup.description || '', category: selectedGroup.category });
     setIsEditGroupModalOpen(true);
-  }, [selectedGroup, isOwner, notify]);
+  }, [selectedGroup, isOwner, currentUser.role, notify]);
 
   const handleSaveGroupEdit = async () => {
     if (!selectedGroup || isEditingGroup) return;
@@ -423,7 +423,7 @@ export const Community: React.FC<CommunityProps> = ({ currentUser }) => {
   };
 
   const handleDeleteGroup = async () => {
-    if (!selectedGroup || !isOwner(selectedGroup)) return;
+    if (!selectedGroup || (!isOwner(selectedGroup) && currentUser.role !== 'admin')) return;
     if (!confirm('Guruhni o\'chirishni tasdiqlaysizmi?')) return;
     try {
       await api.deleteGroup(selectedGroup.id);
@@ -557,15 +557,18 @@ export const Community: React.FC<CommunityProps> = ({ currentUser }) => {
 
         <div className="mb-4">
           <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">{t('community.category')}</label>
-          <select
+          <input
+            list="create-category-list"
             value={createForm.category}
             onChange={(e) => setCreateForm(prev => ({ ...prev, category: e.target.value }))}
-            className="w-full p-3 rounded-xl bg-slate-100 dark:bg-white/10 dark:text-white"
-          >
+            placeholder="Kategoriya yozing yoki tanlang..."
+            className="w-full p-3 rounded-xl bg-slate-100 dark:bg-white/10 dark:text-white border border-slate-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          />
+          <datalist id="create-category-list">
             {Object.entries(TRANSLATIONS[language]?.categories || {}).map(([key, label]) => (
-              <option key={key} value={key}>{typeof label === 'string' ? label : key}</option>
+              <option key={key} value={typeof label === 'string' ? label : key} />
             ))}
-          </select>
+          </datalist>
         </div>
 
         <div className="flex gap-3">
@@ -582,15 +585,21 @@ export const Community: React.FC<CommunityProps> = ({ currentUser }) => {
         <h2 className="text-2xl font-black mb-4 dark:text-white">{t('community.editGroup')}</h2>
         <input className="w-full mb-4 p-3 rounded-xl bg-slate-100 dark:bg-white/10 dark:text-white" value={editGroupForm.name} onChange={e => setEditGroupForm({ ...editGroupForm, name: e.target.value })} />
         <textarea className="w-full mb-4 p-3 rounded-xl bg-slate-100 dark:bg-white/10 dark:text-white" value={editGroupForm.description} onChange={e => setEditGroupForm({ ...editGroupForm, description: e.target.value })} />
-        <select
-          value={editGroupForm.category}
-          onChange={(e) => setEditGroupForm(prev => ({ ...prev, category: e.target.value }))}
-          className="w-full mb-4 p-3 rounded-xl bg-slate-100 dark:bg-white/10 dark:text-white"
-        >
-          {Object.entries(TRANSLATIONS[language]?.categories || {}).map(([key, label]) => (
-            <option key={key} value={key}>{typeof label === 'string' ? label : key}</option>
-          ))}
-        </select>
+        <div className="mb-4">
+          <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">{t('community.category')}</label>
+          <input
+            list="edit-category-list"
+            value={editGroupForm.category}
+            onChange={(e) => setEditGroupForm(prev => ({ ...prev, category: e.target.value }))}
+            placeholder="Kategoriya yozing yoki tanlang..."
+            className="w-full p-3 rounded-xl bg-slate-100 dark:bg-white/10 dark:text-white border border-slate-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          />
+          <datalist id="edit-category-list">
+            {Object.entries(TRANSLATIONS[language]?.categories || {}).map(([key, label]) => (
+              <option key={key} value={typeof label === 'string' ? label : key} />
+            ))}
+          </datalist>
+        </div>
         <button disabled={isEditingGroup} onClick={handleSaveGroupEdit} className="w-full p-3 bg-indigo-600 text-white rounded-xl font-bold">{t('common.save')}</button>
       </div>
     </div>

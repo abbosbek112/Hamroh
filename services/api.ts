@@ -9,6 +9,7 @@ import { authApi } from './api/auth';
 import { usersApi } from './api/users';
 import { groupsApi } from './api/groups';
 import { messagesApi } from './api/messages';
+import { organizationsApi } from './api/organizations';
 
 /**
  * =========================================================================================
@@ -2520,4 +2521,37 @@ export const api = {
       throw error;
     }
   },
+
+  // ======================================================
+  // ORGANIZATION (O'QUV MARKAZ) API
+  // ======================================================
+  createOrganization: organizationsApi.createOrganization,
+  getMyOrganization: organizationsApi.getMyOrganization,
+  getMyOrganizations: organizationsApi.getMyOrganizations,
+  joinOrganization: organizationsApi.joinOrganization,
+  getOrgMembers: organizationsApi.getOrgMembers,
+  getStudentAnalytics: organizationsApi.getStudentAnalytics,
+  createClass: organizationsApi.createClass,
+  getClasses: organizationsApi.getClasses,
+  assignMemberToClass: organizationsApi.assignMemberToClass,
+  updateMemberRole: organizationsApi.updateMemberRole,
+  removeOrgMember: organizationsApi.removeMember,
+  updateOrganization: organizationsApi.updateOrganization,
+  deleteClass: organizationsApi.deleteClass,
+  leaveOrganization: organizationsApi.leaveOrganization,
+  getAllOrganizations: organizationsApi.getAllOrganizations,
+  addOrgMember: organizationsApi.addOrgMember,
+  assignStudentToClass: organizationsApi.assignStudentToClass,
+  removeStudentFromClass: organizationsApi.removeStudentFromClass,
+  getClassMembers: organizationsApi.getClassMembers,
+  assignTask: organizationsApi.assignTask,
+  getTeacherTasks: organizationsApi.getTeacherTasks,
+  getMyAssignedTasks: organizationsApi.getMyAssignedTasks,
+  updateGroupVisit: organizationsApi.updateGroupVisit,
+  getUnseenTasksCount: organizationsApi.getUnseenTasksCount,
+  completeAssignedTask: organizationsApi.completeAssignedTask,
+  deleteAssignedTask: organizationsApi.deleteAssignedTask,
+  linkParentToStudent: organizationsApi.linkParentToStudent,
+  getMyLinkedStudents: organizationsApi.getMyLinkedStudents,
+  getStudentDataForParent: organizationsApi.getStudentDataForParent,
 };

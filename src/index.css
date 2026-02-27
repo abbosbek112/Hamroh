@@ -543,8 +543,6 @@ input[type="time"][lang="en-GB"] {
   --theme-glow: rgba(6, 182, 212, 0.4);
 }
 
-.app-theme-neon [class*="bg-indigo-600"],
-.app-theme-neon [class*="bg-indigo-500"],
 .app-theme-neon .bg-indigo-600,
 .app-theme-neon .bg-indigo-500 {
   background-color: #06b6d4 !important;
@@ -558,8 +556,7 @@ input[type="time"][lang="en-GB"] {
 }
 
 .app-theme-neon .text-indigo-600,
-.app-theme-neon .text-indigo-500,
-.app-theme-neon [class*="text-indigo"] {
+.app-theme-neon .text-indigo-500 {
   color: #06b6d4 !important;
 }
 
@@ -568,9 +565,16 @@ input[type="time"][lang="en-GB"] {
   border-color: #06b6d4 !important;
 }
 
-.app-theme-neon .shadow-indigo-500\/30,
-.app-theme-neon [class*="shadow-indigo"] {
+.app-theme-neon .shadow-indigo-500\/30 {
   box-shadow: 0 10px 40px -10px rgba(6, 182, 212, 0.4) !important;
+}
+
+.app-theme-neon .bg-indigo-100 {
+  background-color: rgba(6, 182, 212, 0.1) !important;
+}
+
+.app-theme-neon .hover\:bg-indigo-200:hover {
+  background-color: rgba(6, 182, 212, 0.2) !important;
 }
 
 /* Tinch O'rmon - Tabiat ranglari */
@@ -580,8 +584,6 @@ input[type="time"][lang="en-GB"] {
   --theme-glow: rgba(5, 150, 105, 0.4);
 }
 
-.app-theme-forest [class*="bg-indigo-600"],
-.app-theme-forest [class*="bg-indigo-500"],
 .app-theme-forest .bg-indigo-600,
 .app-theme-forest .bg-indigo-500 {
   background-color: #059669 !important;
@@ -595,8 +597,7 @@ input[type="time"][lang="en-GB"] {
 }
 
 .app-theme-forest .text-indigo-600,
-.app-theme-forest .text-indigo-500,
-.app-theme-forest [class*="text-indigo"] {
+.app-theme-forest .text-indigo-500 {
   color: #059669 !important;
 }
 
@@ -605,9 +606,16 @@ input[type="time"][lang="en-GB"] {
   border-color: #059669 !important;
 }
 
-.app-theme-forest .shadow-indigo-500\/30,
-.app-theme-forest [class*="shadow-indigo"] {
+.app-theme-forest .shadow-indigo-500\/30 {
   box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.4) !important;
+}
+
+.app-theme-forest .bg-indigo-100 {
+  background-color: rgba(5, 150, 105, 0.1) !important;
+}
+
+.app-theme-forest .hover\:bg-indigo-200:hover {
+  background-color: rgba(5, 150, 105, 0.2) !important;
 }
 
 /* Yarim Tun - Dark/Lux Theme */
@@ -617,8 +625,6 @@ input[type="time"][lang="en-GB"] {
   --theme-glow: rgba(0, 0, 0, 0.8);
 }
 
-.app-theme-midnight [class*="bg-indigo-600"],
-.app-theme-midnight [class*="bg-indigo-500"],
 .app-theme-midnight .bg-indigo-600,
 .app-theme-midnight .bg-indigo-500 {
   background-color: #0f172a !important;
@@ -632,8 +638,7 @@ input[type="time"][lang="en-GB"] {
 }
 
 .app-theme-midnight .text-indigo-600,
-.app-theme-midnight .text-indigo-500,
-.app-theme-midnight [class*="text-indigo"] {
+.app-theme-midnight .text-indigo-500 {
   color: #94a3b8 !important;
 }
 
@@ -642,9 +647,16 @@ input[type="time"][lang="en-GB"] {
   border-color: #1e293b !important;
 }
 
-.app-theme-midnight .shadow-indigo-500\/30,
-.app-theme-midnight [class*="shadow-indigo"] {
+.app-theme-midnight .shadow-indigo-500\/30 {
   box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6) !important;
+}
+
+.app-theme-midnight .bg-indigo-100 {
+  background-color: rgba(15, 23, 42, 0.15) !important;
+}
+
+.app-theme-midnight .hover\:bg-indigo-200:hover {
+  background-color: rgba(15, 23, 42, 0.25) !important;
 }
 
 /* ===== Market & Shop Premium UI ===== */

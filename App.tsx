@@ -44,6 +44,8 @@ const Support = lazy(() => import('./components/Support').then(module => ({ defa
 const Settings = lazy(() => import('./components/Settings').then(module => ({ default: module.Settings })));
 const Admin = lazy(() => import('./pages/Admin').then(module => ({ default: module.Admin })));
 const Market = lazy(() => import('./pages/Market').then(module => ({ default: module.Market })));
+const OrgDashboard = lazy(() => import('./pages/OrgDashboard').then(module => ({ default: module.OrgDashboard })));
+const ParentPortal = lazy(() => import('./pages/ParentPortal').then(module => ({ default: module.ParentPortal })));
 
 // Loading component for Suspense fallback
 const LoadingFallback = () => (
@@ -222,6 +224,7 @@ function App() {
               onLogout={handleLogout}
               toggleTheme={toggleTheme}
               isDarkMode={isDarkMode}
+              onNavigate={handleNavigate}
             />
           </Suspense>
         ) : (
@@ -250,6 +253,18 @@ function App() {
               onNavigate={handleNavigate}
             />
           </Suspense>
+        ) : (
+          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
+        );
+      case AppView.ORG_DASHBOARD:
+        return user ? (
+          <Suspense fallback={<LoadingFallback />}><OrgDashboard /></Suspense>
+        ) : (
+          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
+        );
+      case AppView.PARENT_PORTAL:
+        return user ? (
+          <Suspense fallback={<LoadingFallback />}><ParentPortal user={user} onNavigate={handleNavigate} /></Suspense>
         ) : (
           <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
         );

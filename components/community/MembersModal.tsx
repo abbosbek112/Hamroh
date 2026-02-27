@@ -33,7 +33,7 @@ export const MembersModal: React.FC<MembersModalProps> = ({
 
     if (!isOpen) return null;
 
-    const isOwner = selectedGroup.owner_id === currentUser.id;
+    const isOwner = selectedGroup.owner_id === currentUser.id || currentUser.role === 'admin';
 
     return (
         <div
@@ -100,8 +100,8 @@ export const MembersModal: React.FC<MembersModalProps> = ({
                                                     <button
                                                         onClick={() => onToggleBlock(member.id)}
                                                         className={`p-2 rounded-xl transition-all ${isUserBlocked(member.id)
-                                                                ? 'text-red-500 bg-red-50 dark:bg-red-500/10'
-                                                                : 'text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'
+                                                            ? 'text-red-500 bg-red-50 dark:bg-red-500/10'
+                                                            : 'text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'
                                                             }`}
                                                         title={isUserBlocked(member.id) ? t('community.unblock') : t('community.block')}
                                                     >

@@ -6,7 +6,7 @@ import { AppView, User, SystemConfig, NavigationParams } from '../types';
 import {
   Home, Target, Users, Info, Menu, X,
   Moon, Sun, Headphones, LogOut, Settings as SettingsIcon,
-  Shield, ShoppingBag
+  Shield, ShoppingBag, GraduationCap
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -35,17 +35,32 @@ export const Layout: React.FC<LayoutProps> = ({
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [, setSystemConfig] = useState<SystemConfig | null>(null);
+  const [isTeacher, setIsTeacher] = useState(false);
+  const [unseenTasks, setUnseenTasks] = useState(0);
   const { t, language, setLanguage } = useLanguage();
 
   useEffect(() => {
     api.getSystemConfig().then(setSystemConfig);
-  }, []);
+    // Check if user is a teacher in any org
+    if (user) {
+      api.getMyOrganization().then(result => {
+        if (result) {
+          if (result.role === 'teacher') {
+            setIsTeacher(true);
+          } else if (result.role === 'student' && result.org) {
+            api.getUnseenTasksCount(result.org.id).then(setUnseenTasks).catch(() => { });
+          }
+        }
+      }).catch(() => { });
+    }
+  }, [user?.id, currentView]);
 
   const navItems = [
     { view: AppView.HOME, label: t('nav.home'), icon: Home },
     { view: AppView.INTIZOM, label: t('nav.intizom'), icon: Target },
     { view: AppView.COMMUNITY, label: t('nav.maqsaddosh'), icon: Users },
     { view: AppView.MARKET, label: t('nav.market'), icon: ShoppingBag },
+    { view: AppView.ORG_DASHBOARD, label: "O'quv Markaz", icon: GraduationCap },
     { view: AppView.SETTINGS, label: t('nav.settings'), icon: SettingsIcon },
     { view: AppView.SUPPORT, label: t('nav.support'), icon: Headphones },
     { view: AppView.ABOUT, label: t('nav.about'), icon: Info },
@@ -171,7 +186,12 @@ export const Layout: React.FC<LayoutProps> = ({
                 }`}
             >
               <item.icon size={20} strokeWidth={2} className={currentView === item.view ? 'opacity-100' : 'opacity-70 group-hover:opacity-100 transition-opacity flex-shrink-0'} />
-              <span className={`text-sm tracking-wide whitespace-nowrap ${currentView === item.view ? 'opacity-100' : 'opacity-90'}`}>{item.label}</span>
+              <span className={`text-sm tracking-wide whitespace-nowrap flex-1 ${currentView === item.view ? 'opacity-100' : 'opacity-90'}`}>{item.label}</span>
+              {item.view === AppView.ORG_DASHBOARD && unseenTasks > 0 && (
+                <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-2 ring-white/50 dark:ring-black">
+                  {unseenTasks > 9 ? '9+' : unseenTasks}
+                </div>
+              )}
             </button>
           ))}
         </nav>

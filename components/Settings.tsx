@@ -3,9 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   User as UserIcon, Camera, Trash2, LogOut, Loader2,
   Check, X, Shield, Star, Lock, Copy, Moon, Sun, Globe, Calendar, Mail,
-  Palette, Sparkles
+  Palette, Sparkles, GraduationCap, Users, UserPlus, ChevronDown
 } from 'lucide-react';
-import { User } from '../types';
+import { User, ParentStudentLink, TeacherTask } from '../types';
 import { api } from '../services/api';
 import { ACHIEVEMENTS_LIST, STORE_ITEMS } from '../constants';
 import { compressImage } from '../utils/helpers';
@@ -15,18 +15,19 @@ import { logger } from '../utils/logger';
 import { notificationService } from '../utils/notifications';
 import { ShareableAchievement } from './ShareableAchievement';
 import { Bell, Share2 } from 'lucide-react';
-import { Badge } from '../types';
+import { Badge, AppView } from '../types';
 
 const GlobalConfig = {
   maxImageSize: 5 * 1024 * 1024, // 5MB
 };
 
-interface SettingsProps {
+export interface SettingsProps {
   user: User;
-  onUpdateUser: (user: User) => void;
+  onUpdateUser: (updatedUser: User) => void;
   onLogout: () => void;
   toggleTheme: () => void;
   isDarkMode: boolean;
+  onNavigate: (view: AppView) => void;
 }
 
 export const Settings: React.FC<SettingsProps> = ({
@@ -34,7 +35,8 @@ export const Settings: React.FC<SettingsProps> = ({
   onUpdateUser,
   onLogout,
   toggleTheme,
-  isDarkMode
+  isDarkMode,
+  onNavigate
 }) => {
   const { t, setLanguage } = useLanguage();
   const { notify } = useToast();
@@ -42,6 +44,13 @@ export const Settings: React.FC<SettingsProps> = ({
   const [formData, setFormData] = useState<User>(user);
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Organization state
+  const [inviteCode, setInviteCode] = useState('');
+  const [orgName, setOrgName] = useState<string | null>(null);
+  const [orgRole, setOrgRole] = useState<string | null>(null);
+  const [isJoiningOrg, setIsJoiningOrg] = useState(false);
+  const [orgLoading, setOrgLoading] = useState(true);
 
   const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle');
   const [usernameError, setUsernameError] = useState('');
@@ -60,6 +69,49 @@ export const Settings: React.FC<SettingsProps> = ({
     });
     setCompleteness(Math.round((filled / fields.length) * 100));
   }, [formData]);
+
+  // Load org membership
+  useEffect(() => {
+    api.getMyOrganization().then(result => {
+      if (result) {
+        setOrgName(result.org.name);
+        setOrgRole(result.role);
+      }
+    }).catch(() => { }).finally(() => setOrgLoading(false));
+  }, []);
+
+
+
+  const handleJoinOrg = async () => {
+    if (!inviteCode.trim()) return;
+    setIsJoiningOrg(true);
+    try {
+      const org = await api.joinOrganization(inviteCode);
+      setOrgName(org.name);
+      setOrgRole('member');
+      setInviteCode('');
+      notify('Tashkilotga muvaffaqiyatli qo\'shildingiz!', 'success');
+    } catch (err: any) {
+      notify(err.message || 'Xatolik yuz berdi', 'error');
+    } finally {
+      setIsJoiningOrg(false);
+    }
+  };
+
+  const handleLeaveOrg = async () => {
+    if (!confirm('Tashkilotdan chiqmoqchimisiz?')) return;
+    try {
+      const result = await api.getMyOrganization();
+      if (result) {
+        await api.leaveOrganization(result.org.id);
+        setOrgName(null);
+        setOrgRole(null);
+        notify('Tashkilotdan chiqdingiz', 'info');
+      }
+    } catch (err: any) {
+      notify(err.message || 'Xatolik', 'error');
+    }
+  };
 
   useEffect(() => {
     if (formData.username === user.username) {
@@ -299,6 +351,22 @@ export const Settings: React.FC<SettingsProps> = ({
               <p className="text-xs text-slate-400 font-semibold mt-2 py-1 px-3 bg-slate-100 dark:bg-white/5 rounded-full inline-block">
                 {t('settings.profile_completeness').replace('%', completeness.toString())}
               </p>
+
+              <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-dashed border-slate-200 dark:border-white/10">
+                <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Mening ID kodim (Ota-ona uchun)</div>
+                <div className="flex items-center gap-2">
+                  <code className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400 flex-1 truncate">{user.id}</code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(user.id);
+                      notify('ID nusxalandi!', 'success');
+                    }}
+                    className="p-1.5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-indigo-500 transition-colors"
+                  >
+                    <Copy size={14} />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -306,7 +374,26 @@ export const Settings: React.FC<SettingsProps> = ({
         {/* --- RIGHT COLUMN: SETTINGS FORM --- */}
         <div className="lg:col-span-2 space-y-8">
 
-          <section className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 shadow-sm">
+          {/* Ota-onalar Uchun Maxsus Banner */}
+          <button
+            onClick={() => onNavigate(AppView.PARENT_PORTAL)}
+            className="w-full relative overflow-hidden bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 text-white rounded-[2.5rem] p-8 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all group border-0 text-left block"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 transition-transform group-hover:scale-110 duration-700"></div>
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <h3 className="text-xl sm:text-2xl font-black mb-1.5 flex items-center gap-2">
+                  <Shield size={28} className="text-white fill-white/20" /> Ota-ona Paneli
+                </h3>
+                <p className="text-white/80 font-medium text-sm sm:text-base">Farzandingizning natijalari va kundalik hayoti</p>
+              </div>
+              <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm group-hover:bg-white/30 transition-colors hidden sm:block">
+                <ChevronDown size={24} className="transform -rotate-90" />
+              </div>
+            </div>
+          </button>
+
+          <section className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-8 shadow-sm">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
               <Sun size={20} className="text-orange-500" /> {t('settings.preferences') || 'Afzalliklar'}
             </h3>
@@ -414,6 +501,57 @@ export const Settings: React.FC<SettingsProps> = ({
                 {notificationService.getPermission() === 'granted' ? `${t('common.active')} ✅` : t('common.enable')}
               </button>
             </div>
+          </section>
+
+          {/* O'quv Markaz */}
+          <section className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 shadow-sm">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+              <GraduationCap size={20} className="text-violet-500" /> O'quv Markaz
+            </h3>
+            {orgLoading ? (
+              <div className="flex items-center gap-2 text-sm text-slate-400">
+                <Loader2 size={16} className="animate-spin" /> Tekshirilmoqda...
+              </div>
+            ) : orgName ? (
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-slate-800 dark:text-white">{orgName}</p>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Rol: {orgRole === 'teacher' ? 'O\'qituvchi' : 'O\'quvchi'}
+                  </p>
+                </div>
+                {orgRole !== 'teacher' && (
+                  <button onClick={handleLeaveOrg}
+                    className="px-3 py-2 text-xs font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors">
+                    Chiqish
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  O'quv markazingiz invite kodini kiriting
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={inviteCode}
+                    onChange={e => setInviteCode(e.target.value.toUpperCase())}
+                    placeholder="masalan: ABCD-EF12"
+                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl font-mono font-bold text-sm tracking-wider text-slate-900 dark:text-white focus:ring-2 focus:ring-violet-500 outline-none"
+                    onKeyDown={e => e.key === 'Enter' && handleJoinOrg()}
+                  />
+                  <button
+                    onClick={handleJoinOrg}
+                    disabled={isJoiningOrg || !inviteCode.trim()}
+                    className="px-5 py-3 bg-violet-600 text-white rounded-xl font-bold text-sm hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                  >
+                    {isJoiningOrg ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+                    Qo'shilish
+                  </button>
+                </div>
+              </div>
+            )}
           </section>
 
           <section className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 shadow-sm space-y-6">
@@ -581,6 +719,8 @@ export const Settings: React.FC<SettingsProps> = ({
             />
           )}
 
+
+
           <div className="mt-8 mb-6 p-4 rounded-2xl border border-gray-200 dark:border-white/10 flex justify-between items-center bg-white dark:bg-white/5 shadow-sm">
             <button
               onClick={onLogout}
@@ -599,6 +739,7 @@ export const Settings: React.FC<SettingsProps> = ({
 
         </div>
       </div>
+
     </div>
   );
 };

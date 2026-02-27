@@ -9,6 +9,8 @@ export enum AppView {
   SETTINGS = 'SETTINGS',
   ADMIN = 'ADMIN',
   MARKET = 'MARKET',
+  ORG_DASHBOARD = 'ORG_DASHBOARD',
+  PARENT_PORTAL = 'PARENT_PORTAL',
 }
 
 export interface Badge {
@@ -342,4 +344,88 @@ export interface RoutineStack {
   lastCompletedDate: string; // YYYY-MM-DD
 }
 
+// --- ORGANIZATION (O'QUV MARKAZ) TYPES ---
 
+export type OrgRole = 'teacher' | 'student' | 'parent';
+
+export interface Organization {
+  id: string;
+  name: string;
+  description?: string;
+  logoUrl?: string;
+  inviteCode: string;
+  ownerId: string;
+  subscriptionPlan: 'free' | 'starter' | 'standard';
+  maxStudents: number;
+  memberCount?: number;
+  createdAt?: string;
+}
+
+export interface OrganizationMember {
+  id: string;
+  orgId: string;
+  userId: string;
+  role: OrgRole;
+  classId?: string;
+  joinedAt?: string;
+  // Joined user data
+  userName?: string;
+  userAvatar?: string;
+  userXp?: number;
+  userLevel?: number;
+  userStreak?: number;
+  userFocusMinutes?: number;
+  userLastActive?: number;
+}
+
+export interface OrgClass {
+  id: string;
+  orgId: string;
+  name: string;
+  teacherId?: string;
+  teacherName?: string;
+  studentCount?: number;
+  createdAt?: string;
+}
+
+export interface StudentAnalytics {
+  userId: string;
+  name: string;
+  avatar: string;
+  xp: number;
+  level: number;
+  streak: number;
+  focusMinutes: number;
+  todosCompleted: number;
+  todosTotal: number;
+  routinesCompleted: number;
+  routinesTotal: number;
+  lastActive: number;
+  riskLevel: 'safe' | 'warning' | 'danger';
+}
+
+export interface TeacherTask {
+  id: string;
+  orgId: string;
+  assignedBy: string;
+  assignedTo: string;
+  assignedToName?: string;
+  assignedByName?: string;
+  classId?: string;
+  title: string;
+  description?: string;
+  deadline?: string;
+  completed: boolean;
+  completedAt?: string;
+  createdAt: string;
+}
+
+export interface ParentStudentLink {
+  id: string;
+  parentId: string;
+  studentId: string;
+  orgId: string;
+  studentName?: string;
+  studentAvatar?: string;
+  createdAt: string;
+}

@@ -87,7 +87,9 @@ export const GroupChat: React.FC<GroupChatProps> = ({
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const isOwner = selectedGroup.owner_id === currentUser.id;
-    const canPinMessages = isOwner || currentUser.role === 'admin';
+    const isAdmin = currentUser.role === 'admin';
+    const canManageGroup = isOwner || isAdmin;
+    const canPinMessages = canManageGroup;
 
     const filteredMessages = messages.filter(msg =>
         !messageSearchQuery || msg.text.toLowerCase().includes(messageSearchQuery.toLowerCase())
@@ -122,7 +124,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                             <span className="md:hidden">{groupMembers.length}</span>
                         </button>
 
-                        {isOwner && (
+                        {canManageGroup && (
                             <div className="flex items-center gap-1.5">
                                 <button
                                     onClick={onEditGroup}
@@ -143,15 +145,6 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                             </div>
                         )}
 
-                        <button
-                            onClick={onLeaveGroup}
-                            aria-label={t('community.leave_group')}
-                            className="p-1.5 sm:px-3 sm:py-1.5 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-xl text-xs font-bold hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors flex items-center gap-1"
-                            title={t('community.leave_group')}
-                        >
-                            <LogOut size={14} />
-                            <span className="hidden sm:inline">{t('community.leave_group_short') || 'Chiqish'}</span>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -238,7 +231,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                                     )}
                                     <div className="relative group flex gap-2 items-start z-0">
                                         <div
-                                            className={`px-4 py-2.5 rounded-2xl max-w-[75%] relative z-0 ${isOwn
+                                            className={`px-4 py-2.5 rounded-2xl relative z-0 ${isOwn
                                                 ? 'bg-indigo-600 text-white'
                                                 : 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white'
                                                 }`}
@@ -252,12 +245,12 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                                                         }
                                                     }}
                                                     className={`mb-2 px-3 py-1.5 rounded-lg text-xs border-l-2 cursor-pointer hover:opacity-80 transition-opacity text-left w-full ${isOwn
-                                                        ? 'bg-indigo-500/30 border-indigo-300 text-indigo-100 hover:bg-indigo-500/40'
+                                                        ? 'bg-white/20 border-white/50 text-white hover:bg-white/30'
                                                         : 'bg-slate-200/50 dark:bg-white/5 border-slate-300 dark:border-white/20 text-slate-600 dark:text-slate-400 hover:bg-slate-300/50 dark:hover:bg-white/10'
                                                         }`}
                                                 >
-                                                    <div className="font-bold">{msg.replyTo.userName}</div>
-                                                    <div className="truncate">{msg.replyTo.text}</div>
+                                                    <div className={`font-bold ${isOwn ? 'text-white/90' : 'text-slate-700 dark:text-slate-300'}`}>{msg.replyTo.userName}</div>
+                                                    <div className={`truncate ${isOwn ? 'text-white/70' : 'text-slate-500 dark:text-slate-400'}`}>{msg.replyTo.text}</div>
                                                 </button>
                                             )}
                                             <p className="text-sm whitespace-pre-wrap break-words">{msg.text}</p>
@@ -318,7 +311,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                                                                     {t('community.edit')}
                                                                 </button>
                                                             )}
-                                                            {(msg.userId === currentUser.id || isOwner) && (
+                                                            {(msg.userId === currentUser.id || canManageGroup) && (
                                                                 <button
                                                                     onClick={() => {
                                                                         onDeleteMessage(msg.id);

@@ -7,6 +7,9 @@ interface HomeBannerProps {
 }
 
 export const HomeBanner: React.FC<HomeBannerProps> = ({ identity }) => {
+    // Don't show banner if manifest is empty
+    if (!identity.manifest?.trim()) return null;
+
     return (
         <div className="relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-gradient-to-r from-violet-600 to-indigo-600 p-5 sm:p-8 text-white shadow-2xl shadow-indigo-500/20 mb-8 animate-fade-in-up">
             <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
@@ -15,19 +18,21 @@ export const HomeBanner: React.FC<HomeBannerProps> = ({ identity }) => {
             <div className="relative z-10">
                 <div className="flex items-start justify-between gap-4">
                     <div>
-                        <div className="flex items-center gap-2 text-indigo-100/80 text-[10px] sm:text-xs font-black uppercase tracking-widest mb-2">
+                        <div className="flex items-center gap-2 text-white/70 text-[10px] sm:text-xs font-black uppercase tracking-widest mb-2">
                             <Target size={14} /> 90-Kunlik Transformatsiya
                         </div>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-black leading-tight mb-2">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-black leading-tight mb-2 text-white drop-shadow-md">
                             "{identity.manifest}"
                         </h2>
-                        <div className="flex flex-wrap gap-2 mt-4">
-                            {identity.values.map((val, idx) => (
-                                <span key={idx} className="px-3 py-1 bg-white/20 rounded-lg text-xs font-bold backdrop-blur-md border border-white/10">
-                                    #{val}
-                                </span>
-                            ))}
-                        </div>
+                        {identity.values.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-4">
+                                {identity.values.map((val, idx) => (
+                                    <span key={idx} className="px-3 py-1 bg-white/20 rounded-lg text-xs font-bold backdrop-blur-md border border-white/10">
+                                        #{val}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
                     </div>
                     <div className="hidden sm:block">
                         <Sparkles size={48} className="text-amber-300 opacity-80" />

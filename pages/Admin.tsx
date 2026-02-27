@@ -7,11 +7,11 @@ import {
   PieChart as PieChartIcon, CreditCard, Wallet, ArrowUpRight,
   ArrowDownRight, Target, Activity, Calendar, Smartphone, Monitor,
   Image as ImageIcon, Link, Palette, Play, Info, AlertCircle, Sparkles, Check,
-  Handshake, FileText, Briefcase, Plus, X, Clock, Settings, Crown, Coins, Upload,
+  Handshake, FileText, Briefcase, Plus, X, Clock, Settings, Crown, Coins, Upload, UserPlus,
   Cpu, Server, Database, MessageSquare, Trash2, UserCheck, Lock, Eye, Filter, Zap,
   LogOut, Phone, Star, Lock as LockIcon, Unlock, PlusCircle, FileMinus, ToggleLeft, ToggleRight, Infinity,
   Save, Sliders, ExternalLink, Timer, Bot, Edit2, Wand2, Smartphone as PhoneIcon, Layers, LayoutTemplate, Copy, Tablet,
-  Headphones, ChevronRight, Loader2, ShoppingBag
+  Headphones, ChevronRight, Loader2, ShoppingBag, GraduationCap
 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -19,7 +19,7 @@ import {
 } from 'recharts';
 import { ACHIEVEMENTS_LIST, TRANSLATIONS } from '../constants';
 import { api } from '../services/api';
-import { SystemConfig, Deal, ActiveAd, AdminUser, Badge, AdminGroup, SpamLog, Expense, SupportTicket, User, StoreItem } from '../types';
+import { SystemConfig, Deal, ActiveAd, AdminUser, Badge, AdminGroup, SpamLog, Expense, SupportTicket, User, StoreItem, Organization, OrganizationMember } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { logger } from '../utils/logger';
 import { validateMessage, sanitizeInput, checkSpamAndProfanity, MAX_LENGTHS } from '../utils/validation';
@@ -42,7 +42,7 @@ const calculateDaysLeft = (endDate: string) => {
   return days > 0 ? days : 0;
 };
 
-type AdminTab = 'OVERVIEW' | 'ANALYTICS' | 'USERS' | 'GROUPS' | 'MODERATION' | 'MARKETING' | 'BADGES' | 'DEALS' | 'SUPPORT' | 'MARKET';
+type AdminTab = 'OVERVIEW' | 'ANALYTICS' | 'USERS' | 'GROUPS' | 'MODERATION' | 'MARKETING' | 'BADGES' | 'DEALS' | 'SUPPORT' | 'MARKET' | 'EDUCATION';
 type MarketingSubTab = 'ACTIVE_ADS' | 'CREATE_AD' | 'CREATE_NOTICE';
 
 // --- TOAST & CONFIRM COMPONENTS ---
@@ -463,6 +463,14 @@ export const Admin: React.FC = () => {
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
   const [supportReply, setSupportReply] = useState('');
   const [isSendingSupport, setIsSendingSupport] = useState(false);
+
+  // --- EDUCATION STATE ---
+  const [orgsList, setOrgsList] = useState<Organization[]>([]);
+  const [orgCreateForm, setOrgCreateForm] = useState({ name: '', description: '' });
+  const [isCreatingOrg, setIsCreatingOrg] = useState(false);
+  const [teacherSearch, setTeacherSearch] = useState('');
+  const [teacherSearchResults, setTeacherSearchResults] = useState<AdminUser[]>([]);
+  const [selectedOrgForTeacher, setSelectedOrgForTeacher] = useState<string | null>(null);
 
   // SECURITY: Refs to prevent infinite loops in real-time polling
   const supportTicketsRef = useRef<SupportTicket[]>([]);
@@ -2239,6 +2247,202 @@ export const Admin: React.FC = () => {
     </div>
   );
 
+  // --- EDUCATION: O'QUV MARKAZ BOSHQARUVI ---
+  const handleCreateOrg = async () => {
+    if (!orgCreateForm.name.trim()) return notify("Markaz nomini kiriting", 'error');
+    setIsCreatingOrg(true);
+    try {
+      const newOrg = await api.createOrganization(orgCreateForm.name, orgCreateForm.description);
+      setOrgsList(prev => [...prev, newOrg]);
+      setOrgCreateForm({ name: '', description: '' });
+      notify(`"${newOrg.name}" markazi yaratildi`, 'success');
+    } catch (err: any) {
+      notify(err.message || 'Xatolik', 'error');
+    } finally {
+      setIsCreatingOrg(false);
+    }
+  };
+
+  const handleTeacherSearch = () => {
+    if (!teacherSearch.trim()) return;
+    const q = teacherSearch.toLowerCase();
+    const results = usersList.filter(u =>
+      u.name.toLowerCase().includes(q) || u.username.toLowerCase().includes(q)
+    );
+    setTeacherSearchResults(results);
+  };
+
+  const handleAssignTeacher = async (userId: string, orgId: string) => {
+    try {
+      // Add user as teacher member of the org
+      await api.addOrgMember(orgId, userId, 'teacher');
+      notify('O\'qituvchi tayinlandi!', 'success');
+      setSelectedOrgForTeacher(null);
+      setTeacherSearch('');
+      setTeacherSearchResults([]);
+    } catch (err: any) {
+      notify(err.message || 'Xatolik', 'error');
+    }
+  };
+
+  // Load orgs when Education tab is active
+  useEffect(() => {
+    if (activeTab === 'EDUCATION') {
+      api.getAllOrganizations?.().then(orgs => {
+        if (orgs) setOrgsList(orgs);
+      }).catch(() => { });
+    }
+  }, [activeTab]);
+
+  const renderEducation = () => (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/25">
+          <GraduationCap size={28} className="text-white" />
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">O'quv Markaz Boshqaruvi</h2>
+          <p className="text-sm text-slate-500">Markazlar yaratish va o'qituvchilarni tayinlash</p>
+        </div>
+      </div>
+
+      {/* Create Org */}
+      <div className="bg-white dark:bg-white/5 rounded-2xl p-6 border border-slate-200/60 dark:border-white/10">
+        <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+          <Plus size={20} className="text-indigo-500" /> Yangi Markaz Yaratish
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input
+            type="text"
+            value={orgCreateForm.name}
+            onChange={e => setOrgCreateForm(prev => ({ ...prev, name: e.target.value }))}
+            placeholder="Markaz nomi (masalan: IT Academy)"
+            className="px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          />
+          <input
+            type="text"
+            value={orgCreateForm.description}
+            onChange={e => setOrgCreateForm(prev => ({ ...prev, description: e.target.value }))}
+            placeholder="Tavsif (ixtiyoriy)"
+            className="px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          />
+          <button
+            onClick={handleCreateOrg}
+            disabled={isCreatingOrg}
+            className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {isCreatingOrg ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
+            Yaratish
+          </button>
+        </div>
+      </div>
+
+      {/* Orgs List */}
+      <div className="space-y-4">
+        <h3 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+          <LayoutDashboard size={20} className="text-violet-500" />
+          Barcha Markazlar ({orgsList.length})
+        </h3>
+
+        {orgsList.length === 0 ? (
+          <div className="text-center py-16 text-slate-400">
+            <GraduationCap size={48} className="mx-auto mb-3 opacity-30" />
+            <p className="font-medium">Hozircha markazlar yo'q</p>
+            <p className="text-xs mt-1">Yuqoridagi formadan yangi markaz yarating</p>
+          </div>
+        ) : (
+          <div className="grid gap-4">
+            {orgsList.map(org => (
+              <div key={org.id} className="bg-white dark:bg-white/5 rounded-2xl p-5 border border-slate-200/60 dark:border-white/10 hover:shadow-lg transition-all">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-violet-500 to-indigo-500 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+                    {org.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h4 className="font-bold text-slate-900 dark:text-white truncate">{org.name}</h4>
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400">
+                        {org.subscriptionPlan}
+                      </span>
+                    </div>
+                    {org.description && (
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mb-2 truncate">{org.description}</p>
+                    )}
+                    <div className="flex flex-wrap gap-3 text-xs text-slate-400">
+                      <span className="flex items-center gap-1"><Users size={12} /> {org.maxStudents} max o'quvchi</span>
+                      <span className="flex items-center gap-1 font-mono bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded-lg">
+                        🔑 {org.inviteCode}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Assign Teacher Button */}
+                  <button
+                    onClick={() => setSelectedOrgForTeacher(selectedOrgForTeacher === org.id ? null : org.id)}
+                    className={`px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${selectedOrgForTeacher === org.id
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 hover:bg-indigo-100 dark:hover:bg-indigo-500/20'
+                      }`}
+                  >
+                    <UserPlus size={14} /> O'qituvchi tayinlash
+                  </button>
+                </div>
+
+                {/* Teacher Assignment Panel */}
+                {selectedOrgForTeacher === org.id && (
+                  <div className="mt-4 pt-4 border-t border-slate-200 dark:border-white/10">
+                    <div className="flex gap-3 mb-3">
+                      <div className="relative flex-1">
+                        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <input
+                          type="text"
+                          value={teacherSearch}
+                          onChange={e => setTeacherSearch(e.target.value)}
+                          onKeyDown={e => e.key === 'Enter' && handleTeacherSearch()}
+                          placeholder="Username yoki ism bilan qidirish..."
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                        />
+                      </div>
+                      <button
+                        onClick={handleTeacherSearch}
+                        className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700"
+                      >
+                        Qidirish
+                      </button>
+                    </div>
+
+                    {teacherSearchResults.length > 0 && (
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {teacherSearchResults.map(u => (
+                          <div key={u.id} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-white/5 rounded-xl">
+                            <div className="flex items-center gap-3">
+                              <img src={u.avatar} alt="" className="w-9 h-9 rounded-full object-cover" />
+                              <div>
+                                <div className="font-medium text-sm text-slate-800 dark:text-white">{u.name}</div>
+                                <div className="text-xs text-slate-400">@{u.username}</div>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => handleAssignTeacher(u.id, org.id)}
+                              className="px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-xs font-bold hover:bg-emerald-600 transition-colors"
+                            >
+                              Tayinlash
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen pb-20">
       {/* Top Navigation Bar */}
@@ -2255,6 +2459,7 @@ export const Admin: React.FC = () => {
               { id: 'DEALS', label: 'Deals', icon: Handshake },
               { id: 'MARKETING', label: 'Marketing', icon: Megaphone },
               { id: 'BADGES', label: 'Badges', icon: Crown },
+              { id: 'EDUCATION', label: "O'quv Markaz", icon: GraduationCap },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -2284,6 +2489,7 @@ export const Admin: React.FC = () => {
         {activeTab === 'BADGES' && renderBadges()}
         {activeTab === 'MARKET' && renderMarket()}
         {activeTab === 'SUPPORT' && renderSupport()}
+        {activeTab === 'EDUCATION' && renderEducation()}
       </div>
 
       {/* Modals & Notifications */}

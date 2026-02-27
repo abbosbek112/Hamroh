@@ -378,14 +378,21 @@
     on public.messages for select 
     using (
       auth.uid() is not null and (
+        -- Platform admin can view all
+        exists (
+          select 1 from public.users 
+          where id = auth.uid() and role = 'admin'
+        )
+        or
         (group_id is not null and (
           exists (
             select 1 from public.groups 
             where groups.id = group_id 
             and (
-              (member_ids::jsonb @> jsonb_build_array(auth.uid()::text))
+              owner_id = auth.uid()
+              or (member_ids::jsonb @> jsonb_build_array(auth.uid()::text))
               or (member_ids::jsonb @> to_jsonb(auth.uid())::jsonb)
-              or owner_id = auth.uid()
+              or (member_ids::text like '%' || auth.uid()::text || '%')
             )
           )
         )) or
@@ -401,18 +408,27 @@
       auth.uid() is not null 
       and auth.uid() = sender_id
       and (
+        -- Platform admin can send to any group
+        exists (
+          select 1 from public.users 
+          where id = auth.uid() and role = 'admin'
+        )
+        or
+        -- Group message: user must be member or owner
         (group_id is not null and (
           exists (
             select 1 from public.groups 
             where groups.id = group_id 
             and (
-              (member_ids::jsonb @> jsonb_build_array(auth.uid()::text))
+              owner_id = auth.uid()
+              or (member_ids::jsonb @> jsonb_build_array(auth.uid()::text))
               or (member_ids::jsonb @> to_jsonb(auth.uid())::jsonb)
-              or owner_id = auth.uid()
+              or (member_ids::text like '%' || auth.uid()::text || '%')
             )
           )
         ))
         or
+        -- Direct message
         (receiver_id is not null)
       )
     );
@@ -1477,3 +1493,463 @@ GRANT EXECUTE ON FUNCTION public.award_xp_routine() TO authenticated;
 
 -- Reload schema cache
 NOTIFY pgrst, 'reload config';
+
+
+-- =========================================================================================
+-- =========================================================================================
+-- SECTION 18: HAMROH FOR EDUCATION — O'QUV MARKAZ TIZIMI
+-- =========================================================================================
+-- =========================================================================================
+-- TARTIB: Avval barcha jadvallar, keyin barcha RLS policies
+
+-- =========================================================================================
+-- 18.1: JADVALLAR (BARCHASI AVVAL YARATILADI)
+-- =========================================================================================
+
+-- 1) Organizations
+CREATE TABLE IF NOT EXISTS public.organizations (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  name text NOT NULL,
+  description text,
+  logo_url text,
+  invite_code text UNIQUE NOT NULL,
+  owner_id uuid REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+  subscription_plan text DEFAULT 'free',
+  max_students int DEFAULT 30,
+  created_at timestamptz DEFAULT now()
+);
+ALTER TABLE public.organizations ENABLE ROW LEVEL SECURITY;
+
+-- 2) Classes
+CREATE TABLE IF NOT EXISTS public.classes (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  org_id uuid REFERENCES public.organizations(id) ON DELETE CASCADE NOT NULL,
+  name text NOT NULL,
+  teacher_id uuid REFERENCES public.users(id) ON DELETE SET NULL,
+  created_at timestamptz DEFAULT now()
+);
+ALTER TABLE public.classes ENABLE ROW LEVEL SECURITY;
+
+-- 3) Organization Members
+CREATE TABLE IF NOT EXISTS public.organization_members (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  org_id uuid REFERENCES public.organizations(id) ON DELETE CASCADE NOT NULL,
+  user_id uuid REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+  role text DEFAULT 'student',
+  class_id uuid REFERENCES public.classes(id) ON DELETE SET NULL,
+  joined_at timestamptz DEFAULT now(),
+  UNIQUE(org_id, user_id)
+);
+ALTER TABLE public.organization_members ENABLE ROW LEVEL SECURITY;
+
+-- =========================================================================================
+-- 18.2: INVITE KOD FUNKSIYASI
+-- =========================================================================================
+CREATE OR REPLACE FUNCTION public.generate_invite_code()
+RETURNS text AS $$
+DECLARE
+  v_code text;
+  v_exists boolean;
+BEGIN
+  LOOP
+    v_code := upper(substr(md5(random()::text), 1, 4) || '-' || substr(md5(random()::text), 1, 4));
+    SELECT EXISTS(SELECT 1 FROM public.organizations WHERE invite_code = v_code) INTO v_exists;
+    IF NOT v_exists THEN
+      RETURN v_code;
+    END IF;
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+-- =========================================================================================
+-- 18.3: RLS — ORGANIZATIONS
+-- =========================================================================================
+DROP POLICY IF EXISTS "Anyone can view org by invite code" ON public.organizations;
+CREATE POLICY "Anyone can view org by invite code"
+  ON public.organizations FOR SELECT
+  USING (auth.uid() IS NOT NULL);
+
+DROP POLICY IF EXISTS "Authenticated users can create orgs" ON public.organizations;
+CREATE POLICY "Authenticated users can create orgs"
+  ON public.organizations FOR INSERT
+  WITH CHECK (auth.uid() IS NOT NULL AND auth.uid() = owner_id);
+
+DROP POLICY IF EXISTS "Org owners can update their org" ON public.organizations;
+CREATE POLICY "Org owners can update their org"
+  ON public.organizations FOR UPDATE
+  USING (auth.uid() = owner_id)
+  WITH CHECK (auth.uid() = owner_id);
+
+DROP POLICY IF EXISTS "Org owners can delete their org" ON public.organizations;
+CREATE POLICY "Org owners can delete their org"
+  ON public.organizations FOR DELETE
+  USING (auth.uid() = owner_id);
+
+-- =========================================================================================
+-- 18.4:-- Helper function: RLS ichida recursionsiz membership tekshirish
+-- SECURITY DEFINER RLS ni bypass qiladi — shu sababli recursion bo'lmaydi
+-- =========================================================================================
+CREATE OR REPLACE FUNCTION public.is_org_member(p_org_id uuid, p_user_id uuid)
+RETURNS boolean
+LANGUAGE sql SECURITY DEFINER SET search_path = public AS $$
+  SELECT EXISTS(
+    SELECT 1 FROM public.organization_members
+    WHERE org_id = p_org_id AND user_id = p_user_id
+  ) OR EXISTS(
+    SELECT 1 FROM public.organizations
+    WHERE id = p_org_id AND owner_id = p_user_id
+  );
+$$;
+
+GRANT EXECUTE ON FUNCTION public.is_org_member(uuid, uuid) TO authenticated;
+
+-- =========================================================================================
+-- Helper function 2: Check if user is a teacher or owner (bypassing RLS)
+-- =========================================================================================
+CREATE OR REPLACE FUNCTION public.is_org_teacher_or_owner(p_org_id uuid, p_user_id uuid)
+RETURNS boolean
+LANGUAGE sql SECURITY DEFINER SET search_path = public AS $$
+  SELECT EXISTS(
+    SELECT 1 FROM public.organization_members
+    WHERE org_id = p_org_id AND user_id = p_user_id AND role = 'teacher'
+  ) OR EXISTS(
+    SELECT 1 FROM public.organizations
+    WHERE id = p_org_id AND owner_id = p_user_id
+  );
+$$;
+
+GRANT EXECUTE ON FUNCTION public.is_org_teacher_or_owner(uuid, uuid) TO authenticated;
+
+-- RLS Policies for organization_members
+-- =========================================================================================
+DROP POLICY IF EXISTS "Org members can view other members" ON public.organization_members;
+CREATE POLICY "Org members can view other members"
+  ON public.organization_members FOR SELECT
+  USING (
+    -- O'z recordini ko'rish
+    auth.uid() = user_id
+    OR
+    -- Platform admin
+    EXISTS (
+      SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'admin'
+    )
+    OR
+    -- Org a'zosi yoki owner (SECURITY DEFINER orqali — recursionsiz)
+    public.is_org_member(org_id, auth.uid())
+  );
+
+DROP POLICY IF EXISTS "Users can join orgs" ON public.organization_members;
+CREATE POLICY "Users can join orgs"
+  ON public.organization_members FOR INSERT
+  WITH CHECK (
+    -- Foydalanuvchi o'zi qo'shiladi
+    (auth.uid() = user_id AND EXISTS (
+      SELECT 1 FROM public.organizations
+      WHERE id = organization_members.org_id
+    ))
+    OR
+    -- Platform admin har kimni qo'sha oladi
+    EXISTS (
+      SELECT 1 FROM public.users
+      WHERE id = auth.uid() AND role = 'admin'
+    )
+    OR
+    -- Org owner o'z markaziga qo'sha oladi
+    EXISTS (
+      SELECT 1 FROM public.organizations
+      WHERE id = organization_members.org_id AND owner_id = auth.uid()
+    )
+  );
+
+DROP POLICY IF EXISTS "Org admins can update members" ON public.organization_members;
+CREATE POLICY "Org admins can update members"
+  ON public.organization_members FOR UPDATE
+  USING (
+    public.is_org_teacher_or_owner(org_id, auth.uid())
+  );
+
+DROP POLICY IF EXISTS "Org admins can remove members" ON public.organization_members;
+CREATE POLICY "Org admins can remove members"
+  ON public.organization_members FOR DELETE
+  USING (
+    public.is_org_teacher_or_owner(org_id, auth.uid())
+    OR
+    auth.uid() = user_id
+  );
+
+-- =========================================================================================
+-- 18.5: RLS — CLASSES (organization_members endi mavjud!)
+-- =========================================================================================
+DROP POLICY IF EXISTS "Org members can view classes" ON public.classes;
+CREATE POLICY "Org members can view classes"
+  ON public.classes FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.organization_members
+      WHERE org_id = classes.org_id AND user_id = auth.uid()
+    )
+    OR
+    EXISTS (
+      SELECT 1 FROM public.organizations
+      WHERE id = classes.org_id AND owner_id = auth.uid()
+    )
+  );
+
+DROP POLICY IF EXISTS "Org admins can manage classes" ON public.classes;
+CREATE POLICY "Org admins can manage classes"
+  ON public.classes FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.organizations
+      WHERE id = classes.org_id AND owner_id = auth.uid()
+    )
+    OR
+    EXISTS (
+      SELECT 1 FROM public.organization_members
+      WHERE org_id = classes.org_id AND user_id = auth.uid() AND role = 'teacher'
+    )
+  );
+
+-- =========================================================================================
+-- 18.6: INDEXES
+-- =========================================================================================
+CREATE INDEX IF NOT EXISTS idx_organizations_owner_id ON public.organizations(owner_id);
+CREATE INDEX IF NOT EXISTS idx_organizations_invite_code ON public.organizations(invite_code);
+CREATE INDEX IF NOT EXISTS idx_org_members_org_id ON public.organization_members(org_id);
+CREATE INDEX IF NOT EXISTS idx_org_members_user_id ON public.organization_members(user_id);
+CREATE INDEX IF NOT EXISTS idx_org_members_role ON public.organization_members(role);
+CREATE INDEX IF NOT EXISTS idx_classes_org_id ON public.classes(org_id);
+CREATE INDEX IF NOT EXISTS idx_classes_teacher_id ON public.classes(teacher_id);
+
+-- =========================================================================================
+-- 18.7: RPC — O'quvchi Analitikasi
+-- =========================================================================================
+CREATE OR REPLACE FUNCTION public.get_org_student_analytics(p_org_id uuid)
+RETURNS TABLE (
+  user_id uuid,
+  name text,
+  avatar text,
+  xp int,
+  level int,
+  streak int,
+  focus_minutes int,
+  last_active timestamptz,
+  todos_completed bigint,
+  todos_total bigint,
+  routines_completed bigint,
+  routines_total bigint
+)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE
+  v_caller_id uuid;
+  v_is_authorized boolean;
+BEGIN
+  v_caller_id := auth.uid();
+  IF v_caller_id IS NULL THEN
+    RAISE EXCEPTION 'Unauthorized';
+  END IF;
+
+  SELECT EXISTS(
+    SELECT 1 FROM public.organizations WHERE id = p_org_id AND owner_id = v_caller_id
+    UNION ALL
+    SELECT 1 FROM public.organization_members om_check
+    WHERE om_check.org_id = p_org_id AND om_check.user_id = v_caller_id AND om_check.role = 'teacher'
+  ) INTO v_is_authorized;
+
+  IF NOT v_is_authorized THEN
+    RAISE EXCEPTION 'Not authorized to view this organization';
+  END IF;
+
+  RETURN QUERY
+  SELECT
+    u.id,
+    u.name,
+    u.avatar,
+    u.xp,
+    u.level,
+    u.streak,
+    COALESCE(u.focus_minutes, 0),
+    u.last_active,
+    (SELECT COUNT(*)::bigint FROM public.todos t WHERE t.user_id = u.id AND t.completed = true),
+    (SELECT COUNT(*)::bigint FROM public.todos t WHERE t.user_id = u.id),
+    (SELECT COUNT(*)::bigint FROM public.routine_tasks rt WHERE rt.user_id = u.id AND rt.completed = true AND rt.date >= CURRENT_DATE - INTERVAL '7 days'),
+    (SELECT COUNT(*)::bigint FROM public.routine_tasks rt WHERE rt.user_id = u.id AND rt.date >= CURRENT_DATE - INTERVAL '7 days')
+  FROM public.organization_members om
+  INNER JOIN public.users u ON u.id = om.user_id
+  WHERE om.org_id = p_org_id AND om.role = 'student'
+  ORDER BY u.xp DESC;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.get_org_student_analytics(uuid) TO authenticated;
+
+-- =========================================================================================
+-- 18.8: REALTIME
+-- =========================================================================================
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime'
+    AND schemaname = 'public'
+    AND tablename = 'organizations'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.organizations;
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime'
+    AND schemaname = 'public'
+    AND tablename = 'organization_members'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.organization_members;
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime'
+    AND schemaname = 'public'
+    AND tablename = 'classes'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.classes;
+  END IF;
+END $$;
+
+-- Final reload
+NOTIFY pgrst, 'reload config';
+NOTIFY pgrst, 'reload schema';
+
+-- =========================================================================================
+-- SECTION: TEACHER ASSIGNED TASKS
+-- =========================================================================================
+CREATE TABLE IF NOT EXISTS public.teacher_assigned_tasks (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  org_id uuid REFERENCES public.organizations(id) ON DELETE CASCADE,
+  assigned_by uuid REFERENCES public.users(id),
+  assigned_to uuid REFERENCES public.users(id),
+  class_id uuid REFERENCES public.classes(id) ON DELETE SET NULL,
+  title text NOT NULL,
+  description text,
+  deadline timestamptz,
+  completed boolean DEFAULT false,
+  completed_at timestamptz,
+  created_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE public.teacher_assigned_tasks ENABLE ROW LEVEL SECURITY;
+
+-- Teacher can see all tasks they created or in their org
+DROP POLICY IF EXISTS "teacher_tasks_select" ON public.teacher_assigned_tasks;
+CREATE POLICY "teacher_tasks_select" ON public.teacher_assigned_tasks
+  FOR SELECT USING (
+    auth.uid() = assigned_by
+    OR auth.uid() = assigned_to
+    OR public.is_org_member(org_id, auth.uid())
+  );
+
+-- Teacher can insert tasks
+DROP POLICY IF EXISTS "teacher_tasks_insert" ON public.teacher_assigned_tasks;
+CREATE POLICY "teacher_tasks_insert" ON public.teacher_assigned_tasks
+  FOR INSERT WITH CHECK (auth.uid() = assigned_by);
+
+-- Teacher can update their tasks, student can mark completed
+DROP POLICY IF EXISTS "teacher_tasks_update" ON public.teacher_assigned_tasks;
+CREATE POLICY "teacher_tasks_update" ON public.teacher_assigned_tasks
+  FOR UPDATE USING (
+    auth.uid() = assigned_by OR auth.uid() = assigned_to
+  );
+
+-- Teacher can delete their tasks
+DROP POLICY IF EXISTS "teacher_tasks_delete" ON public.teacher_assigned_tasks;
+CREATE POLICY "teacher_tasks_delete" ON public.teacher_assigned_tasks
+  FOR DELETE USING (auth.uid() = assigned_by);
+
+CREATE INDEX IF NOT EXISTS idx_teacher_tasks_assigned_to ON public.teacher_assigned_tasks(assigned_to);
+CREATE INDEX IF NOT EXISTS idx_teacher_tasks_org ON public.teacher_assigned_tasks(org_id);
+CREATE INDEX IF NOT EXISTS idx_teacher_tasks_class ON public.teacher_assigned_tasks(class_id);
+
+-- =========================================================================================
+-- SECTION: GROUP VISITS (Last Viewed Watermark)
+-- =========================================================================================
+CREATE TABLE IF NOT EXISTS public.group_visits (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  org_id uuid REFERENCES public.organizations(id) ON DELETE CASCADE,
+  user_id uuid REFERENCES public.users(id) ON DELETE CASCADE,
+  last_viewed_at timestamptz DEFAULT now(),
+  UNIQUE(org_id, user_id)
+);
+
+ALTER TABLE public.group_visits ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users can view their own visits" ON public.group_visits;
+CREATE POLICY "Users can view their own visits" ON public.group_visits
+  FOR SELECT USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert their own visits" ON public.group_visits;
+CREATE POLICY "Users can insert their own visits" ON public.group_visits
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can update their own visits" ON public.group_visits;
+CREATE POLICY "Users can update their own visits" ON public.group_visits
+  FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE INDEX IF NOT EXISTS idx_group_visits_user ON public.group_visits(user_id);
+CREATE INDEX IF NOT EXISTS idx_group_visits_org ON public.group_visits(org_id);
+
+-- =========================================================================================
+-- SECTION: PARENT-STUDENT LINKS
+-- =========================================================================================
+CREATE TABLE IF NOT EXISTS public.parent_student_links (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  parent_id uuid REFERENCES public.users(id) ON DELETE CASCADE,
+  student_id uuid REFERENCES public.users(id) ON DELETE CASCADE,
+  org_id uuid REFERENCES public.organizations(id) ON DELETE SET NULL,
+  created_at timestamptz DEFAULT now(),
+  UNIQUE(parent_id, student_id)
+);
+
+ALTER TABLE public.parent_student_links ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "parent_links_select" ON public.parent_student_links;
+DROP POLICY IF EXISTS "parent_links_insert" ON public.parent_student_links;
+DROP POLICY IF EXISTS "parent_links_delete" ON public.parent_student_links;
+
+CREATE POLICY "parent_links_select" ON public.parent_student_links
+  FOR SELECT USING (auth.uid() = parent_id OR auth.uid() = student_id);
+
+CREATE POLICY "parent_links_insert" ON public.parent_student_links
+  FOR INSERT WITH CHECK (auth.uid() = parent_id);
+
+CREATE POLICY "parent_links_delete" ON public.parent_student_links
+  FOR DELETE USING (auth.uid() = parent_id);
+
+CREATE INDEX IF NOT EXISTS idx_parent_links_parent ON public.parent_student_links(parent_id);
+CREATE INDEX IF NOT EXISTS idx_parent_links_student ON public.parent_student_links(student_id);
+
+-- Realtime
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime'
+    AND schemaname = 'public'
+    AND tablename = 'parent_student_links'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.parent_student_links;
+  END IF;
+END $$;
+
+-- Realtime for teacher tasks
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime'
+    AND schemaname = 'public'
+    AND tablename = 'teacher_assigned_tasks'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.teacher_assigned_tasks;
+  END IF;
+END $$;
+
+NOTIFY pgrst, 'reload config';
+NOTIFY pgrst, 'reload schema';
