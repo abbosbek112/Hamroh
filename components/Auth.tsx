@@ -26,8 +26,6 @@ export const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onLoginSuccess }) =
 
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  // Use same state for both password fields - when one is toggled, both change
-  const showConfirmPassword = showPassword;
 
   const { t } = useLanguage();
   const { notify } = useToast();

@@ -239,7 +239,6 @@ export const organizationsApi = {
             return [];
         }
 
-        const now = Date.now();
         return (data || []).map((row: any): StudentAnalytics => {
             const lastActiveMs = row.last_active ? new Date(row.last_active).getTime() : 0;
             const totalTasks = (Number(row.todos_total) || 0) + (Number(row.routines_total) || 0);

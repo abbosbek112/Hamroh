@@ -205,19 +205,16 @@ function App() {
 
   // Render Logic with Suspense for lazy loading
   const renderView = () => {
+    if (!user) return null; // Guard against null user; renderView() is always called with a non-null user
     switch (currentView) {
       case AppView.HOME:
-        return <Suspense fallback={<LoadingFallback />}><Home user={user!} onNavigate={handleNavigate} /></Suspense>;
+        return <Suspense fallback={<LoadingFallback />}><Home user={user} onNavigate={handleNavigate} /></Suspense>;
       case AppView.INTIZOM:
         return <Suspense fallback={<LoadingFallback />}><Intizom initialTab={intizomTab} /></Suspense>;
       case AppView.COMMUNITY:
-        return user ? (
-          <Suspense fallback={<LoadingFallback />}><Community currentUser={user} /></Suspense>
-        ) : (
-          <Suspense fallback={<LoadingFallback />}><Home user={null as any} onNavigate={handleNavigate} /></Suspense>
-        );
+        return <Suspense fallback={<LoadingFallback />}><Community currentUser={user} /></Suspense>;
       case AppView.SETTINGS:
-        return user ? (
+        return (
           <Suspense fallback={<LoadingFallback />}>
             <Settings
               user={user}
@@ -228,25 +225,19 @@ function App() {
               onNavigate={handleNavigate}
             />
           </Suspense>
-        ) : (
-          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
         );
       case AppView.SUPPORT:
-        return user ? (
-          <Suspense fallback={<LoadingFallback />}><Support currentUser={user} /></Suspense>
-        ) : (
-          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
-        );
+        return <Suspense fallback={<LoadingFallback />}><Support currentUser={user} /></Suspense>;
       case AppView.ABOUT:
         return <Suspense fallback={<LoadingFallback />}><About onNavigate={handleNavigate} /></Suspense>;
       case AppView.ADMIN:
-        return user?.role === 'admin' ? (
+        return user.role === 'admin' ? (
           <Suspense fallback={<LoadingFallback />}><Admin /></Suspense>
         ) : (
-          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
+          <Suspense fallback={<LoadingFallback />}><Home user={user} onNavigate={handleNavigate} /></Suspense>
         );
       case AppView.MARKET:
-        return user ? (
+        return (
           <Suspense fallback={<LoadingFallback />}>
             <Market
               user={user}
@@ -254,23 +245,13 @@ function App() {
               onNavigate={handleNavigate}
             />
           </Suspense>
-        ) : (
-          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
         );
       case AppView.ORG_DASHBOARD:
-        return user ? (
-          <Suspense fallback={<LoadingFallback />}><OrgDashboard /></Suspense>
-        ) : (
-          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
-        );
+        return <Suspense fallback={<LoadingFallback />}><OrgDashboard /></Suspense>;
       case AppView.PARENT_PORTAL:
-        return user ? (
-          <Suspense fallback={<LoadingFallback />}><ParentPortal user={user} onNavigate={handleNavigate} /></Suspense>
-        ) : (
-          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
-        );
+        return <Suspense fallback={<LoadingFallback />}><ParentPortal user={user} onNavigate={handleNavigate} /></Suspense>;
       default:
-        return <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>;
+        return <Suspense fallback={<LoadingFallback />}><Home user={user} onNavigate={handleNavigate} /></Suspense>;
     }
   };
 
