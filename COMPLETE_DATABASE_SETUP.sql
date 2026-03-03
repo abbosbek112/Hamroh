@@ -1243,6 +1243,60 @@ create policy "Admins can update store items"
   on public.store_items for update
   using (auth.email() = 'admin@hamroh.ai' or exists (select 1 from public.users where id = auth.uid() and role = 'admin'));
 
+
+-- ==========================================
+-- MIGRATION: 30-DAY DIARY (DAILY REFLECTIONS)
+-- ==========================================
+
+create table if not exists public.daily_reflections (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references public.users(id) not null,
+  date date not null,
+  action_satisfaction text check (action_satisfaction in ('yoq', 'ortacha', 'ha')),
+  goal_achievement text check (goal_achievement in ('yaxshi', 'ortacha', 'ajoyib')),
+  mood integer check (mood >= 1 and mood <= 5),
+  grateful_1 text,
+  grateful_2 text,
+  proud_1 text,
+  proud_2 text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  unique(user_id, date)
+);
+
+-- Enable RLS
+alter table public.daily_reflections enable row level security;
+
+-- Policies for daily_reflections
+drop policy if exists "Users can view own daily reflections" on public.daily_reflections;
+create policy "Users can view own daily reflections"
+  on public.daily_reflections for select
+  using (auth.uid() = user_id);
+
+drop policy if exists "Users can insert own daily reflections" on public.daily_reflections;
+create policy "Users can insert own daily reflections"
+  on public.daily_reflections for insert
+  with check (auth.uid() = user_id);
+
+drop policy if exists "Users can update own daily reflections" on public.daily_reflections;
+create policy "Users can update own daily reflections"
+  on public.daily_reflections for update
+  using (auth.uid() = user_id);
+
+-- Enable realtime safely
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables 
+    where pubname = 'supabase_realtime' 
+    and schemaname = 'public' 
+    and tablename = 'daily_reflections'
+  ) then
+    alter publication supabase_realtime add table public.daily_reflections;
+  end if;
+end $$;
+
+
 drop policy if exists "Admins can delete store items" on public.store_items;
 create policy "Admins can delete store items"
   on public.store_items for delete
@@ -1896,6 +1950,19 @@ CREATE POLICY "Users can update their own visits" ON public.group_visits
 
 CREATE INDEX IF NOT EXISTS idx_group_visits_user ON public.group_visits(user_id);
 CREATE INDEX IF NOT EXISTS idx_group_visits_org ON public.group_visits(org_id);
+
+-- Enable realtime safely
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables 
+    where pubname = 'supabase_realtime' 
+    and schemaname = 'public' 
+    and tablename = 'group_visits'
+  ) then
+    alter publication supabase_realtime add table public.group_visits;
+  end if;
+end $$;
 
 -- =========================================================================================
 -- SECTION: PARENT-STUDENT LINKS

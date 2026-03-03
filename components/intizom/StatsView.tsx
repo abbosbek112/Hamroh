@@ -5,6 +5,7 @@ import { api } from '../../services/api';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ShareCard } from '../transformation/ShareCard';
 import { User } from '../../types';
+import { SectionIntro } from './SectionIntro';
 
 interface WeeklyActivityData {
    day: string;
@@ -154,6 +155,7 @@ export const StatsView: React.FC = () => {
 
    return (
       <div className="animate-fade-in max-w-6xl mx-auto space-y-8 pb-10">
+         <SectionIntro sectionKey="stats" />
          <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8 tracking-tight">{t('intizom.stats.title')}</h2>
 
          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

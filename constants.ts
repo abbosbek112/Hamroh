@@ -288,6 +288,15 @@ export const TRANSLATIONS = {
     intizom: {
       title: "Temir Intizom",
       subtitle: "Muvaffaqiyat tasodif emas, u kunlik kichik g'alabalardan iborat.",
+      welcome: {
+        headline: "INTIZOM — bu o'zing bilan kelishuv.",
+        p1: "Bu bo'lim sening kun davomida qilgan harakatlaringni nazorat qilish va o'zingni tartibga solish uchun yaratilgan. Ko'p odamlar katta maqsadlar qo'yadi, lekin har kuni nima qilayotganini kuzatmaydi. Natijada intizom yo'qoladi va rivojlanish sekinlashadi.",
+        p2: "Shu yerda sen kunlik harakatlaringni belgilaysan. Diniy amallar, biznes, oila, sport yoki ilm — qaysi yo'nalishda qadam tashlaganingni ko'rasan. Kun oxirida esa o'zingdan bitta oddiy savol so'raysan: 'Bugungi harakatlarim qoniqarlimi?'",
+        p3: "Bu bo'lim seni majburlamaydi. U seni eslatadi.",
+        p4: "Intizom — bu motivatsiya kelganda ishlash emas. Intizom — kayfiyat bo'lmasa ham kichik qadam tashlashdir. Har kuni ozgina harakat qilish katta natijaga olib keladi.",
+        p5: "Bu yerda sen boshqalarga hisobot bermaysan. Sen o'zingni nazorat qilasan. O'zing uchun. O'zingni kuchaytirish uchun.",
+        dismiss: "Tushundim, boshlaymiz"
+      },
       tabs: {
         daily: "Kun tartibi",
         plan: "Planner",
@@ -414,6 +423,49 @@ export const TRANSLATIONS = {
         stable: "Barqaror",
         completion: "Bajarilish",
         day_prefix: "Kun"
+      },
+      intro: {
+        guide_label: "YO'RIQNOMA",
+        what_label: "BU NIMA?",
+        can_do_label: "NIMA QILINADI?",
+        how_label: "QANDAY?",
+        dismiss: "Tushundim",
+        plan: {
+          title: "Rejalashtirish",
+          what: "Kuningizni oldindan rejalashtirish — muvaffaqiyatning kalitidir. Bu bo'limda siz kunlik ishlaringizni tartibga solasiz.",
+          can_do: "Yangi faoliyatlar qo'shish, vaqt belgilash va kunlik rejangizni shakllantirib kun tartibiga saqlash.",
+          how: "'Reja tuzish' tugmasini bosing, faoliyatlarni kiriting va saqlang. Reja kun tartibiga avtomatik qo'shiladi."
+        },
+        daily: {
+          title: "Kun Tartibi",
+          what: "Kunlik vazifalaringiz shu yerda. Har bir bajarilgan vazifa sizning intizomingizni mustahkamlaydi.",
+          can_do: "Vazifalarni belgilash, bajarish, tahrirlash. Kechagi kunni nusxalash va streak'ni saqlash.",
+          how: "Vazifani bosib bajarilgan deb belgilang. Yangi vazifa qo'shish uchun '+' tugmasini ishlating."
+        },
+        tasks: {
+          title: "Vazifalar",
+          what: "Uzoq muddatli va muhim vazifalaringiz ro'yxati. Kunlik tartibdan farqli o'laroq, bu yerda kattaroq maqsadlar.",
+          can_do: "Vazifa yaratish, qiyinlik darajasini belgilash (oson/o'rta/qiyin), muddat qo'yish va bajarish.",
+          how: "Yuqoridagi maydonga vazifa nomini yozing va '+' bosing. Bajarilganda belgilang — XP olasiz!"
+        },
+        journal: {
+          title: "Kundalik",
+          what: "O'z fikrlaringizni yozib boring. Bu sizning ichki dunyoingiz bilan suhbat — o'zingizni anglash vositasi.",
+          can_do: "Har kuni savollarga javob yozish, his-tuyg'ularingizni qayd qilish va tarixni ko'rish.",
+          how: "Maydonga yozing va 'Saqlash' tugmasini bosing. Har bir yozuv +50 XP beradi."
+        },
+        focus: {
+          title: "Diqqat va Fokus",
+          what: "Chuqur konsentratsiya sessiyalari. Chalg'ishlardan xalos bo'ling va samaradorlikni oshiring.",
+          can_do: "Pomodoro (25 daqiqa), erkin rejim yoki shaxsiy vaqt tanlash. Fon musiqasi qo'shish.",
+          how: "Vaqtni tanlang, 'Boshlash' tugmasini bosing va diqqatni jamlang. Har daqiqa +1 XP."
+        },
+        stats: {
+          title: "Statistika",
+          what: "Sizning o'sish tahlillaringiz. Qayerda edingiz va qayerga yetdingiz — barchasi raqamlarda.",
+          can_do: "Haftalik faollik grafigi, bajarilgan vazifalar, fokus vaqti va streak statistikasini ko'rish.",
+          how: "Bu sahifa avtomatik yangilanadi. Shunchaki ko'rib boring va o'sishingizni kuzating."
+        }
       }
     },
     settings: {
@@ -1107,6 +1159,15 @@ export const TRANSLATIONS = {
     intizom: {
       title: "Дисциплина",
       subtitle: "Дисциплина и личное развитие.",
+      welcome: {
+        headline: "ДИСЦИПЛИНА — это договор с самим собой.",
+        p1: "Этот раздел создан для отслеживания твоих ежедневных действий и поддержания порядка. Многие ставят большие цели, но не следят за тем, что делают каждый день. В результате дисциплина теряется, а прогресс замедляется.",
+        p2: "Здесь ты фиксируешь свои ежедневные действия. Религиозные практики, бизнес, семья, спорт или наука — ты видишь, в каком направлении движешься. А в конце дня задаёшь себе один простой вопрос: 'Доволен ли я сегодняшними действиями?'",
+        p3: "Этот раздел не заставляет тебя. Он напоминает.",
+        p4: "Дисциплина — это не работать когда есть мотивация. Дисциплина — делать маленький шаг даже когда нет настроения. Небольшое усилие каждый день приводит к большим результатам.",
+        p5: "Здесь ты не отчитываешься перед другими. Ты контролируешь себя. Для себя. Чтобы стать сильнее.",
+        dismiss: "Понял, начинаем"
+      },
       tabs: {
         daily: "Распорядок",
         plan: "Планирование",
@@ -1233,6 +1294,49 @@ export const TRANSLATIONS = {
         stable: "Стабильно",
         completion: "Выполнение",
         day_prefix: "День"
+      },
+      intro: {
+        guide_label: "РУКОВОДСТВО",
+        what_label: "ЧТО ЭТО?",
+        can_do_label: "ЧТО МОЖНО?",
+        how_label: "КАК?",
+        dismiss: "Понятно",
+        plan: {
+          title: "Планирование",
+          what: "Планирование дня заранее — ключ к успеху. Здесь вы организуете свои ежедневные дела.",
+          can_do: "Добавлять активности, устанавливать время и сохранять план в распорядок дня.",
+          how: "Нажмите 'Создать план', введите активности и сохраните. План автоматически добавится в распорядок."
+        },
+        daily: {
+          title: "Распорядок Дня",
+          what: "Ваши ежедневные задачи здесь. Каждая выполненная задача укрепляет вашу дисциплину.",
+          can_do: "Отмечать задачи, редактировать, копировать вчерашний день и сохранять streak.",
+          how: "Нажмите на задачу чтобы отметить. Добавьте новую через кнопку '+'."
+        },
+        tasks: {
+          title: "Задачи",
+          what: "Список важных долгосрочных задач. В отличие от распорядка, здесь более крупные цели.",
+          can_do: "Создавать задачи, выбирать сложность (легко/средне/сложно), ставить дедлайн.",
+          how: "Введите название задачи и нажмите '+'. При выполнении отметьте — получите XP!"
+        },
+        journal: {
+          title: "Дневник",
+          what: "Записывайте свои мысли. Это диалог с внутренним миром — инструмент самопознания.",
+          can_do: "Отвечать на ежедневные вопросы, записывать чувства и просматривать историю.",
+          how: "Напишите в поле и нажмите 'Сохранить'. Каждая запись даёт +50 XP."
+        },
+        focus: {
+          title: "Фокус и Внимание",
+          what: "Сессии глубокой концентрации. Избавьтесь от отвлечений и повысьте продуктивность.",
+          can_do: "Выбрать Pomodoro (25 мин), свободный режим или свое время. Добавить фоновую музыку.",
+          how: "Выберите время, нажмите 'Старт' и сосредоточьтесь. Каждая минута = +1 XP."
+        },
+        stats: {
+          title: "Статистика",
+          what: "Ваша аналитика роста. Где были и куда пришли — всё в цифрах.",
+          can_do: "Просмотр графика активности за неделю, выполненных задач, времени фокуса и streak.",
+          how: "Страница обновляется автоматически. Просто наблюдайте за своим прогрессом."
+        }
       }
     },
     settings: {
@@ -1903,6 +2007,15 @@ export const TRANSLATIONS = {
     intizom: {
       title: "Discipline",
       subtitle: "Discipline and personal growth.",
+      welcome: {
+        headline: "DISCIPLINE — is a contract with yourself.",
+        p1: "This section is designed to track your daily actions and maintain order. Many people set big goals but don't monitor what they do every day. As a result, discipline fades and progress slows down.",
+        p2: "Here you mark your daily actions. Religious practices, business, family, sports, or knowledge — you see which direction you're moving. At the end of the day, you ask yourself one simple question: 'Am I satisfied with today's actions?'",
+        p3: "This section doesn't force you. It reminds you.",
+        p4: "Discipline is not working when motivation strikes. Discipline is taking a small step even when you don't feel like it. A little effort every day leads to great results.",
+        p5: "Here you don't report to others. You monitor yourself. For yourself. To become stronger.",
+        dismiss: "Got it, let's start"
+      },
       tabs: {
         daily: "Routine",
         plan: "Planner",
@@ -2029,6 +2142,49 @@ export const TRANSLATIONS = {
         stable: "Stable",
         completion: "Completion",
         day_prefix: "Day"
+      },
+      intro: {
+        guide_label: "GUIDE",
+        what_label: "WHAT IS THIS?",
+        can_do_label: "WHAT CAN I DO?",
+        how_label: "HOW?",
+        dismiss: "Got it",
+        plan: {
+          title: "Planning",
+          what: "Planning your day in advance is the key to success. Here you organize your daily activities.",
+          can_do: "Add activities, set times, and save your plan to the daily routine.",
+          how: "Click 'Create plan', enter activities and save. The plan is automatically added to your routine."
+        },
+        daily: {
+          title: "Daily Routine",
+          what: "Your daily tasks are here. Each completed task strengthens your discipline.",
+          can_do: "Mark tasks, edit, copy yesterday's tasks, and maintain your streak.",
+          how: "Click on a task to mark it done. Add a new one with the '+' button."
+        },
+        tasks: {
+          title: "Tasks",
+          what: "Your list of important long-term tasks. Unlike routine, these are bigger goals.",
+          can_do: "Create tasks, set difficulty (easy/medium/hard), and add deadlines.",
+          how: "Type the task name and click '+'. Mark as done when completed — earn XP!"
+        },
+        journal: {
+          title: "Journal",
+          what: "Write down your thoughts. This is a dialogue with your inner world — a tool for self-awareness.",
+          can_do: "Answer daily prompts, record feelings, and review your history.",
+          how: "Write in the field and click 'Save'. Each entry gives +50 XP."
+        },
+        focus: {
+          title: "Focus & Attention",
+          what: "Deep concentration sessions. Free yourself from distractions and boost productivity.",
+          can_do: "Choose Pomodoro (25 min), free mode, or custom time. Add background music.",
+          how: "Select time, click 'Start' and concentrate. Each minute = +1 XP."
+        },
+        stats: {
+          title: "Statistics",
+          what: "Your growth analytics. Where you were and where you've reached — all in numbers.",
+          can_do: "View weekly activity chart, completed tasks, focus time, and streak statistics.",
+          how: "This page updates automatically. Just observe and track your progress."
+        }
       }
     },
     settings: {

@@ -16,6 +16,7 @@ import { api } from '../services/api';
 import { logger } from '../utils/logger';
 
 interface HomeProps {
+  user: User;
   onNavigate: (view: AppView, params?: NavigationParams) => void;
 }
 
@@ -87,12 +88,12 @@ const XPGuideModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
   );
 };
 
-export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
+export const Home: React.FC<HomeProps> = ({ user, onNavigate }) => {
   const { t, language, setLanguage } = useLanguage();
   const [todaysTasks, setTodaysTasks] = useState<RoutineTask[]>([]);
   const [completionRate, setCompletionRate] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState<User | null>(null);
+  const [userData, setUserData] = useState<User | null>(user);
   const [showXPGuide, setShowXPGuide] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(1);
@@ -105,7 +106,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     journalEntries: 0,
     loading: true,
   });
-
   // Book State
   const [isBookOpen, setIsBookOpen] = useState(false);
   const [isWritingMode, setIsWritingMode] = useState(false);
@@ -167,16 +167,15 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Get current user session
-        const currentUser = await api.getSession();
-        if (currentUser) {
+        // Use the passed user data instead of fetching again
+        if (user) {
           // Merge with Local Data for Transformation System
-          const localData = loadTransData(currentUser.id);
+          const localData = loadTransData(user.id);
           const fullUser = {
-            ...currentUser,
-            identity: localData?.identity || currentUser.identity,
-            routines: localData?.routines || currentUser.routines,
-            lastReviewDate: localData?.lastReviewDate || currentUser.lastReviewDate
+            ...user,
+            identity: localData?.identity || user.identity,
+            routines: localData?.routines || user.routines,
+            lastReviewDate: localData?.lastReviewDate || user.lastReviewDate
           };
 
           setUserData(fullUser);
@@ -191,8 +190,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           if (fullUser.routines && fullUser.routines.length > 0) {
             setActiveRoutine(fullUser.routines[0]);
           }
-
-
 
           // Share Card Check (Every 7 days of streak)
           if (fullUser.streak > 0 && fullUser.streak % 7 === 0 && !localStorage.getItem(`share_card_shown_${fullUser.streak}`)) {
@@ -212,7 +209,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         }
       } catch (error: unknown) {
         logger.error("Failed to fetch data:", error);
-        // If unauthorized, tasks will be empty array (handled gracefully)
         setTodaysTasks([]);
         setCompletionRate(0);
       } finally {
@@ -220,7 +216,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const userId = userData?.id;
@@ -1105,3 +1101,5 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     </>
   );
 };
+
+export default Home;

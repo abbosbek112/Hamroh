@@ -6,6 +6,7 @@ import { api } from '../../services/api';
 import { useToast } from '../../contexts/ToastContext';
 import { RoutineTask } from '../../types';
 import { logger } from '../../utils/logger';
+import { SectionIntro } from './SectionIntro';
 
 interface PlannerProps {
   onPlanCreated: () => void; // Callback to switch tab
@@ -96,6 +97,7 @@ export const Planner: React.FC<PlannerProps> = ({ onPlanCreated }) => {
 
   return (
     <div className="animate-fade-in max-w-4xl mx-auto space-y-8">
+      <SectionIntro sectionKey="plan" />
       <div className="bg-gradient-to-br from-indigo-600 to-violet-700 p-8 md:p-12 rounded-[2.5rem] shadow-xl relative overflow-hidden text-white">
         <div className="absolute top-0 right-0 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl -z-0 translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 left-0 w-60 h-60 bg-blue-400 opacity-20 rounded-full blur-3xl -z-0 -translate-x-1/2 translate-y-1/2"></div>

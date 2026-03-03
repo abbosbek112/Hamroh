@@ -148,6 +148,19 @@ export interface JournalEntry {
   aiComment?: string;
 }
 
+export interface DailyReflection {
+  id?: string;
+  userId?: string;
+  date: string; // YYYY-MM-DD
+  actionSatisfaction?: 'yoq' | 'ortacha' | 'ha';
+  goalAchievement?: 'yaxshi' | 'ortacha' | 'ajoyib';
+  mood?: number; // 1 to 5
+  grateful1?: string;
+  grateful2?: string;
+  proud1?: string;
+  proud2?: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'model';

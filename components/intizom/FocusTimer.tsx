@@ -7,6 +7,7 @@ import { useGlobalAudio } from '../../contexts/AudioContext';
 import { useFocus } from '../../contexts/FocusContext';
 import { logger } from '../../utils/logger';
 import { getAudioUrl } from '../../config/audioConfig';
+import { SectionIntro } from './SectionIntro';
 
 export const FocusTimer: React.FC = () => {
   const { t } = useLanguage();
@@ -229,6 +230,7 @@ export const FocusTimer: React.FC = () => {
 
   return (
     <div className="animate-fade-in flex flex-col items-center justify-center py-6 lg:py-12 min-h-[60vh]">
+      <SectionIntro sectionKey="focus" />
       <div className="relative mb-12 group">
         <div className={`absolute inset-0 rounded-full blur-[100px] transition-all duration-1000 ${isActive ? 'bg-violet-600/40 scale-110' : 'bg-blue-600/10 scale-90'}`}></div>
         <div className="relative w-72 h-72 sm:w-96 sm:h-96 flex items-center justify-center">

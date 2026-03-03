@@ -86,7 +86,6 @@ export const authApi = {
         if (insertError) {
           if ((insertError as any).code === '23503' || (insertError as any).message?.includes('foreign key constraint')) {
             logger.warn('Foreign key constraint error - auth user may not exist in auth.users:', insertError);
-            return null;
           }
           // If the profile was already created (e.g., by the on_auth_user_created trigger), just get it
           if ((insertError as any).code === '23505' || (insertError as any).message?.includes('duplicate key')) {
@@ -95,14 +94,32 @@ export const authApi = {
               userData = fetched;
             } else {
               logger.error('Profile exists but could not be fetched:', insertError);
-              return null;
             }
           } else {
             logger.error('Failed to create user profile in getSession:', insertError);
-            return null;
           }
         } else if (inserted) {
           userData = inserted;
+        }
+
+        // CRITICAL FALLBACK: If still no userData but we HAVE a session, return a minimal User object
+        // This prevents the app from kicking the user out to Landing Page just because of a DB fetch error
+        if (!userData) {
+          logger.warn('Returning fallback user object from session metadata');
+          return {
+            id: session.user.id,
+            email: email,
+            name: name,
+            username: username,
+            avatar: avatar,
+            role: 'user',
+            xp: 0,
+            level: 1,
+            streak: 0,
+            inventory: [],
+            badges: FREE_BADGES,
+            language: (metadata as any).language || 'uz',
+          } as User;
         }
       }
 

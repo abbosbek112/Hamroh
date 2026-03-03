@@ -5,6 +5,7 @@ import { JournalEntry } from '../../types';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useToast } from '../../contexts/ToastContext';
 import { logger } from '../../utils/logger';
+import { SectionIntro } from './SectionIntro';
 
 export const DailyJournal: React.FC = () => {
   const { t, language } = useLanguage();
@@ -45,6 +46,7 @@ export const DailyJournal: React.FC = () => {
 
   return (
     <div className="animate-fade-in space-y-8">
+      <SectionIntro sectionKey="journal" />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white/70 dark:bg-white/5 border border-indigo-100 dark:border-blue-500/10 p-8 rounded-[2rem] shadow-sm relative overflow-hidden backdrop-blur-md">

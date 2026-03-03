@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { BrainCircuit, Calendar, ListTodo, BookOpen, Clock, BarChart3 } from 'lucide-react';
+import { BrainCircuit, Calendar, ListTodo, BookOpen, Clock, BarChart3, Shield, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { RoutineList } from '../components/intizom/RoutineList';
 import { Planner } from '../components/intizom/Planner';
@@ -22,6 +22,76 @@ interface IntizomProps {
   initialTab?: string;
 }
 
+const IntizomWelcome: React.FC = () => {
+  const { t } = useLanguage();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const seen = localStorage.getItem('hamroh_intizom_welcome_seen');
+    if (!seen) setVisible(true);
+  }, []);
+
+  const handleDismiss = () => {
+    localStorage.setItem('hamroh_intizom_welcome_seen', 'true');
+    setVisible(false);
+  };
+
+  if (!visible) return null;
+
+  return (
+    <div className="animate-fade-in mb-6 sm:mb-8">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-slate-900 via-violet-950 to-indigo-950 p-6 sm:p-10 text-white shadow-2xl">
+        {/* Background decorations */}
+        <div className="absolute top-0 right-0 w-72 h-72 bg-violet-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-56 h-56 bg-indigo-500/15 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-fuchsia-500/10 rounded-full blur-[80px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+
+        {/* Shield icon */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/10 backdrop-blur-sm">
+            <Shield className="text-violet-300" size={28} />
+          </div>
+          <div>
+            <h2 className="text-xl sm:text-2xl font-black tracking-tight">
+              {t('intizom.welcome.headline')}
+            </h2>
+          </div>
+        </div>
+
+        {/* Paragraphs */}
+        <div className="space-y-4 max-w-3xl">
+          <p className="text-white/80 text-sm sm:text-base leading-relaxed font-medium">
+            {t('intizom.welcome.p1')}
+          </p>
+          <p className="text-white/80 text-sm sm:text-base leading-relaxed font-medium">
+            {t('intizom.welcome.p2')}
+          </p>
+          <p className="text-white/95 text-base sm:text-lg font-bold italic">
+            {t('intizom.welcome.p3')}
+          </p>
+          <p className="text-white/80 text-sm sm:text-base leading-relaxed font-medium">
+            {t('intizom.welcome.p4')}
+          </p>
+          <p className="text-white/90 text-sm sm:text-base leading-relaxed font-semibold">
+            {t('intizom.welcome.p5')}
+          </p>
+        </div>
+
+        {/* Dismiss button */}
+        <div className="flex justify-end mt-6 sm:mt-8">
+          <button
+            onClick={handleDismiss}
+            className="group px-6 sm:px-8 py-3 bg-white text-slate-900 font-bold text-sm sm:text-base rounded-xl transition-all active:scale-95 hover:shadow-lg hover:shadow-white/20 flex items-center gap-2"
+          >
+            {t('intizom.welcome.dismiss')}
+            <ChevronDown size={18} className="group-hover:translate-y-0.5 transition-transform" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Intizom: React.FC<IntizomProps> = ({ initialTab }) => {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<ViewMode>(ViewMode.DAILY);
@@ -34,6 +104,8 @@ export const Intizom: React.FC<IntizomProps> = ({ initialTab }) => {
 
   return (
     <div className="space-y-8 pb-32 lg:pb-20">
+      {/* Welcome Intro */}
+      <IntizomWelcome />
       {/* Header & Tabs */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="px-1 sm:px-0">

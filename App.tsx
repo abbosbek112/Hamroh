@@ -126,7 +126,8 @@ function App() {
         }
       } catch (e: unknown) {
         logger.error("Session check failed", e);
-        api.logout();
+        // CRITICAL: Don't force logout here as it might be a temporary network issue
+        // api.logout(); 
       } finally {
         if (mounted) {
           setTimeout(() => setIsAppLoading(false), 500);
@@ -206,14 +207,14 @@ function App() {
   const renderView = () => {
     switch (currentView) {
       case AppView.HOME:
-        return <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>;
+        return <Suspense fallback={<LoadingFallback />}><Home user={user!} onNavigate={handleNavigate} /></Suspense>;
       case AppView.INTIZOM:
         return <Suspense fallback={<LoadingFallback />}><Intizom initialTab={intizomTab} /></Suspense>;
       case AppView.COMMUNITY:
         return user ? (
           <Suspense fallback={<LoadingFallback />}><Community currentUser={user} /></Suspense>
         ) : (
-          <Suspense fallback={<LoadingFallback />}><Home onNavigate={handleNavigate} /></Suspense>
+          <Suspense fallback={<LoadingFallback />}><Home user={null as any} onNavigate={handleNavigate} /></Suspense>
         );
       case AppView.SETTINGS:
         return user ? (

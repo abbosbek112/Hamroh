@@ -7,6 +7,7 @@ import { RoutineTask } from '../../types';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useToast } from '../../contexts/ToastContext';
 import { logger } from '../../utils/logger';
+import { SectionIntro } from './SectionIntro';
 
 // Helper function to normalize time format to HH:MM
 const normalizeTime = (time: string): string => {
@@ -349,6 +350,7 @@ export const RoutineList: React.FC = () => {
 
   return (
     <div className="animate-fade-in max-w-4xl mx-auto">
+      <SectionIntro sectionKey="daily" />
       {/* Daily Header & Progress */}
       <div className="flex flex-col gap-4 sm:gap-6 mb-8">
         <div className="flex justify-between items-center gap-3 sm:gap-4 flex-wrap">

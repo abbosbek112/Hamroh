@@ -463,21 +463,76 @@ button {
     position: relative !important;
   }
 
-  /* Badge sparkles and glows should be visible */
+  /* PERFORMANCE: Disable expensive badge animations on mobile to prevent freezing */
+  .badge-float {
+    animation: none !important;
+  }
+
+  .badge-rotate {
+    animation: none !important;
+  }
+
+  .badge-glow,
+  .badge-glow-2 {
+    animation: none !important;
+    opacity: 0.5;
+  }
+
+  .badge-ring {
+    animation: none !important;
+  }
+
   .badge-sparkle-0,
   .badge-sparkle-1,
   .badge-sparkle-2,
-  .badge-sparkle-3,
-  .badge-glow,
-  .badge-glow-2,
-  .badge-ring {
-    z-index: 99 !important;
+  .badge-sparkle-3 {
+    display: none !important;
+  }
+}
+
+/* CRITICAL MOBILE PERFORMANCE: Reduce expensive effects on low-powered devices */
+@media (max-width: 768px) {
+
+  /* Disable expensive GPU-heavy effects */
+  .mix-blend-screen,
+  .mix-blend-multiply {
+    mix-blend-mode: normal !important;
   }
 
-  /* Main badge icon should be on top */
-  .badge-float,
-  .badge-rotate {
-    z-index: 102 !important;
+  /* Reduce backdrop blur on mobile */
+  .backdrop-blur-md,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
+  /* Disable perspective transforms (3D book) on mobile — already hidden but safety net */
+  .perspective-3000,
+  .perspective-2000,
+  .perspective-1000 {
+    perspective: none !important;
+  }
+
+  /* Prevent GPU memory leak from will-change stacking */
+  * {
+    will-change: auto !important;
+  }
+
+  /* Reduce animation intensity */
+  .animate-pulse-slow {
+    animation-duration: 20s !important;
+  }
+
+  .animate-float-slow,
+  .animate-float-medium,
+  .animate-float-fast {
+    animation-duration: 12s !important;
+  }
+
+  .animate-blob {
+    animation-duration: 14s !important;
   }
 }
 

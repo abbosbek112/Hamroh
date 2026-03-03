@@ -5,6 +5,7 @@ import { api } from '../../services/api';
 import { Todo } from '../../types';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { useToast } from '../../contexts/ToastContext';
+import { SectionIntro } from './SectionIntro';
 
 type TaskDifficulty = 'EASY' | 'MEDIUM' | 'HARD';
 
@@ -109,6 +110,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <div className="animate-fade-in max-w-3xl mx-auto space-y-6">
+      <SectionIntro sectionKey="tasks" />
       <div className={`bg-white/70 dark:bg-white/5 border border-white/60 dark:border-white/10 rounded-[2rem] p-6 shadow-sm transition-all duration-300 overflow-hidden backdrop-blur-md ${isTaskFormExpanded ? 'ring-2 ring-indigo-500/20' : ''}`}>
         {!isTaskFormExpanded ? (
           <div className="flex gap-4 items-center cursor-pointer" onClick={() => setIsTaskFormExpanded(true)}>

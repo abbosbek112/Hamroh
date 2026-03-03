@@ -2523,6 +2523,88 @@ export const api = {
   },
 
   // ======================================================
+  // 30-DAY DIARY (DAILY REFLECTION) API
+  // ======================================================
+
+  getDailyReflection: async (date: string): Promise<import('../types').DailyReflection | null> => {
+    try {
+      const userId = await getCurrentUserId();
+      if (!userId) return null;
+
+      const { data, error } = await supabase
+        .from('daily_reflections')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('date', date)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) return null;
+
+      return {
+        id: data.id,
+        userId: data.user_id,
+        date: data.date,
+        actionSatisfaction: data.action_satisfaction,
+        goalAchievement: data.goal_achievement,
+        mood: data.mood,
+        grateful1: data.grateful_1,
+        grateful2: data.grateful_2,
+        proud1: data.proud_1,
+        proud2: data.proud_2,
+      };
+    } catch (error: unknown) {
+      logger.error('getDailyReflection error:', error);
+      return null;
+    }
+  },
+
+  saveDailyReflection: async (reflection: import('../types').DailyReflection): Promise<void> => {
+    try {
+      const userId = await getCurrentUserId();
+      if (!userId) throw new Error("Unauthorized");
+
+      // Check if exists
+      const { data: existing } = await supabase
+        .from('daily_reflections')
+        .select('id')
+        .eq('user_id', userId)
+        .eq('date', reflection.date)
+        .maybeSingle();
+
+      const payload = {
+        user_id: userId,
+        date: reflection.date,
+        action_satisfaction: reflection.actionSatisfaction || null,
+        goal_achievement: reflection.goalAchievement || null,
+        mood: reflection.mood || null,
+        grateful_1: reflection.grateful1 || null,
+        grateful_2: reflection.grateful2 || null,
+        proud_1: reflection.proud1 || null,
+        proud_2: reflection.proud2 || null,
+      };
+
+      if (existing?.id) {
+        // Update
+        const { error } = await supabase
+          .from('daily_reflections')
+          .update(payload)
+          .eq('id', existing.id);
+        if (error) throw error;
+      } else {
+        // Insert
+        const { error } = await supabase
+          .from('daily_reflections')
+          .insert(payload);
+        if (error) throw error;
+      }
+    } catch (error: unknown) {
+      logger.error('saveDailyReflection error:', error);
+      throw error;
+    }
+  },
+
+  // ======================================================
   // ORGANIZATION (O'QUV MARKAZ) API
   // ======================================================
   createOrganization: organizationsApi.createOrganization,
