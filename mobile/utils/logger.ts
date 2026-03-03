@@ -1,12 +1,12 @@
 const isDevelopment = __DEV__;
 
 export const logger = {
-  log: (...args: any[]): void => {
+  log: (...args: unknown[]): void => {
     if (isDevelopment) {
       console.log(...args);
     }
   },
-  warn: (...args: any[]): void => {
+  warn: (...args: unknown[]): void => {
     if (isDevelopment) {
       console.warn(...args);
     }
@@ -14,12 +14,12 @@ export const logger = {
   error: (...args: unknown[]): void => {
     console.error(...args);
   },
-  debug: (...args: any[]): void => {
+  debug: (...args: unknown[]): void => {
     if (isDevelopment) {
       console.debug(...args);
     }
   },
-  info: (...args: any[]): void => {
+  info: (...args: unknown[]): void => {
     if (isDevelopment) {
       console.info('[INFO]', ...args);
     }

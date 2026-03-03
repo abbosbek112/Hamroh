@@ -40,3 +40,8 @@ coverage
 # Misc
 *.pem
 .cache
+
+# Mobile (Expo/React Native)
+mobile/.expo/
+mobile/web-build/
+mobile/dist/

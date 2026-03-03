@@ -29,6 +29,10 @@ export default function HomeScreen() {
         router.replace('/(auth)/login');
         return;
       }
+      if (!session.user?.id) {
+        router.replace('/(auth)/login');
+        return;
+      }
       const { data, error } = await supabase
         .from('users')
         .select('*')

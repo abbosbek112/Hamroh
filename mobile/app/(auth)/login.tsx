@@ -39,8 +39,9 @@ export default function LoginScreen() {
         if (error) throw error;
         router.replace('/(tabs)');
       }
-    } catch (error: any) {
-      Alert.alert('Error', error.message || 'Authentication failed');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Authentication failed';
+      Alert.alert('Error', message);
     } finally {
       setIsLoading(false);
     }
