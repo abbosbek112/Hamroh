@@ -14,8 +14,6 @@ export const detectLanguage = (text: string): DetectedLanguage => {
     return 'uz'; // Default to Uzbek
   }
 
-  const lowerText = text.toLowerCase().trim();
-  
   // Russian detection patterns
   const russianPatterns = [
     /[а-яё]/i, // Cyrillic letters

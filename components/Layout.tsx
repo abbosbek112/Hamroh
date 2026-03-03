@@ -35,7 +35,6 @@ export const Layout: React.FC<LayoutProps> = ({
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [, setSystemConfig] = useState<SystemConfig | null>(null);
-  const [isTeacher, setIsTeacher] = useState(false);
   const [unseenTasks, setUnseenTasks] = useState(0);
   const { t, language, setLanguage } = useLanguage();
 
@@ -45,9 +44,7 @@ export const Layout: React.FC<LayoutProps> = ({
     if (user) {
       api.getMyOrganization().then(result => {
         if (result) {
-          if (result.role === 'teacher') {
-            setIsTeacher(true);
-          } else if (result.role === 'student' && result.org) {
+          if (result.role === 'student' && result.org) {
             api.getUnseenTasksCount(result.org.id).then(setUnseenTasks).catch(() => { });
           }
         }

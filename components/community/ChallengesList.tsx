@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Trophy, Zap, Calendar, Users, Plus, Filter, Trash2, Loader2 } from 'lucide-react';
 import { Challenge, User } from '../../types';
 import { api } from '../../services/api';
@@ -37,11 +37,7 @@ export const ChallengesList: React.FC<ChallengesListProps> = ({ currentUser, ref
     });
     const [creating, setCreating] = useState(false);
 
-    useEffect(() => {
-        loadChallenges();
-    }, [refreshTrigger]);
-
-    const loadChallenges = async () => {
+    const loadChallenges = useCallback(async () => {
         try {
             setLoading(true);
             const data = await api.getChallenges();
@@ -54,7 +50,11 @@ export const ChallengesList: React.FC<ChallengesListProps> = ({ currentUser, ref
         } finally {
             setLoading(false);
         }
-    };
+    }, [notify]);
+
+    useEffect(() => {
+        loadChallenges();
+    }, [loadChallenges, refreshTrigger]);
 
     const handleJoin = async (challenge: Challenge) => {
         try {
