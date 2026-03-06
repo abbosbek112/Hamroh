@@ -36,6 +36,7 @@ export const MemberProfileModal: React.FC<MemberProfileModalProps> = ({
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t('community.profile')}</h3>
                     <button
                         onClick={onClose}
+                        aria-label={t('common.close')}
                         className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl transition-colors"
                     >
                         <X size={20} className="text-slate-600 dark:text-slate-400" />

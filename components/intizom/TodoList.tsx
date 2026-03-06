@@ -123,7 +123,7 @@ export const TodoList: React.FC = () => {
           <div className="space-y-4 animate-fade-in">
             <div className="flex justify-between items-start">
               <h3 className="font-bold text-lg text-slate-800 dark:text-white">{t('intizom.tasks.create_title')}</h3>
-              <button onClick={() => setIsTaskFormExpanded(false)} className="text-slate-400 hover:text-slate-600"><X size={20} /></button>
+              <button onClick={() => setIsTaskFormExpanded(false)} aria-label={t('common.close')} className="text-slate-400 hover:text-slate-600"><X size={20} /></button>
             </div>
             <div className="space-y-3">
               <input type="text" value={newTaskForm.title} onChange={(e) => setNewTaskForm({ ...newTaskForm, title: e.target.value })} placeholder={t('intizom.tasks.name_placeholder')} className="w-full px-4 py-3 bg-slate-50 dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-xl font-medium outline-none focus:ring-2 focus:ring-violet-500" />
@@ -187,8 +187,8 @@ export const TodoList: React.FC = () => {
                   </div>
 
                   <div className="absolute bottom-4 right-4 flex gap-2 z-20 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity" onClick={(e) => e.stopPropagation()}>
-                    <button onClick={(e) => handleEditTodo(e, todo)} className="p-2 text-slate-400 hover:text-blue-500 bg-white dark:bg-white/10 rounded-full shadow-sm hover:shadow-md transition-all border border-slate-100 dark:border-transparent"><Edit2 size={16} /></button>
-                    <button onClick={(e) => handleDeleteTask(e, todo.id)} className="p-2 text-slate-400 hover:text-red-500 bg-white dark:bg-white/10 rounded-full shadow-sm hover:shadow-md transition-all border border-slate-100 dark:border-transparent"><Trash2 size={16} /></button>
+                    <button onClick={(e) => handleEditTodo(e, todo)} aria-label={t('common.edit')} className="p-2 text-slate-400 hover:text-blue-500 bg-white dark:bg-white/10 rounded-full shadow-sm hover:shadow-md transition-all border border-slate-100 dark:border-transparent"><Edit2 size={16} /></button>
+                    <button onClick={(e) => handleDeleteTask(e, todo.id)} aria-label={t('common.delete')} className="p-2 text-slate-400 hover:text-red-500 bg-white dark:bg-white/10 rounded-full shadow-sm hover:shadow-md transition-all border border-slate-100 dark:border-transparent"><Trash2 size={16} /></button>
                   </div>
                 </>
               )}

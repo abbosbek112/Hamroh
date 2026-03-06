@@ -31,7 +31,7 @@ const XPGuideModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOp
           <h3 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Star className="text-yellow-500 fill-yellow-500" /> {t('home.xp_guide.title')}
           </h3>
-          <button onClick={onClose} className="p-2 bg-slate-100 dark:bg-white/10 rounded-full hover:bg-slate-200"><X size={20} /></button>
+          <button onClick={onClose} aria-label={t('common.close')} className="p-2 bg-slate-100 dark:bg-white/10 rounded-full hover:bg-slate-200"><X size={20} /></button>
         </div>
 
         <div className="space-y-4">
@@ -477,7 +477,7 @@ export const Home: React.FC<HomeProps> = ({ user, onNavigate }) => {
                   </div>
                 </div>
               </div>
-              <button onClick={handleCompleteOnboarding} className="p-3 bg-slate-100 dark:bg-white/5 rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
+              <button onClick={handleCompleteOnboarding} aria-label={t('common.close')} className="p-3 bg-slate-100 dark:bg-white/5 rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
                 <X size={20} className="text-slate-500 dark:text-slate-400" />
               </button>
             </div>
@@ -788,7 +788,7 @@ export const Home: React.FC<HomeProps> = ({ user, onNavigate }) => {
                       // WRITING MODE (Active Journal)
                       <div className="flex flex-col h-full relative">
                         <div className="absolute top-0 right-4 z-20">
-                          <button onClick={(e) => { e.stopPropagation(); setIsWritingMode(false); }} className="p-2 text-slate-400 hover:text-red-500 transition-colors"><X size={20} /></button>
+                          <button onClick={(e) => { e.stopPropagation(); setIsWritingMode(false); }} aria-label={t('common.close')} className="p-2 text-slate-400 hover:text-red-500 transition-colors"><X size={20} /></button>
                         </div>
 
                         {/* INCREASED PADDING LEFT TO 16 (4rem = 64px) to clear the red line at 40px */}

@@ -678,7 +678,7 @@ const ClassesTab = ({ classes, members, onCreateClass, onDeleteClass, onAssignTo
                     <button onClick={handleCreate}
                         className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700">Yaratish</button>
                     <button onClick={() => { setShowCreate(false); setNewClassName(''); }}
-                        className="p-2.5 text-slate-400 hover:text-slate-600 rounded-xl"><X size={18} /></button>
+                        aria-label="Yopish" className="p-2.5 text-slate-400 hover:text-slate-600 rounded-xl"><X size={18} /></button>
                 </div>
             )}
 

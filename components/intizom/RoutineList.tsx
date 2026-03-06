@@ -516,8 +516,8 @@ export const RoutineList: React.FC = () => {
 
                     <div className="flex items-center gap-3 flex-shrink-0 relative z-10">
                       <div className="flex gap-1 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity z-20" onClick={(e) => e.stopPropagation()}>
-                        <button onClick={(e) => handleEditRoutine(e, task)} className="p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-500/20 rounded-xl transition-all transform hover:scale-110"><Edit2 size={18} /></button>
-                        <button onClick={(e) => handleDeleteRoutineTask(e, task.id)} className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/20 rounded-xl transition-all transform hover:scale-110"><Trash2 size={18} /></button>
+                        <button onClick={(e) => handleEditRoutine(e, task)} aria-label={t('common.edit')} className="p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-500/20 rounded-xl transition-all transform hover:scale-110"><Edit2 size={18} /></button>
+                        <button onClick={(e) => handleDeleteRoutineTask(e, task.id)} aria-label={t('common.delete')} className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/20 rounded-xl transition-all transform hover:scale-110"><Trash2 size={18} /></button>
                       </div>
                       {task.completed ? (
                         <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-lg ring-2 ring-green-200 dark:ring-green-500/30">

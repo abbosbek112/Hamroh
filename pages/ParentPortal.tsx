@@ -71,7 +71,7 @@ const ChildDetailModal = ({ title, items, type, onClose }: {
                     {type === 'todo' ? <ListTodo className="text-indigo-500" /> : <CheckCircle2 className="text-violet-500" />}
                     {title}
                 </h3>
-                <button onClick={onClose} className="p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors">
+                <button onClick={onClose} aria-label="Yopish" className="p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors">
                     <X size={20} className="text-slate-400" />
                 </button>
             </div>

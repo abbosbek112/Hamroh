@@ -18,20 +18,55 @@ export default defineConfig(({ mode }) => {
       }
     },
     build: {
-      // Performance optimizations
-      minify: 'esbuild', // esbuild is faster and included by default
+      // Target modern browsers to reduce polyfills and bundle size
+      target: 'es2020',
+      // Use terser for better tree-shaking and more aggressive minification
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: mode === 'production',
+          drop_debugger: true,
+          pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
+          passes: 2,
+        },
+        mangle: {
+          safari10: true,
+        },
+      },
+      // Enable CSS minification
+      cssMinify: true,
       rollupOptions: {
         output: {
-          manualChunks: {
-            // Split vendor chunks for better caching
-            'react-vendor': ['react', 'react-dom'],
-            'ui-vendor': ['lucide-react', 'recharts'],
-            'supabase-vendor': ['@supabase/supabase-js'],
+          // More granular chunk splitting for better tree-shaking and caching
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react-dom') || id.includes('react/')) {
+                return 'react-vendor';
+              }
+              if (id.includes('lucide-react')) {
+                return 'icons-vendor';
+              }
+              if (id.includes('recharts')) {
+                return 'charts-vendor';
+              }
+              if (id.includes('@supabase')) {
+                return 'supabase-vendor';
+              }
+              if (id.includes('@sentry') || id.includes('posthog')) {
+                return 'analytics-vendor';
+              }
+            }
           },
+        },
+        treeshake: {
+          moduleSideEffects: false,
+          propertyReadSideEffects: false,
         },
       },
       chunkSizeWarningLimit: 1000,
       sourcemap: mode === 'development', // Only generate sourcemaps in dev
+      // Reduce reporting overhead
+      reportCompressedSize: false,
     },
     // Optimize dependencies
     optimizeDeps: {

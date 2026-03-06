@@ -90,6 +90,7 @@ export const MembersModal: React.FC<MembersModalProps> = ({
                                         <>
                                             <button
                                                 onClick={() => onStartDM(member)}
+                                                aria-label={t('community.direct_messages')}
                                                 className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-xl transition-all"
                                                 title={t('community.direct_messages')}
                                             >
@@ -99,6 +100,7 @@ export const MembersModal: React.FC<MembersModalProps> = ({
                                                 <>
                                                     <button
                                                         onClick={() => onToggleBlock(member.id)}
+                                                        aria-label={isUserBlocked(member.id) ? t('community.unblock') : t('community.block')}
                                                         className={`p-2 rounded-xl transition-all ${isUserBlocked(member.id)
                                                             ? 'text-red-500 bg-red-50 dark:bg-red-500/10'
                                                             : 'text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'
@@ -109,6 +111,7 @@ export const MembersModal: React.FC<MembersModalProps> = ({
                                                     </button>
                                                     <button
                                                         onClick={() => onRemoveMember(member.id)}
+                                                        aria-label={t('community.remove_member')}
                                                         className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all"
                                                         title={t('community.remove_member')}
                                                     >

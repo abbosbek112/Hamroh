@@ -25,8 +25,8 @@ export const LiquidBackground: React.FC = () => {
         {/* 1. Deep Space Base Gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#020205] via-[#0B0B15] to-[#020205]"></div>
 
-        {/* 2. Starfield Texture (Static Noise + Sparkles) */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.04] mix-blend-overlay"></div>
+        {/* 2. Starfield Texture (Static Noise - CSS-based, no external request) */}
+        <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}></div>
 
         {/* 3. Glowing Nebulas (Liquid Motion) */}
         {/* Purple/Pink Nebula - Top Left - Optimized for mobile */}

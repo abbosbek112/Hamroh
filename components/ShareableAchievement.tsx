@@ -111,6 +111,7 @@ export const ShareableAchievement: React.FC<ShareableAchievementProps> = ({ user
 
                 <button
                     onClick={onClose}
+                    aria-label={t('common.close')}
                     className="absolute top-4 right-4 p-2 bg-slate-100 dark:bg-white/10 rounded-full hover:bg-slate-200 transition-colors z-50"
                 >
                     <X size={20} className="text-slate-600 dark:text-slate-300" />
