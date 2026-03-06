@@ -32,7 +32,6 @@ import { api } from './services/api';
 import { Loader2 } from 'lucide-react';
 import { logger } from './utils/logger';
 import { supabase } from './services/supabaseClient';
-import { PWAInstallPrompt } from './components/PWAInstallPrompt';
 
 // Lazy load heavy components for better performance
 // Note: All components use named exports, so we need to map them correctly
@@ -291,7 +290,6 @@ function App() {
       onUpdateUser={setUser}
       onLogout={handleLogout}
     >
-      <PWAInstallPrompt />
       <FocusProvider>
         {renderView()}
       </FocusProvider>
