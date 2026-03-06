@@ -235,26 +235,27 @@ export const Home: React.FC<HomeProps> = ({ user, onNavigate }) => {
     const fetchWeeklyStats = async () => {
       try {
         const today = new Date();
-        const dates: string[] = [];
-        for (let i = 0; i < 7; i++) {
-          const d = new Date(today);
-          d.setDate(today.getDate() - i);
-          dates.push(d.toISOString().split('T')[0]);
-        }
+        const sevenDaysAgo = new Date(today);
+        sevenDaysAgo.setDate(today.getDate() - 6);
+        const startDate = sevenDaysAgo.toISOString().split('T')[0];
+        const endDate = today.toISOString().split('T')[0];
 
-        const routines = await Promise.all(dates.map(date => api.getRoutine(date)));
-        const allTasks = routines.flat();
+        // Fetch all three data sources in parallel with a single batched routine query
+        const [allTasks, focusHistory, journals] = await Promise.all([
+          api.getRoutinesInRange(startDate, endDate),
+          api.getFocusHistory(),
+          api.getJournalEntries(),
+        ]);
+
         const completedTasks = allTasks.filter(t => t.completed).length;
 
-        const focusHistory = await api.getFocusHistory();
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+        const startDateObj = new Date(startDate);
         const focusMinutes = focusHistory
-          .filter(h => new Date(h.date) >= new Date(sevenDaysAgo.toISOString().split('T')[0]))
+          .filter(h => new Date(h.date) >= startDateObj)
           .reduce((sum, h) => sum + (h.minutes || 0), 0);
 
-        const journals = await api.getJournalEntries();
-        const journalEntries = journals.filter(j => j.timestamp >= sevenDaysAgo.getTime()).length;
+        const sevenDaysAgoMs = sevenDaysAgo.getTime();
+        const journalEntries = journals.filter(j => j.timestamp >= sevenDaysAgoMs).length;
 
         setWeeklyStats({
           completedTasks,
@@ -308,16 +309,24 @@ export const Home: React.FC<HomeProps> = ({ user, onNavigate }) => {
     if (window.innerWidth < 1024) return; // Disable on mobile
     if (isBookOpen) return; // Disable mouse tracking when book is open
 
+    let rafId: number | null = null;
     const handleMouseMove = (e: MouseEvent) => {
       if (!heroRef.current) return;
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 15;
-      const y = (e.clientY / innerHeight - 0.5) * 15;
-      setMousePos({ x, y });
+      if (rafId !== null) return; // Throttle to one update per animation frame
+      rafId = requestAnimationFrame(() => {
+        const { innerWidth, innerHeight } = window;
+        const x = (e.clientX / innerWidth - 0.5) * 15;
+        const y = (e.clientY / innerHeight - 0.5) * 15;
+        setMousePos({ x, y });
+        rafId = null;
+      });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, [isBookOpen]);
 
   const handleBookClick = (e: React.MouseEvent) => {
