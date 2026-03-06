@@ -1,7 +1,6 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({ mode }) => {
   return {
@@ -11,26 +10,6 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      VitePWA({
-        registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
-        manifest: {
-          name: 'Hamroh AI',
-          short_name: 'Hamroh',
-          description: 'Sizning shaxsiy rivojlanish yordamchingiz',
-          theme_color: '#4f46e5',
-          background_color: '#ffffff',
-          display: 'standalone',
-          icons: [
-            {
-              src: 'icon.svg',
-              sizes: 'any',
-              type: 'image/svg+xml',
-              purpose: 'any maskable'
-            }
-          ]
-        }
-      })
     ],
     // Email verification: use .env VITE_SKIP_EMAIL_VERIFICATION=true (Auth/api read it)
     resolve: {

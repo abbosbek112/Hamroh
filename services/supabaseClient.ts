@@ -34,6 +34,7 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { logger } from '../utils/logger';
 
 // Type assertion for Vite environment variables
 // Vite provides import.meta.env at runtime, but TypeScript needs type assertion
@@ -89,7 +90,7 @@ if (!finalUrl || !supabaseAnonKey || isAuthDisabled) {
   supabaseInstance = createMockClient();
 
   // Log status
-  console.log('[Supabase] Initializing in DEMO mode (Auth Disabled or missing keys)');
+  logger.log('[Supabase] Initializing in DEMO mode (Auth Disabled or missing keys)');
 } else {
   // Initialize real Supabase client
   try {
@@ -112,9 +113,9 @@ if (!finalUrl || !supabaseAnonKey || isAuthDisabled) {
       }
     });
 
-    console.log('[Supabase] Client initialized for:', finalUrl);
+    logger.log('[Supabase] Client initialized for:', finalUrl);
   } catch (error) {
-    console.error('[Supabase] Critical initialization error:', error);
+    logger.error('[Supabase] Critical initialization error:', error);
     supabaseInstance = createMockClient();
   }
 
