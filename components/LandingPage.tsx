@@ -168,7 +168,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, toggleTheme, 
                               {/* App Header */}
                               <div className="h-20 pt-6 px-6 flex items-center justify-between z-10">
                                  <div className="w-8 h-8 rounded-full bg-white dark:bg-white/10 shadow-sm flex items-center justify-center"><Menu size={14} className="text-slate-600 dark:text-white" /></div>
-                                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500">HAMROH</span>
+                                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-600 dark:text-slate-400">HAMROH</span>
                                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-md"></div>
                               </div>
 
@@ -183,10 +183,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, toggleTheme, 
                                           <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-red-100 dark:bg-red-500/20 text-[8px] font-bold text-red-500 dark:text-red-400 uppercase">
                                              <Clock size={8} /> {t('landing.mock_reminder')}
                                           </div>
-                                          <div className="text-[10px] text-slate-400 mt-1">{t('landing.mock_reading_time')}</div>
+                                          <div className="text-[10px] text-slate-500 mt-1">{t('landing.mock_reading_time')}</div>
                                        </div>
                                     </div>
-                                    <div className="text-4xl font-black text-slate-900 dark:text-white mb-2">1,240 <span className="text-sm text-slate-400">XP</span></div>
+                                    <div className="text-4xl font-black text-slate-900 dark:text-white mb-2">1,240 <span className="text-sm text-slate-500">XP</span></div>
                                     <div className="w-full bg-slate-100 dark:bg-white/5 h-2 rounded-full overflow-hidden">
                                        <div className="h-full w-3/4 bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
                                     </div>
@@ -533,7 +533,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin, toggleTheme, 
                </button>
 
                <button onClick={() => setIsAuthOpen(true)} className="px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-black rounded-2xl font-bold text-xl">{t('landing.login')}</button>
-               <button onClick={() => setMobileMenuOpen(false)} className="absolute bottom-10 p-4 bg-slate-100 dark:bg-white/10 rounded-full text-slate-900 dark:text-white"><X /></button>
+               <button onClick={() => setMobileMenuOpen(false)} aria-label={t('common.close') || 'Yopish'} className="absolute bottom-10 p-4 bg-slate-100 dark:bg-white/10 rounded-full text-slate-900 dark:text-white"><X /></button>
             </div>
          )}
 

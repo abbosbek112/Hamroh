@@ -90,6 +90,7 @@ export const ChallengeDetailModal: React.FC<ChallengeDetailModalProps> = ({
                     <div className="text-6xl">{challenge.icon}</div>
                     <button
                         onClick={onClose}
+                        aria-label={t('common.close')}
                         className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/30 text-white rounded-full transition-colors"
                     >
                         <X size={18} />

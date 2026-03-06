@@ -83,6 +83,7 @@ export const DMChat: React.FC<DMChatProps> = ({
                     <div className="flex items-center gap-3">
                         <button
                             onClick={onBack}
+                            aria-label="Orqaga"
                             className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl transition-colors"
                         >
                             <X size={20} className="text-slate-600 dark:text-slate-400" />
@@ -124,7 +125,7 @@ export const DMChat: React.FC<DMChatProps> = ({
                             className="flex-1 bg-transparent outline-none text-sm text-slate-700 dark:text-slate-200"
                         />
                         {messageSearchQuery && (
-                            <button onClick={() => setMessageSearchQuery('')} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setMessageSearchQuery('')} aria-label="Clear search" className="text-slate-400 hover:text-slate-600">
                                 <X size={14} />
                             </button>
                         )}
@@ -268,6 +269,7 @@ export const DMChat: React.FC<DMChatProps> = ({
                         </div>
                         <button
                             onClick={() => setReplyingTo(null)}
+                            aria-label="Cancel reply"
                             className="p-1 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 rounded"
                         >
                             <X size={14} className="text-indigo-600 dark:text-indigo-400" />
@@ -282,6 +284,7 @@ export const DMChat: React.FC<DMChatProps> = ({
                                 setEditingMessageId(null);
                                 setEditMessageText('');
                             }}
+                            aria-label="Cancel edit"
                             className="p-1 hover:bg-yellow-100 dark:hover:bg-yellow-500/20 rounded"
                         >
                             <X size={14} className="text-yellow-600 dark:text-yellow-400" />
@@ -319,6 +322,7 @@ export const DMChat: React.FC<DMChatProps> = ({
                             <button
                                 onClick={onSaveEdit}
                                 disabled={!editMessageText.trim() || isSendingMessage}
+                                aria-label="Save edit"
                                 className="px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl disabled:hover:shadow-lg flex items-center justify-center"
                             >
                                 {isSendingMessage ? (
@@ -332,6 +336,7 @@ export const DMChat: React.FC<DMChatProps> = ({
                                     setEditingMessageId(null);
                                     setEditMessageText('');
                                 }}
+                                aria-label="Cancel edit"
                                 className="px-6 py-3 bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-300 rounded-xl font-bold transition-all"
                             >
                                 <X size={20} />
@@ -341,6 +346,7 @@ export const DMChat: React.FC<DMChatProps> = ({
                         <button
                             onClick={onSendMessage}
                             disabled={!messageInput.trim() || isSendingMessage}
+                            aria-label="Send message"
                             className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl disabled:hover:shadow-lg flex items-center justify-center"
                         >
                             {isSendingMessage ? (

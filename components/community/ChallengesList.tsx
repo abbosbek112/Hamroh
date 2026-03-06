@@ -209,6 +209,7 @@ export const ChallengesList: React.FC<ChallengesListProps> = ({ currentUser, ref
                                 {currentUser.role === 'admin' && (
                                     <button
                                         onClick={e => { e.stopPropagation(); handleDelete(challenge.id); }}
+                                        aria-label="O'chirish"
                                         className="absolute top-3 right-3 z-20 p-1.5 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-lg hover:bg-red-200 transition-colors"
                                     >
                                         <Trash2 size={14} />

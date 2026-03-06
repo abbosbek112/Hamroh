@@ -64,7 +64,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({ user, onClose,
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
             <div className="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-[#1a1a1e] rounded-[2rem] shadow-2xl animate-fade-in-up border border-slate-200 dark:border-white/10 overflow-hidden flex flex-col">
-                <button onClick={onClose} className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 z-10">
+                <button onClick={onClose} aria-label="Yopish" className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 z-10">
                     <X size={20} />
                 </button>
 

@@ -55,7 +55,7 @@ const ToastContainer: React.FC<{ toasts: Toast[], remove: (id: number) => void }
       <div key={t.id} className={`pointer-events-auto min-w-[300px] p-4 rounded-xl shadow-2xl border flex items-center gap-3 animate-fade-in-up backdrop-blur-md ${t.type === 'error' ? 'bg-red-500/90 text-white border-red-400' : t.type === 'success' ? 'bg-green-500/90 text-white border-green-400' : 'bg-slate-800/90 text-white border-slate-700'}`}>
         {t.type === 'success' ? <CheckCircle size={20} /> : t.type === 'error' ? <AlertTriangle size={20} /> : <Info size={20} />}
         <span className="font-bold text-sm">{t.message}</span>
-        <button onClick={() => remove(t.id)} className="ml-auto p-1 hover:bg-white/20 rounded-full"><X size={14} /></button>
+        <button onClick={() => remove(t.id)} aria-label="O'chirish" className="ml-auto p-1 hover:bg-white/20 rounded-full"><X size={14} /></button>
       </div>
     ))}
   </div>
@@ -139,7 +139,7 @@ const UserDetailModal: React.FC<{
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
       <div className="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-[#1a1a1e] rounded-[2rem] shadow-2xl animate-fade-in-up border border-slate-200 dark:border-white/10 overflow-hidden flex flex-col">
-        <button onClick={onClose} className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 z-10">
+        <button onClick={onClose} aria-label="Yopish" className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 z-10">
           <X size={20} />
         </button>
 
@@ -1435,7 +1435,7 @@ export const Admin: React.FC = () => {
             <div className="relative w-full max-w-lg bg-white dark:bg-[#1a1a1e] rounded-[2rem] p-8 shadow-2xl animate-fade-in-up border border-slate-200 dark:border-white/10">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Guruhni tahrirlash</h2>
-                <button onClick={() => { setIsEditingGroup(false); setEditGroupForm(null); }} className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl"><X size={20} /></button>
+                <button onClick={() => { setIsEditingGroup(false); setEditGroupForm(null); }} aria-label="Yopish" className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl"><X size={20} /></button>
               </div>
               <div className="space-y-4">
                 <div>
@@ -1500,8 +1500,8 @@ export const Admin: React.FC = () => {
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{selectedGroup.description || 'Tavsif yo\'q'}</p>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={handleEditGroupClick} className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl text-slate-400 hover:text-blue-500" title="Tahrirlash"><Edit2 size={20} /></button>
-                  <button onClick={() => setSelectedGroup(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl text-slate-400 hover:text-slate-600"><X size={20} /></button>
+                  <button onClick={handleEditGroupClick} aria-label="Tahrirlash" className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl text-slate-400 hover:text-blue-500" title="Tahrirlash"><Edit2 size={20} /></button>
+                  <button onClick={() => setSelectedGroup(null)} aria-label="Yopish" className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl text-slate-400 hover:text-slate-600"><X size={20} /></button>
                 </div>
               </div>
 
@@ -1597,9 +1597,9 @@ export const Admin: React.FC = () => {
                     </td>
                     <td className="p-6"><span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${group.status === 'Healthy' ? 'bg-green-100 text-green-700' : group.status === 'Warning' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>{group.status}</span></td>
                     <td className="p-6 text-right flex justify-end gap-2">
-                      <button onClick={() => setSelectedGroup(group)} className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full" title="Batafsil ko'rish"><Eye size={18} /></button>
-                      <button onClick={() => { setSelectedGroup(group); handleEditGroupClick(); }} className="p-2 text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full" title="Tahrirlash"><Edit2 size={18} /></button>
-                      <button onClick={() => handleDeleteGroup(group.id)} className="p-2 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full" title="O'chirish"><Trash2 size={18} /></button>
+                      <button onClick={() => setSelectedGroup(group)} aria-label="Batafsil ko'rish" className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full" title="Batafsil ko'rish"><Eye size={18} /></button>
+                      <button onClick={() => { setSelectedGroup(group); handleEditGroupClick(); }} aria-label="Tahrirlash" className="p-2 text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full" title="Tahrirlash"><Edit2 size={18} /></button>
+                      <button onClick={() => handleDeleteGroup(group.id)} aria-label="O'chirish" className="p-2 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full" title="O'chirish"><Trash2 size={18} /></button>
                     </td>
                   </tr>
                 ))}
@@ -1804,7 +1804,7 @@ export const Admin: React.FC = () => {
                   <td className="p-6"><span className="px-3 py-1 bg-slate-100 dark:bg-white/10 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300">{item.type}</span></td>
                   <td className="p-6 font-mono font-bold text-slate-900 dark:text-white">{item.price} XP</td>
                   <td className="p-6 text-right">
-                    <button onClick={() => handleDeleteStoreItem(item.id)} className="p-2 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full" title="O'chirish"><Trash2 size={18} /></button>
+                    <button onClick={() => handleDeleteStoreItem(item.id)} aria-label="O'chirish" className="p-2 text-slate-400 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full" title="O'chirish"><Trash2 size={18} /></button>
                   </td>
                 </tr>
               ))}
@@ -1905,7 +1905,7 @@ export const Admin: React.FC = () => {
                 <div className={`h-40 bg-gradient-to-r ${ad.bgGradient} relative flex flex-col justify-between p-4`}>
                   <div className="flex justify-between items-start">
                     <span className={`px-2 py-1 bg-black/40 backdrop-blur-md text-white text-[10px] font-bold rounded uppercase ${ad.status === 'Expired' ? 'bg-red-500/80' : ''}`}>{ad.status}</span>
-                    <button onClick={() => handleDeleteAd(ad.id)} className="p-1.5 bg-white/20 hover:bg-white/40 rounded-full text-white"><Trash2 size={14} /></button>
+                    <button onClick={() => handleDeleteAd(ad.id)} aria-label="O'chirish" className="p-1.5 bg-white/20 hover:bg-white/40 rounded-full text-white"><Trash2 size={14} /></button>
                   </div>
                   {ad.image && <img src={ad.image} className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay" />}
                   <div className="relative z-10">

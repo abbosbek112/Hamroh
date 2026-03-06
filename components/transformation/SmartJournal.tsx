@@ -93,7 +93,7 @@ export const SmartJournal: React.FC<SmartJournalProps> = ({ user, onSave, onClos
                 {/* Progress Bar */}
                 <div className="absolute top-0 left-0 h-1 bg-indigo-500 transition-all duration-300" style={{ width: `${((step + 1) / template.prompts.length) * 100}%` }}></div>
 
-                <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+                <button onClick={onClose} aria-label={t('common.close')} className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
                     <X size={24} />
                 </button>
 

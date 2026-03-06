@@ -424,6 +424,7 @@ export const GroupChat: React.FC<GroupChatProps> = ({
                                     setEditingMessageId(null);
                                     setEditMessageText('');
                                 }}
+                                aria-label="Cancel edit"
                                 className="px-6 py-3 bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/20 text-slate-700 dark:text-slate-300 rounded-xl font-bold transition-all"
                             >
                                 <X size={20} />
