@@ -1432,6 +1432,35 @@ export const api = {
     }
   },
 
+  getRoutinesInRange: async (startDate: string, endDate: string): Promise<RoutineTask[]> => {
+    try {
+      const userId = await getCurrentUserId();
+      if (!userId) return [];
+
+      const { data, error } = await supabase
+        .from('routine_tasks')
+        .select('*')
+        .eq('user_id', userId)
+        .gte('date', startDate)
+        .lte('date', endDate)
+        .order('date', { ascending: true });
+
+      if (error) throw error;
+      return (data || []).map((t: any) => ({
+        id: t.id,
+        time: t.time,
+        title: t.title,
+        completed: t.completed || false,
+        date: t.date,
+        userId: t.user_id,
+        createdAt: t.created_at,
+      }));
+    } catch (error: unknown) {
+      logger.error('getRoutinesInRange error:', error);
+      return [];
+    }
+  },
+
   saveRoutineTask: async (task: RoutineTask): Promise<RoutineTask> => {
     try {
       const userId = await getCurrentUserId();

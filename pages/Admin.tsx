@@ -504,19 +504,19 @@ export const Admin: React.FC = () => {
       try {
         setIsLoading(true);
 
-        const config = await api.getSystemConfig();
+        const [config, savedDeals, savedAds, savedBadges, savedStoreItems, tickets] = await Promise.all([
+          api.getSystemConfig(),
+          api.getDeals(),
+          api.getActiveAds(),
+          api.getBadges(),
+          api.getStoreItems(),
+          api.getAllSupportTickets(),
+        ]);
         setSystemConfig(config);
-        const savedDeals = await api.getDeals();
         setDeals(savedDeals);
-        const savedAds = await api.getActiveAds();
         setActiveAds(savedAds);
-        const savedBadges = await api.getBadges();
         setBadges(savedBadges);
-        const savedStoreItems = await api.getStoreItems();
         setStoreItems(savedStoreItems);
-
-        // Load Tickets (real-time updates handled separately)
-        const tickets = await api.getAllSupportTickets();
         setSupportTickets(tickets);
 
         // Users and Groups will be loaded by real-time effects
@@ -680,7 +680,7 @@ export const Admin: React.FC = () => {
     };
 
     generateSystemLoadData();
-    const interval = setInterval(generateSystemLoadData, 3000); // Update every 3 seconds
+    const interval = setInterval(generateSystemLoadData, 30000); // Update every 30 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -700,7 +700,7 @@ export const Admin: React.FC = () => {
     };
 
     generateEcosystemData();
-    const interval = setInterval(generateEcosystemData, 3000); // Update every 3 seconds
+    const interval = setInterval(generateEcosystemData, 30000); // Update every 30 seconds
     return () => clearInterval(interval);
   }, [usersList.length, groupsList.length]);
 

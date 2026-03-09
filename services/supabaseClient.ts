@@ -119,9 +119,9 @@ if (!finalUrl || !supabaseAnonKey || isAuthDisabled) {
     supabaseInstance = createMockClient();
   }
 
-  // Handle invalid refresh token errors globally
+  // Handle auth state changes globally (single listener to avoid duplicate subscriptions)
   if (typeof window !== 'undefined' && supabaseInstance.auth) {
-    supabaseInstance.auth.onAuthStateChange((event, session) => {
+    supabaseInstance.auth.onAuthStateChange((event: string, _session: any) => {
       if (event === 'SIGNED_OUT') {
         // Clear any cached data
         try {
@@ -129,19 +129,6 @@ if (!finalUrl || !supabaseAnonKey || isAuthDisabled) {
         } catch (e) {
           // Ignore localStorage errors
         }
-      } else if (event === 'TOKEN_REFRESHED') {
-        // Session refreshed successfully
-      } else if (event === 'SIGNED_IN') {
-        // User signed in
-      } else if (event === 'USER_UPDATED') {
-        // User data updated
-      }
-    });
-
-    // Handle session errors
-    supabaseInstance.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT' && !session) {
-        // Session cleared
       }
     });
   }
